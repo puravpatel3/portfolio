@@ -1,0 +1,2 @@
+streamlit
+pydeck  # For map visualizations
