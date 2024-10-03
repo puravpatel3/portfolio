@@ -11,11 +11,12 @@ def show_about_me():
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         header {visibility: hidden;} /* Hide the header */
+        .stImage {margin-bottom: -20px;} /* Reduce gap between images and text */
         </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-    # Create a two-column layout: left for the image, right for text and buttons
+    # Create a two-column layout: left for the images and buttons, right for the text
     col1, col2 = st.columns([1, 2])
 
     # Left column: Profile pictures (images loaded from GitHub repository)
@@ -26,7 +27,15 @@ def show_about_me():
         st.image(image1_url, width=250)
         st.image(image2_url, width=250)
 
-    # Right column: Bio and buttons
+        # Buttons section (organized vertically below the second image)
+        linkedin_url = "https://www.linkedin.com/in/puravp"
+        resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
+
+        st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
+        st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>', unsafe_allow_html=True)
+        st.write('<a href="mailto:patel.a.purav@gmail.com"><button class="btn btn-primary">Contact Me</button></a>', unsafe_allow_html=True)
+
+    # Right column: Bio and Professional Summary
     with col2:
         st.write("""
         ## Hi, I'm Purav!
@@ -36,7 +45,7 @@ def show_about_me():
         I built this web app to offer a deeper look into my expertise, showcase the projects I’ve worked on, and connect with other professionals who share similar passions. You’ll find a summary of my professional journey below, and more detailed insights about my roles and projects in the subpages.
         """)
 
-        # Professional Summary
+        # Professional Summary (reduced text size for role titles)
         st.write("""
         ### Senior Order Fulfillment Analytics Manager
         Location: Detroit, United States  
@@ -58,14 +67,6 @@ def show_about_me():
         Location: Waukesha, Wisconsin  
         Time Worked: Jul '12 — Jul '14
         """)
-
-        # Buttons section (organized vertically)
-        linkedin_url = "https://www.linkedin.com/in/puravp"
-        resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
-
-        st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
-        st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>', unsafe_allow_html=True)
-        st.write('<a href="mailto:patel.a.purav@gmail.com"><button class="btn btn-primary">Contact Me</button></a>', unsafe_allow_html=True)
 
 # Call the function directly
 show_about_me()
