@@ -1,2 +1,8 @@
 streamlit
-pydeck  # For map visualizations
+pandas
+plotly
+matplotlib
+seaborn
+st-aggrid
+openpyxl
+pydeck
