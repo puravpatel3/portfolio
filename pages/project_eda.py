@@ -32,10 +32,9 @@ This app is suitable for data professionals, analysts, or businesses looking to 
 # Adding Key Technologies Used
 st.subheader("Key Technologies Used")
 st.write("""
-- **Python**  
-- **Pandas**  
-- **Plotly**  
-- **Streamlit**  
+- **Pandas**: Essential for data manipulation and preparation.  
+- **Plotly**: For generating visualizations for data analysis.  
+- **Streamlit**: Used to build the interactive web application for EDA.
 """)
 
 # ================================================================================================
