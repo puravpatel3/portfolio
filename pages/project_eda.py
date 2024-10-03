@@ -16,6 +16,11 @@ This app demonstrates my expertise in exploratory data analysis (EDA), providing
 Users can preview their dataset, explore field relationships, review summary statistics, and create visualizations based on their data. EDA is a critical step in any data science workflow and forms the foundation of insightful data-driven decision-making.
 """)
 
+# Data Source
+st.markdown("""
+**Data Source**: [Electric Vehicle Charging Patterns Dataset on Kaggle](https://www.kaggle.com/datasets/valakhorasani/electric-vehicle-charging-patterns)
+""")
+
 # Adding Instructions
 st.subheader("Instructions")
 st.write("""
