@@ -7,8 +7,8 @@ from st_aggrid import AgGrid, GridOptionsBuilder
 # Setting up web app page
 st.set_page_config(page_title='Interactive Data Analysis App', page_icon=None, layout="wide")
 
-# Path to default CSV file
-default_file_path = r'C:\Users\212068332.HCAD\Box\z_My Folder\5-Artificial Intelligence\Streamlit Projects\Portfolio Web App\portfolio-app-streamlit\files\ev_charging_patterns.csv'
+# Path to the CSV file in your GitHub repository
+default_file_path = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/ev_charging_patterns.csv'
 
 # Creating section in sidebar
 st.sidebar.write("****A) File upload****")
@@ -19,9 +19,9 @@ ft = st.sidebar.selectbox("*What is the file type?*", ["csv", "Excel"])
 # Creating dynamic file upload option in sidebar
 uploaded_file = st.sidebar.file_uploader("*Upload file here*", type=['csv', 'xlsx'])
 
-# Default to loading the CSV if no file is uploaded
+# Default to loading the CSV from GitHub if no file is uploaded
 if uploaded_file is None and ft == 'csv':
-    st.info(f"Loading default CSV file: {default_file_path}")
+    st.info(f"Loading default CSV file from GitHub: {default_file_path}")
     file_path = default_file_path
     data = pd.read_csv(file_path)
 elif uploaded_file is not None:
