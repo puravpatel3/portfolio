@@ -18,12 +18,12 @@ def show_about_me():
 
     # Left column: Profile pictures (image loaded from GitHub repository)
     image1_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg'
-    image2_url = '/mnt/data/image.png'  # Placeholder for the second image to be uploaded
+    image2_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg'
 
     with col1:
         # Display the first image
         st.image(image1_url, width=250)
-        # Add a placeholder space for the second image
+        # Display the second image
         st.image(image2_url, width=250)
 
     # Right column: Bio and Professional Summary
