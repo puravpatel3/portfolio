@@ -1,19 +1,40 @@
 import streamlit as st
 import pydeck as pdk  # For map visualization
-import pandas as pd
 
 # List of roles with their corresponding locations
 roles = [
     {
-        "role": "Senior Order Fulfillment Analytics Manager",
-        "location": "Detroit, United States",
-        "lat": 42.3314,
-        "lon": -83.0458,
-        "time": "Jul '21 — Present",
+        "role": "Operations Management Leadership Development Program",
+        "location": "Waukesha, Wisconsin",
+        "lat": 43.0117,
+        "lon": -88.2315,
+        "time": "Jul '12 — Jul '14",
         "accomplishments": [
-            "Led cross-functional project to improve order delivery and revenue flow by developing Celonis analytics views for performance insights, automated reason codes, and proactive material visibility, resulting in a 10% delivery improvement.",
-            "Enhanced business strategy by developing Supply Chain Key Performance Indicator (KPI) dashboards for tracking standard work compliance, analyzing date changes, and identifying outliers, resulting in a 20% improvement in order delivery times and optimal decision making.",
-            "Designed a revenue linearity dashboard identifying past due orders across multiple dimensions and created Standard Operating Procedures for users helping enable a 30% reduction in past due backlog year over year."
+            "Held four separate supply chain roles covering manufacturing, lean, six sigma, order execution, and warehouse ops.",
+            "Directed production plan to bring Accessories production line on time delivery from 45% FW13 to 89% FW23.",
+            "Implemented process standards in warehouse operations leading to a reduction of $1.1M in inventory."
+        ]
+    },
+    {
+        "role": "Logistics & Distribution Leader",
+        "location": "Miami, United States",
+        "lat": 25.7617,
+        "lon": -80.1918,
+        "time": "Aug '14 — Sep '16",
+        "accomplishments": [
+            "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
+            "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
+        ]
+    },
+    {
+        "role": "Logistics Analytics Product Owner",
+        "location": "Hoboken, United States",
+        "lat": 40.7433,
+        "lon": -74.0324,
+        "time": "Oct '16 — Dec '18",
+        "accomplishments": [
+            "Created global lead time standards for internal and external customer shipments by mining and modeling 5+ data sources (1M+ rows of data) leading to a change in 40% of incorrectly set up lead times.",
+            "Defined the data architecture for the new OTM data source and overhauled the existing data source by removing 70% of redundant code and reducing load time by 90%."
         ]
     },
     {
@@ -29,37 +50,15 @@ roles = [
         ]
     },
     {
-        "role": "Logistics Analytics Product Owner",
-        "location": "Hoboken, United States",
-        "lat": 40.7433,
-        "lon": -74.0324,
-        "time": "Oct '16 — Dec '18",
+        "role": "Senior Order Fulfillment Analytics Manager",
+        "location": "Detroit, United States",
+        "lat": 42.3314,
+        "lon": -83.0458,
+        "time": "Jul '21 — Present",
         "accomplishments": [
-            "Created global lead time standards for internal and external customer shipments by mining and modeling 5+ data sources (1M+ rows of data) leading to a change in 40% of incorrectly set up lead times.",
-            "Defined the data architecture for the new OTM data source and overhauled the existing data source by removing 70% of redundant code and reducing load time by 90%."
-        ]
-    },
-    {
-        "role": "Logistics & Distribution Leader",
-        "location": "Miami, United States",
-        "lat": 25.7617,
-        "lon": -80.1918,
-        "time": "Aug '14 — Sep '16",
-        "accomplishments": [
-            "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
-            "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
-        ]
-    },
-    {
-        "role": "Operations Management Leadership Development Program",
-        "location": "Waukesha, Wisconsin",
-        "lat": 43.0117,
-        "lon": -88.2315,
-        "time": "Jul '12 — Jul '14",
-        "accomplishments": [
-            "Held four separate supply chain roles covering manufacturing, lean, six sigma, order execution, and warehouse ops.",
-            "Directed production plan to bring Accessories production line on time delivery from 45% FW13 to 89% FW23.",
-            "Implemented process standards in warehouse operations leading to a reduction of $1.1M in inventory."
+            "Led cross-functional project to improve order delivery and revenue flow by developing Celonis analytics views for performance insights, automated reason codes, and proactive material visibility, resulting in a 10% delivery improvement.",
+            "Enhanced business strategy by developing Supply Chain Key Performance Indicator (KPI) dashboards for tracking standard work compliance, analyzing date changes, and identifying outliers, resulting in a 20% improvement in order delivery times and optimal decision making.",
+            "Designed a revenue linearity dashboard identifying past due orders across multiple dimensions and created Standard Operating Procedures for users helping enable a 30% reduction in past due backlog year over year."
         ]
     }
 ]
@@ -85,10 +84,12 @@ def show_role_details(role):
         col_prev, col_next = st.columns([1, 1])
         with col_prev:
             if st.button("⬅️ Previous"):
-                st.session_state['role_index'] = (st.session_state['role_index'] - 1) % len(roles)
+                if st.session_state['role_index'] > 0:
+                    st.session_state['role_index'] -= 1
         with col_next:
             if st.button("➡️ Next"):
-                st.session_state['role_index'] = (st.session_state['role_index'] + 1) % len(roles)
+                if st.session_state['role_index'] < len(roles) - 1:
+                    st.session_state['role_index'] += 1
 
     # Right side: Map view
     with col2:
@@ -102,22 +103,9 @@ def show_role_details(role):
             )
         ))
 
-# Function to show the timeline table
-def show_timeline_table():
-    # Create a DataFrame for displaying roles with most recent first
-    timeline_df = pd.DataFrame(
-        [(role['role'], role['location'], role['time']) for role in roles],
-        columns=["Role", "Location", "Time Worked"]
-    )
-    timeline_df = timeline_df.iloc[::-1].reset_index(drop=True)  # Reverse the order for most recent at the top
-    st.table(timeline_df)
-
 # Timeline Page
 def show_timeline():
     st.title("Professional Timeline")
-
-    # Display the timeline table (most recent role at the top)
-    show_timeline_table()
 
     # Display the current role details and map
     role = roles[st.session_state['role_index']]
