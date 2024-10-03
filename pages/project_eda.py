@@ -2,7 +2,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from st_aggrid import AgGrid, GridOptionsBuilder
 
 # Setting up web app page
 st.set_page_config(page_title='Interactive Data Analysis App', page_icon=None, layout="wide")
@@ -60,12 +59,8 @@ st.write('### 1. Dataset Preview')
 
 if 'data' in locals() and data is not None:
     try:
-        # Use AgGrid to display and manipulate the data
-        grid_options = GridOptionsBuilder.from_dataframe(data)
-        grid_options.configure_pagination(enabled=True)
-        grid_options.configure_selection('multiple', use_checkbox=True)
-        grid = AgGrid(data, gridOptions=grid_options.build(), enable_enterprise_modules=True, theme='alpine', height=400)
-        selected_rows = grid['selected_rows']
+        # Display the dataset using st.dataframe
+        st.dataframe(data, height=400)
     except Exception as e:
         st.error(f"Error displaying data: {e}")
 else:
