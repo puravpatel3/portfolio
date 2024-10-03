@@ -15,52 +15,51 @@ def show_about_me():
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-    # Create a two-column layout: left for the image,
-    # Right column: Bio, Certifications, LinkedIn, and Resume Download
+    # Create a two-column layout: left for the image and buttons, right for Bio and Skills
     col1, col2 = st.columns([1, 2])
 
-    # Update this to use the GitHub raw URL for the image
+    # Left column: Profile picture and buttons (image loaded from GitHub repository)
     image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg'
-
     with col1:
-        st.image(image_url, width=200)
+        st.image(image_url, width=300)  # Adjusted size of the picture
 
-    # Right column: Bio and Certifications
-    with col2:
-        st.write("""
-        ## Hi, I'm Purav!
-        
-        I'm an experienced data analytics professional with a passion for machine learning and AI. 
-        My goal is to land an Analytics Director role and leverage my technical and leadership skills 
-        to drive business insights and innovations.
-        """)
+        # LinkedIn, Resume, and Contact buttons (aligned vertically)
+        linkedin_url = "https://www.linkedin.com/in/puravp"
+        resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
 
-        # Certifications
-        st.write("### Certifications:")
-        st.write("- Certified AI Specialist")
-        st.write("- Machine Learning Expert (sklearn, TensorFlow)")
-        st.write("- Tableau Expert")
+        st.markdown(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>', unsafe_allow_html=True)
 
-    # Buttons for LinkedIn, Resume, and Contact
-    linkedin_url = "https://www.linkedin.com/in/puravp"
-    resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
-
-    col_linkedin, col_resume, col_contact = st.columns([1, 1, 1])
-
-    # LinkedIn button
-    with col_linkedin:
-        st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>',
-                 unsafe_allow_html=True)
-
-    # Resume download button
-    with col_resume:
-        st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Download My Resume</button></a>',
-                 unsafe_allow_html=True)
-
-    # Contact Me button
-    with col_contact:
         if st.button("Contact Me"):
             show_contact_form()
+
+    # Right column: Bio and Skills
+    with col2:
+        # About Me description
+        st.write("""
+        ## Hi, I'm Purav!
+        I'm an experienced data analytics professional with a passion for machine learning and AI. 
+        As a Senior Business Intelligence Manager with 10+ years in analytics and supply chain leadership, 
+        I leverage advanced analytics and lean methodologies to optimize operations, cut costs, and boost revenue. 
+        I'm proficient in Python, SQL, Tableau, and other analytics tools, and I'm skilled at leading cross-functional 
+        teams to drive process improvement through KPI dashboards and analytical views.
+        """)
+
+        # Skills section (in a 3-column format)
+        st.write("### Skills:")
+        skills = {
+            "Leadership and Management": ["Strategic Growth", "Business Operations", "Analytical Skills"],
+            "Programming and Data Analysis": ["Tableau", "SQL", "Python", "Anaconda", "Jupyter Notebook", "Celonis"],
+            "Technical": ["AI", "Agile", "Smartsheet", "Rally", "Miro", "XMind", "Alteryx", "Microsoft Suite", "ERP", "BI"]
+        }
+
+        # Display skills in a 3-column format
+        cols = st.columns(3)
+        for i, (category, skillset) in enumerate(skills.items()):
+            with cols[i]:
+                st.write(f"**{category}**")
+                for skill in skillset:
+                    st.write(f"- {skill}")
 
 # Function to show the contact form
 def show_contact_form():
