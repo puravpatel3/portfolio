@@ -70,7 +70,6 @@ if 'role_index' not in st.session_state:
 
 # Function to show role details and map location
 def show_role_details(role):
-    # Left side: role details
     st.write(f"### {role['role']}")
     st.write(f"**Location:** {role['location']}")
     st.write(f"**Time Worked:** {role['time']}")
@@ -89,33 +88,33 @@ def show_role_details(role):
 
 # Function to show the timeline table
 def show_timeline_table():
-    # Create a DataFrame for displaying roles with most recent first
+    # Create a DataFrame for displaying roles in reverse order
     timeline_df = pd.DataFrame(
         [(role['role'], role['location'], role['time']) for role in roles],
         columns=["Role", "Location", "Time Worked"]
     )
 
-    # Reverse the order for most recent at the top
+    # Reverse the order for most recent role first
     timeline_df = timeline_df.iloc[::-1].reset_index(drop=True)
 
-    # Style to bold the first row (header)
+    # Style the table: bold the first row (header) and remove the index
     st.write("### Professional Timeline")
     st.table(timeline_df.style.set_properties(**{'font-weight': 'bold'}, subset=pd.IndexSlice[:1]))
 
 # Timeline Page
 def show_timeline():
-    # Layout: Description & Table on left, Map on right
+    # Layout: Table and Role Details on left, Map on right
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        # Display the timeline table (most recent role at the top)
+        # Display the timeline table
         show_timeline_table()
 
         # Display the current role details
         role = roles[st.session_state['role_index']]
         show_role_details(role)
 
-    # Right side: Map view
+    # Right side: Map view (centered relative to Table and Role Details)
     with col2:
         role = roles[st.session_state['role_index']]
         st.pydeck_chart(pdk.Deck(
