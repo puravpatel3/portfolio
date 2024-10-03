@@ -3,6 +3,5 @@ pandas
 plotly
 matplotlib
 seaborn
-st-aggrid
 openpyxl
 pydeck
