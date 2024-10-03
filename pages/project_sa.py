@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load your dataset from GitHub
-csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/drug_review_output.csv'
+# Load your dataset from GitHub (replace the link with the correct raw GitHub URL)
+csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/drug_review_output_clean.csv'
 df = pd.read_csv(csv_url)
 
 # Data preparation
