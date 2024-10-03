@@ -104,26 +104,27 @@ else:
 st.write('### 2. Data Exploration')
 
 if 'data' in locals() and data is not None:
-    # Creating radio button for different insights about the data
+    # Creating radio button for different insights about the data, with "Summary Statistics" as the default
     selected = st.sidebar.radio("**B) What would you like to know about the data?**", 
-                                ["Data Dimensions", 
+                                ["Summary Statistics", 
+                                 "Data Dimensions", 
                                  "Field Descriptions", 
-                                 "Summary Statistics", 
-                                 "Value Counts of Fields"])
+                                 "Value Counts of Fields"],
+                                index=0)  # Default to "Summary Statistics"
+
+    # Showing summary statistics (Summary Statistics)
+    if selected == 'Summary Statistics':
+        ss = pd.DataFrame(data.describe(include='all').round(2).fillna(''))
+        st.dataframe(ss, use_container_width=True)
 
     # Showing the shape of the dataframe (Data Dimensions)
-    if selected == 'Data Dimensions':
+    elif selected == 'Data Dimensions':
         st.write('###### The data has the dimensions:', data.shape)
 
     # Showing field types (Field Descriptions)
     elif selected == 'Field Descriptions':
         fd = data.dtypes.reset_index().rename(columns={'index': 'Field Name', 0: 'Field Type'}).sort_values(by='Field Type', ascending=False).reset_index(drop=True)
         st.dataframe(fd, use_container_width=True)
-
-    # Showing summary statistics (Summary Statistics)
-    elif selected == 'Summary Statistics':
-        ss = pd.DataFrame(data.describe(include='all').round(2).fillna(''))
-        st.dataframe(ss, use_container_width=True)
 
     # Showing value counts of object fields (Value Counts of Fields)
     elif selected == 'Value Counts of Fields':
@@ -137,12 +138,10 @@ if 'data' in locals() and data is not None:
 st.write('### 3. Create Your Visualization')
 
 if 'data' in locals() and data is not None:
-    # Allow users to select variables for X and Y axes
-    x_axis = st.selectbox("Choose X-axis", options=data.columns)
-    y_axis = st.selectbox("Choose Y-axis", options=data.columns)
-
-    # Select chart type
-    chart_type = st.selectbox("Select chart type", ["Bar", "Line", "Scatter"])
+    # Default values for X-axis, Y-axis, and chart type
+    x_axis = st.selectbox("Choose X-axis", options=data.columns, index=list(data.columns).index('Vehicle Model'))
+    y_axis = st.selectbox("Choose Y-axis", options=data.columns, index=list(data.columns).index('Energy Consumed (kWh)'))
+    chart_type = st.selectbox("Select chart type", ["Bar", "Line", "Scatter"], index=2)
 
     # Toggle for Top X values
     filter_top_x = st.checkbox("Filter on Top X Values")
