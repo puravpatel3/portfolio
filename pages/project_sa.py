@@ -9,7 +9,12 @@ st.title("Sentiment Analysis")
 # Project Summary
 st.header("Project Summary")
 st.write("""
-This project demonstrated my ability to analyze customer feedback using sentiment analysis. By utilizing Python libraries such as `sklearn`, `textblob`, and `pandas`, I analyzed customer reviews of pharmaceutical drugs, quantified sentiment, and identified trends in customer satisfaction. The analysis provided insights into how different drugs were perceived by customers, enabling companies to allocate resources effectively, whether in R&D, marketing, or customer support. Sentiment analysis is a valuable tool for businesses of all sizes to gauge customer opinions and make data-driven decisions.
+This project demonstrates my ability to analyze customer feedback using sentiment analysis. By utilizing Python libraries such as `sklearn`, `textblob`, and `pandas`, I analyzed customer reviews of pharmaceutical drugs, quantified sentiment, and identified trends in customer satisfaction. The analysis provided insights into how different drugs were perceived by customers, enabling companies to allocate resources effectively, whether in R&D, marketing, or customer support. Sentiment analysis is a valuable tool for businesses of all sizes to gauge customer opinions and make data-driven decisions.
+""")
+
+# Data Source
+st.markdown("""
+**Data Source**: [Drug Review Dataset on Kaggle](https://www.kaggle.com/datasets/mohamedabdelwahabali/drugreview?select=drug_review_train.csv)
 """)
 
 # Instructions
@@ -116,8 +121,8 @@ with col2:
     st.dataframe(top_10_drugs)
 
 # ================================================================================================
-## Top 10 Drugs by Highest & Lowest Sentiment
-st.write('### Top 10 Drugs by Highest & Lowest Sentiment')
+## Top 10 Drugs by Highest/Lowest Sentiment
+st.write('### Top 10 Drugs by Highest/Lowest Sentiment')
 
 # Top 10 Highest Sentiment
 top_10_highest_sentiment = sentiment_table.nlargest(10, 'avg_sentiment')
