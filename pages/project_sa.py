@@ -116,8 +116,8 @@ with col2:
     st.dataframe(top_10_drugs)
 
 # ================================================================================================
-## Top 10 Drugs by Highest/Lowest Sentiment
-st.write('### Top 10 Drugs by Highest/Lowest Sentiment')
+## Top 10 Drugs by Highest & Lowest Sentiment
+st.write('### Top 10 Drugs by Highest & Lowest Sentiment')
 
 # Top 10 Highest Sentiment
 top_10_highest_sentiment = sentiment_table.nlargest(10, 'avg_sentiment')
