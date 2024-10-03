@@ -15,11 +15,12 @@ This project demonstrated my ability to analyze customer feedback using sentimen
 # Instructions
 st.header("Instructions")
 st.write("""
-1. Start by viewing the **Top 10 Drugs by Highest/Lowest Sentiment** using the default data provided.
-2. Filter the data by a specific **condition** using the dropdown in the sidebar. Once a condition is selected, the app will show:
+1. Start by viewing the **Top 10 Conditions & Drugs by Count** to understand the most reviewed conditions and drugs.
+2. View the **Top 10 Drugs by Highest/Lowest Sentiment** using the default data provided.
+3. Filter the data by a specific **condition** using the dropdown in the sidebar. Once a condition is selected, the app will show:
    - The average sentiment for the **Top 5 Drugs** for that condition.
    - Sentiment trends over time for these top drugs.
-3. Select a specific **drug** from the dropdown to view detailed customer reviews. Two tables will be displayed:
+4. Select a specific **drug** from the dropdown to view detailed customer reviews. Two tables will be displayed:
    - **Top 10 Reviews by Highest Sentiment**
    - **Top 10 Reviews by Lowest Sentiment**
 """)
@@ -89,14 +90,40 @@ sentiment_table = df.groupby(['condition', 'drugName']).agg(
 
 sentiment_table = sentiment_table[sentiment_table['review_count'] >= min_review_count]
 
+# New Section: Top 10 Conditions & Drugs by Count
+st.write('### Top 10 Conditions & Drugs by Count')
+
+# Top 10 Conditions by Review Count
+top_10_conditions = df.groupby('condition').agg(
+    avg_sentiment=('sentiment', 'mean'),
+    review_count=('review', 'size')
+).reset_index().nlargest(10, 'review_count')
+
+# Top 10 Drugs by Review Count
+top_10_drugs = df.groupby('drugName').agg(
+    avg_sentiment=('sentiment', 'mean'),
+    review_count=('review', 'size')
+).reset_index().nlargest(10, 'review_count')
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write('#### Top 10 Conditions by Review Count')
+    st.dataframe(top_10_conditions)
+
+with col2:
+    st.write('#### Top 10 Drugs by Review Count')
+    st.dataframe(top_10_drugs)
+
+# ================================================================================================
+## Top 10 Drugs by Highest/Lowest Sentiment
+st.write('### Top 10 Drugs by Highest/Lowest Sentiment')
+
 # Top 10 Highest Sentiment
 top_10_highest_sentiment = sentiment_table.nlargest(10, 'avg_sentiment')
 
 # Top 10 Lowest Sentiment
 top_10_lowest_sentiment = sentiment_table.nsmallest(10, 'avg_sentiment')
-
-# Display the Top 10 Highest and Lowest Sentiment drugs side by side
-st.write('### Top 10 Drugs by Highest/Lowest Sentiment')
 
 col1, col2 = st.columns(2)
 
@@ -108,7 +135,8 @@ with col2:
     st.write('#### Top 10 Drugs by Lowest Sentiment')
     st.dataframe(top_10_lowest_sentiment)
 
-# Average sentiment by year (Line Chart)
+# ================================================================================================
+## Average sentiment by year (Line Chart)
 if condition_filter != 'All':  # Only plot if a condition is selected
     st.write('### Average Sentiment by Year (Top 5 Drugs)')
 
