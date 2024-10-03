@@ -26,8 +26,8 @@ st.write("""
    - The average sentiment for the **Top 5 Drugs** for that condition.
    - Sentiment trends over time for these top drugs.
 4. Select a specific **drug** from the dropdown to view detailed customer reviews. Two tables will be displayed:
-   - *Top 10 Reviews by Highest Sentiment*
-   - *Top 10 Reviews by Lowest Sentiment*
+   - Top 10 Reviews by Highest Sentiment
+   - Top 10 Reviews by Lowest Sentiment
 """)
 
 # Use Case
