@@ -70,28 +70,54 @@ if 'role_index' not in st.session_state:
 
 # Function to show role details and map location
 def show_role_details(role):
+    # Left side: role details
+    st.write(f"### {role['role']}")
+    st.write(f"**Location:** {role['location']}")
+    st.write(f"**Time Worked:** {role['time']}")
+    st.write("**Top Accomplishments:**")
+    for accomplishment in role['accomplishments']:
+        st.write(f"- {accomplishment}")
+
+    # Previous and Next buttons below the role description
+    col_prev, col_next = st.columns([1, 1])
+    with col_prev:
+        if st.button("⬅️ Previous"):
+            st.session_state['role_index'] = (st.session_state['role_index'] - 1) % len(roles)
+    with col_next:
+        if st.button("➡️ Next"):
+            st.session_state['role_index'] = (st.session_state['role_index'] + 1) % len(roles)
+
+# Function to show the timeline table
+def show_timeline_table():
+    # Create a DataFrame for displaying roles with most recent first
+    timeline_df = pd.DataFrame(
+        [(role['role'], role['location'], role['time']) for role in roles],
+        columns=["Role", "Location", "Time Worked"]
+    )
+
+    # Reverse the order for most recent at the top
+    timeline_df = timeline_df.iloc[::-1].reset_index(drop=True)
+
+    # Style to bold the first row (header)
+    st.write("### Professional Timeline")
+    st.table(timeline_df.style.set_properties(**{'font-weight': 'bold'}, subset=pd.IndexSlice[:1]))
+
+# Timeline Page
+def show_timeline():
+    # Layout: Description & Table on left, Map on right
     col1, col2 = st.columns([2, 1])
 
-    # Left side: role details
     with col1:
-        st.write(f"### {role['role']}")
-        st.write(f"**Location:** {role['location']}")
-        st.write(f"**Time Worked:** {role['time']}")
-        st.write("**Top Accomplishments:**")
-        for accomplishment in role['accomplishments']:
-            st.write(f"- {accomplishment}")
+        # Display the timeline table (most recent role at the top)
+        show_timeline_table()
 
-        # Previous and Next buttons below the role description
-        col_prev, col_next = st.columns([1, 1])
-        with col_prev:
-            if st.button("⬅️ Previous"):
-                st.session_state['role_index'] = (st.session_state['role_index'] - 1) % len(roles)
-        with col_next:
-            if st.button("➡️ Next"):
-                st.session_state['role_index'] = (st.session_state['role_index'] + 1) % len(roles)
+        # Display the current role details
+        role = roles[st.session_state['role_index']]
+        show_role_details(role)
 
     # Right side: Map view
     with col2:
+        role = roles[st.session_state['role_index']]
         st.pydeck_chart(pdk.Deck(
             map_style='mapbox://styles/mapbox/light-v9',
             initial_view_state=pdk.ViewState(
@@ -101,27 +127,6 @@ def show_role_details(role):
                 pitch=50,
             )
         ))
-
-# Function to show the timeline table
-def show_timeline_table():
-    # Create a DataFrame for displaying roles with most recent first
-    timeline_df = pd.DataFrame(
-        [(role['role'], role['location'], role['time']) for role in roles],
-        columns=["Role", "Location", "Time Worked"]
-    )
-    timeline_df = timeline_df.iloc[::-1].reset_index(drop=True)  # Reverse the order for most recent at the top
-    st.table(timeline_df)
-
-# Timeline Page
-def show_timeline():
-    st.title("Professional Timeline")
-
-    # Display the timeline table (most recent role at the top)
-    show_timeline_table()
-
-    # Display the current role details and map
-    role = roles[st.session_state['role_index']]
-    show_role_details(role)
 
 # Call show_timeline directly since this is part of the pages directory
 show_timeline()
