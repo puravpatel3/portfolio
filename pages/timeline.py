@@ -84,12 +84,10 @@ def show_role_details(role):
         col_prev, col_next = st.columns([1, 1])
         with col_prev:
             if st.button("⬅️ Previous"):
-                if st.session_state['role_index'] > 0:
-                    st.session_state['role_index'] -= 1
+                st.session_state['role_index'] = (st.session_state['role_index'] - 1) % len(roles)
         with col_next:
             if st.button("➡️ Next"):
-                if st.session_state['role_index'] < len(roles) - 1:
-                    st.session_state['role_index'] += 1
+                st.session_state['role_index'] = (st.session_state['role_index'] + 1) % len(roles)
 
     # Right side: Map view
     with col2:
