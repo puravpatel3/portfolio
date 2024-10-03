@@ -1,7 +1,4 @@
 import streamlit as st
-import smtplib  # For SMTP (Gmail)
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 # Function to show the About Me page content
 def show_about_me():
@@ -11,55 +8,75 @@ def show_about_me():
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         header {visibility: hidden;} /* Hide the header */
+        .markdown-text-container p {line-height: 1.5em;} /* Adjust spacing in the text */
         </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-    # Create a two-column layout: left for the image and buttons, right for Bio and Skills
-    col1, col2 = st.columns([1, 2])
+    # Create a two-column layout: left for the image,
+    # Right column: Bio, Certifications, LinkedIn, and Resume Download
+    col1, col2 = st.columns([1, 3])
 
-    # Left column: Profile picture and buttons (image loaded from GitHub repository)
+    # Left column: Profile picture (image loaded from GitHub repository)
     image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg'
     with col1:
-        st.image(image_url, width=300)  # Adjusted size of the picture
+        st.image(image_url, width=250)  # Increase the width for a bigger image
 
-        # LinkedIn, Resume, and Contact buttons (aligned vertically)
-        linkedin_url = "https://www.linkedin.com/in/puravp"
-        resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
-
-        st.markdown(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
-        st.markdown(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>', unsafe_allow_html=True)
-
-        if st.button("Contact Me"):
-            show_contact_form()
-
-    # Right column: Bio and Skills
+    # Right column: Bio and Professional Summary
     with col2:
-        # About Me description
-        st.write("""
-        ## Hi, I'm Purav!
-        I'm an experienced data analytics professional with a passion for machine learning and AI. 
-        As a Senior Business Intelligence Manager with 10+ years in analytics and supply chain leadership, 
-        I leverage advanced analytics and lean methodologies to optimize operations, cut costs, and boost revenue. 
-        I'm proficient in Python, SQL, Tableau, and other analytics tools, and I'm skilled at leading cross-functional 
-        teams to drive process improvement through KPI dashboards and analytical views.
+        # Bio Section
+        st.markdown("""
+            ## Hi, I'm Purav!
+            
+            I'm an experienced data analytics professional with a passion for machine learning and AI. 
+            My goal is to leverage my technical and leadership skills to drive business insights and innovations. 
+            With over 10 years of experience in analytics and supply chain leadership, I excel in optimizing 
+            operations, cutting costs, and boosting revenue.
         """)
 
-        # Skills section (in a 3-column format)
-        st.write("### Skills:")
-        skills = {
-            "Leadership and Management": ["Strategic Growth", "Business Operations", "Analytical Skills"],
-            "Programming and Data Analysis": ["Tableau", "SQL", "Python", "Anaconda", "Jupyter Notebook", "Celonis"],
-            "Technical": ["AI", "Agile", "Smartsheet", "Rally", "Miro", "XMind", "Alteryx", "Microsoft Suite", "ERP", "BI"]
-        }
+        # Professional Summary Section (roles)
+        st.markdown("""
+            **<span style='font-size:1.3em'>Senior Order Fulfillment Analytics Manager</span>**  
+            Location: Detroit, United States  
+            Time Worked: Jul '21 — Present  
 
-        # Display skills in a 3-column format
-        cols = st.columns(3)
-        for i, (category, skillset) in enumerate(skills.items()):
-            with cols[i]:
-                st.write(f"**{category}**")
-                for skill in skillset:
-                    st.write(f"- {skill}")
+            **<span style='font-size:1.3em'>Order Execution & Logistics Analytics Manager</span>**  
+            Location: New York, United States  
+            Time Worked: Jan '19 — Jun '21  
+
+            **<span style='font-size:1.3em'>Logistics Analytics Product Owner</span>**  
+            Location: Hoboken, United States  
+            Time Worked: Oct '16 — Dec '18  
+
+            **<span style='font-size:1.3em'>Logistics & Distribution Leader</span>**  
+            Location: Miami, United States  
+            Time Worked: Aug '14 — Sep '16  
+
+            **<span style='font-size:1.3em'>Operations Management Leadership Development Program</span>**  
+            Location: Waukesha, Wisconsin  
+            Time Worked: Jul '12 — Jul '14  
+        """, unsafe_allow_html=True)
+
+    # Buttons for LinkedIn, Resume, and Contact
+    linkedin_url = "https://www.linkedin.com/in/puravp"
+    resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
+
+    col_linkedin, col_resume, col_contact = st.columns([1, 1, 1])
+
+    # LinkedIn button
+    with col_linkedin:
+        st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>',
+                 unsafe_allow_html=True)
+
+    # Resume download button
+    with col_resume:
+        st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>',
+                 unsafe_allow_html=True)
+
+    # Contact Me button
+    with col_contact:
+        if st.button("Contact Me"):
+            show_contact_form()
 
 # Function to show the contact form
 def show_contact_form():
@@ -83,34 +100,6 @@ def show_contact_form():
                 st.error("Please fill out all fields before sending.")
         elif cancel_button:
             st.write("Message canceled.")
-
-# Function to send an email using SMTP (Gmail)
-def send_email(name, email, message):
-    sender_email = "your-email@gmail.com"  # Update this to your Gmail account
-    receiver_email = "patel.a.purav@gmail.com"  # Your email address to receive messages
-    password = "your-gmail-password"  # Update with your Gmail app password
-
-    # Create the email
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-    msg['Subject'] = f"New Contact Form Submission from {name}"
-
-    # Email body
-    body = f"Name: {name}\nEmail: {email}\nMessage:\n{message}"
-    msg.attach(MIMEText(body, 'plain'))
-
-    try:
-        # Send the email via Gmail's SMTP server
-        with smtplib.SMTP('smtp.gmail.com', 587) as server:
-            server.starttls()
-            server.login(sender_email, password)
-            text = msg.as_string()
-            server.sendmail(sender_email, receiver_email, text)
-            server.quit()
-        st.success("Message sent successfully!")
-    except Exception as e:
-        st.error(f"Failed to send message: {e}")
 
 # Call the function directly
 show_about_me()
