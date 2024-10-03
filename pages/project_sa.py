@@ -3,7 +3,49 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load your dataset from GitHub (replace the link with the correct raw GitHub URL)
+# Title Section: Sentiment Analysis
+st.title("Sentiment Analysis")
+
+# Project Summary
+st.header("Project Summary")
+st.write("""
+This project demonstrated my ability to analyze customer feedback using sentiment analysis. By utilizing Python libraries such as `sklearn`, `textblob`, and `pandas`, I analyzed customer reviews of pharmaceutical drugs, quantified sentiment, and identified trends in customer satisfaction. The analysis provided insights into how different drugs were perceived by customers, enabling companies to allocate resources effectively, whether in R&D, marketing, or customer support. Sentiment analysis is a valuable tool for businesses of all sizes to gauge customer opinions and make data-driven decisions.
+""")
+
+# Instructions
+st.header("Instructions")
+st.write("""
+1. Start by viewing the **Top 10 Drugs by Highest/Lowest Sentiment** using the default data provided.
+2. Filter the data by a specific **condition** using the dropdown in the sidebar. Once a condition is selected, the app will show:
+   - The average sentiment for the **Top 5 Drugs** for that condition.
+   - Sentiment trends over time for these top drugs.
+3. Select a specific **drug** from the dropdown to view detailed customer reviews. Two tables will be displayed:
+   - **Top 10 Reviews by Highest Sentiment**
+   - **Top 10 Reviews by Lowest Sentiment**
+""")
+
+# Use Case
+st.header("Use Case")
+st.write("""
+Many companies want to understand customer feedback to decide where to focus their resources. In the pharmaceutical industry, sentiment analysis can highlight the most popular or least popular drugs, which helps companies focus their R&D efforts and marketing strategies. For example, pharmaceutical companies may use this analysis to:
+1. **Refine R&D efforts**: Allocate research and development resources to improve poorly rated drugs.
+2. **Optimize marketing strategy**: Promote high-performing drugs based on positive customer sentiment.
+3. **Enhance product development**: Identify common pain points in reviews to develop better products.
+Sentiment analysis has broad applications beyond pharmaceuticals, helping any company with customer feedback improve its products and services.
+""")
+
+# Key Technologies
+st.header("Key Technologies Used")
+st.write("""
+- **TextBlob**: Used for calculating sentiment polarity from customer reviews.
+- **scikit-learn (sklearn)**: Applied for vectorizing review text and calculating correlation metrics.
+- **NumPy**: Utilized for numerical operations.
+- **Pandas**: Essential for data manipulation and preparation.
+- **Matplotlib & Seaborn**: For generating visualizations to track sentiment trends.
+- **Streamlit**: Used to build the interactive web application that showcases sentiment analysis results.
+""")
+
+# Load your dataset from GitHub
 csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/drug_review_output_clean.csv'
 df = pd.read_csv(csv_url)
 
