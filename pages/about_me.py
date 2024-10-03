@@ -19,8 +19,9 @@ def show_about_me():
     # Right column: Bio, Certifications, LinkedIn, and Resume Download
     col1, col2 = st.columns([1, 2])
 
-    # Left column: Profile picture (image loaded from GitHub repository)
+    # Update this to use the GitHub raw URL for the image
     image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg'
+
     with col1:
         st.image(image_url, width=200)
 
