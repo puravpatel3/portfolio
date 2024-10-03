@@ -112,18 +112,5 @@ def send_email(name, email, message):
     except Exception as e:
         st.error(f"Failed to send message: {e}")
 
-# Main App layout
-def main():
-    st.sidebar.title("Navigation")  # Sidebar title
-    page = st.sidebar.radio("Go to", ["About Me", "Timeline", "Projects"])
-
-    if page == "About Me":
-        show_about_me()
-    elif page == "Timeline":
-        st.write("Timeline page coming soon!")
-    elif page == "Projects":
-        st.write("Projects page coming soon!")
-
-# Run the app
-if __name__ == "__main__":
-    main()
+# Call the function directly
+show_about_me()

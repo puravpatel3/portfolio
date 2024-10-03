@@ -116,13 +116,5 @@ def show_timeline():
     role = roles[st.session_state['role_index']]
     show_role_details(role)
 
-# Main app layout
-def main():
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", ["About Me", "Timeline", "Projects"])
-
-    if page == "Timeline":
-        show_timeline()
-
-if __name__ == "__main__":
-    main()
+# Call show_timeline directly since this is part of the pages directory
+show_timeline()
