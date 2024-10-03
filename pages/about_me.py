@@ -16,13 +16,13 @@ def show_about_me():
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
     # Create a two-column layout: left for the image,
-
     # Right column: Bio, Certifications, LinkedIn, and Resume Download
     col1, col2 = st.columns([1, 2])
 
-    # Left column: Profile picture
+    # Left column: Profile picture (image loaded from GitHub repository)
+    image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg'
     with col1:
-        st.image(r"C:\Users\212068332.HCAD\OneDrive - GEHealthCare\Pictures\Anny Scrapbook\SuShi_Wedding.jpg", width=200)
+        st.image(image_url, width=200)
 
     # Right column: Bio and Certifications
     with col2:
@@ -42,7 +42,7 @@ def show_about_me():
 
     # Buttons for LinkedIn, Resume, and Contact
     linkedin_url = "https://www.linkedin.com/in/puravp"
-    resume_file = r"C:\Users\212068332.HCAD\Box\z_My Folder\2-Resume\1 - Resume - Purav\Resume_Purav Patel.pdf"
+    resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
 
     col_linkedin, col_resume, col_contact = st.columns([1, 1, 1])
 
@@ -53,8 +53,8 @@ def show_about_me():
 
     # Resume download button
     with col_resume:
-        with open(resume_file, "rb") as file:
-            st.download_button(label="Download My Resume", data=file, file_name="Purav_Resume.pdf", mime="application/pdf")
+        st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Download My Resume</button></a>',
+                 unsafe_allow_html=True)
 
     # Contact Me button
     with col_contact:
