@@ -4,12 +4,42 @@ import pandas as pd
 import plotly.express as px
 
 # Setting up web app page
-st.set_page_config(page_title='Interactive Data Analysis App', page_icon=None, layout="wide")
+st.set_page_config(page_title='Exploratory Data Analysis', page_icon=None, layout="wide")
 
-# Path to the CSV file in your GitHub repository
-default_file_path = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/ev_charging_patterns.csv'
+# Adding the title and structured sections to the top of the app
+st.title("**Exploratory Data Analysis**")
 
-# Creating section in sidebar
+# Adding Project Summary
+st.subheader("Project Summary")
+st.write("""
+This app demonstrates my expertise in exploratory data analysis (EDA), providing an interactive tool where users can upload CSV or Excel files and automatically receive key EDA outputs. 
+Users can preview their dataset, explore field relationships, review summary statistics, and create visualizations based on their data. EDA is a critical step in any data science workflow and forms the foundation of insightful data-driven decision-making.
+""")
+
+# Adding Instructions
+st.subheader("Instructions")
+st.write("""
+By default, the app loads EV data to showcase its functionality. Users can upload their own CSV or Excel files through the 'Upload File Here' section in the sidebar. 
+Once uploaded, the app enables users to browse, analyze, and visualize their data. You can review data dimensions, field descriptions, summary statistics, and generate custom visualizations to uncover key insights.
+""")
+
+# Adding Use Case
+st.subheader("Use Case")
+st.write("""
+This app is suitable for data professionals, analysts, or businesses looking to quickly explore new datasets. It provides an efficient, no-code method for performing the initial steps of data analysis, particularly in understanding the structure and relationships within a dataset before deeper analysis or model building.
+""")
+
+# Adding Key Technologies Used
+st.subheader("Key Technologies Used")
+st.write("""
+- **Python**  
+- **Pandas**  
+- **Plotly**  
+- **Streamlit**  
+""")
+
+# ================================================================================================
+# Sidebar for file upload and filtering options
 st.sidebar.write("****A) File upload****")
 
 # User prompt to select file type
@@ -17,6 +47,9 @@ ft = st.sidebar.selectbox("*What is the file type?*", ["csv", "Excel"])
 
 # Creating dynamic file upload option in sidebar
 uploaded_file = st.sidebar.file_uploader("*Upload file here*", type=['csv', 'xlsx'])
+
+# Path to the default CSV file in your GitHub repository
+default_file_path = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/ev_charging_patterns.csv'
 
 # Default to loading the CSV from GitHub if no file is uploaded
 if uploaded_file is None and ft == 'csv':
