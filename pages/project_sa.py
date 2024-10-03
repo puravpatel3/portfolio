@@ -3,8 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load your dataset (make sure to update the path to where your dataset is stored)
-df = pd.read_csv(r'C:\Users\212068332.HCAD\Box\z_My Folder\5-Artificial Intelligence\Portfolio Projects\Sentiment Analysis\Drug Review Sentiment Analysis\Data Outputs\drug_review_output.csv')
+# Load your dataset from GitHub
+csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/drug_review_output.csv'
+df = pd.read_csv(csv_url)
 
 # Data preparation
 df['year'] = pd.to_datetime(df['date']).dt.year
