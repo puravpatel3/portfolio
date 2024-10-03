@@ -10,9 +10,9 @@ roles = [
         "lon": -88.2315,
         "time": "Jul '12 — Jul '14",
         "accomplishments": [
-            "Increased Accessories production line OTD from 45% to 89%.",
-            "Reduced work-in-progress inventory by 30 units ($1.5M value).",
-            "Implemented process standards reducing $1.1M in inventory."
+            "Held four separate supply chain roles covering manufacturing, lean, six sigma, order execution, and warehouse ops.",
+            "Directed production plan to bring Accessories production line on time delivery from 45% FW13 to 89% FW23.",
+            "Implemented process standards in warehouse operations leading to a reduction of $1.1M in inventory."
         ]
     },
     {
@@ -22,8 +22,8 @@ roles = [
         "lon": -80.1918,
         "time": "Aug '14 — Sep '16",
         "accomplishments": [
-            "Increased on-time delivery by 16% by standardizing logistics carrier work.",
-            "Planned and executed 130+ MR shipments to Latin America."
+            "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
+            "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
         ]
     },
     {
@@ -33,9 +33,8 @@ roles = [
         "lon": -74.0324,
         "time": "Oct '16 — Dec '18",
         "accomplishments": [
-            "Overhauled OTM data source reducing load time by 90%.",
-            "Created global lead time standards affecting 40% of shipments.",
-            "Managed 7 digital projects focused on cost savings and forecasting."
+            "Created global lead time standards for internal and external customer shipments by mining and modeling 5+ data sources (1M+ rows of data) leading to a change in 40% of incorrectly set up lead times.",
+            "Defined the data architecture for the new OTM data source and overhauled the existing data source by removing 70% of redundant code and reducing load time by 90%."
         ]
     },
     {
@@ -45,9 +44,9 @@ roles = [
         "lon": -74.0060,
         "time": "Jan '19 — Jun '21",
         "accomplishments": [
-            "Led team to streamline order execution and save $2.5M in costs.",
-            "Developed lead time analytics improving adherence by 15%.",
-            "Expanded defect reason codes from 4 to 50+."
+            "Led multiple continuous improvement events to revamp OTD analytics: expanded automated defect reason codes from 4 to 50+, provided visibility to cross-functional defect relationships, and developed function specific analytics views.",
+            "Supported logistics projects (Air to Ocean, Premium Reduction, Consolidations) by developing cost focused analytical views helping enable $2.5M in cost savings.",
+            "Developed lead time analytical views to identify and rectify manufacturing lead time gaps improving adherence by 15%."
         ]
     },
     {
@@ -57,9 +56,9 @@ roles = [
         "lon": -83.0458,
         "time": "Jul '21 — Present",
         "accomplishments": [
-            "Led cross-functional project to improve order delivery by 10%.",
-            "Developed supply chain KPI dashboards resulting in a 20% improvement.",
-            "Designed a revenue linearity dashboard leading to a 30% backlog reduction."
+            "Led cross-functional project to improve order delivery and revenue flow by developing Celonis analytics views for performance insights, automated reason codes, and proactive material visibility, resulting in a 10% delivery improvement.",
+            "Enhanced business strategy by developing Supply Chain Key Performance Indicator (KPI) dashboards for tracking standard work compliance, analyzing date changes, and identifying outliers, resulting in a 20% improvement in order delivery times and optimal decision making.",
+            "Designed a revenue linearity dashboard identifying past due orders across multiple dimensions and created Standard Operating Procedures for users helping enable a 30% reduction in past due backlog year over year."
         ]
     }
 ]
@@ -107,10 +106,6 @@ def show_role_details(role):
 # Timeline Page
 def show_timeline():
     st.title("Professional Timeline")
-
-    # Filter section (can be expanded as needed)
-    st.write("### Filter by Role, Projects, or Skills")
-    filter_type = st.selectbox("Filter By", ["All", "Roles", "Projects", "Skills"])
 
     # Display the current role details and map
     role = roles[st.session_state['role_index']]
