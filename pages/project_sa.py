@@ -170,14 +170,14 @@ if condition_filter != 'All':  # Only plot if a condition is selected
 
     # Display Top Sentiment and Bottom Sentiment Reviews if a specific drug is selected
     if drug_filter != 'All':
-        # Top 10 Reviews by Highest Sentiment
+        # Top 10 Reviews by Highest Sentiment (filtering for reviews with a rating of 7 or higher)
         st.write('### Top Sentiment Reviews')
-        top_sentiment_reviews = df.nlargest(10, 'sentiment')[['condition', 'drugName', 'review', 'date', 'rating', 'sentiment']]
+        top_sentiment_reviews = df[(df['rating'] >= 7)].nlargest(10, 'sentiment')[['condition', 'drugName', 'review', 'date', 'rating', 'sentiment']]
         st.dataframe(top_sentiment_reviews)
 
-        # Bottom 10 Reviews by Lowest Sentiment
+        # Bottom 10 Reviews by Lowest Sentiment (filtering for reviews with a rating of 5 or lower)
         st.write('### Bottom Sentiment Reviews')
-        bottom_sentiment_reviews = df.nsmallest(10, 'sentiment')[['condition', 'drugName', 'review', 'date', 'rating', 'sentiment']]
+        bottom_sentiment_reviews = df[(df['rating'] <= 5)].nsmallest(10, 'sentiment')[['condition', 'drugName', 'review', 'date', 'rating', 'sentiment']]
         st.dataframe(bottom_sentiment_reviews)
 
 else:
