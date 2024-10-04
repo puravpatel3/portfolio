@@ -22,7 +22,7 @@ roles = [
         "lon": -80.1918,
         "time": "Aug '14 — Sep '16",
         "accomplishments": [
-            "Responsible for managing logistics operations for Imaging Systems inbound to the Miami & outbound to South America.", 
+            "Responsible for managing logistics operations for Imaging Systems inbound to Miami & outbound to South America.", 
             "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
             "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
         ]
@@ -34,6 +34,7 @@ roles = [
         "lon": -74.0324,
         "time": "Oct '16 — Dec '18",
         "accomplishments": [
+            "Responsible for the digital development of the global logistics data warehouse providing visibility to $450M annual spend and setting up ERP with Oracle Transportation Management (OTM) data architecture.",
             "Created global lead time standards for internal and external customer shipments by mining and modeling 5+ data sources (1M+ rows of data) leading to a change in 40% of incorrectly set up lead times.",
             "Defined the data architecture for the new OTM data source and overhauled the existing data source by removing 70% of redundant code and reducing load time by 90%."
         ]
@@ -45,6 +46,7 @@ roles = [
         "lon": -74.0060,
         "time": "Jan '19 — Jun '21",
         "accomplishments": [
+            "Responsible for leading team of 2 Product Owners focused on developing analytical tools to streamline the order execution process, support logistics cost savings initiatives, and provide visibility to logistics lead times.",
             "Led multiple continuous improvement events to revamp OTD analytics: expanded automated defect reason codes from 4 to 50+, provided visibility to cross-functional defect relationships, and developed function specific analytics views.",
             "Supported logistics projects (Air to Ocean, Premium Reduction, Consolidations) by developing cost focused analytical views helping enable $2.5M in cost savings.",
             "Developed lead time analytical views to identify and rectify manufacturing lead time gaps improving adherence by 15%."
@@ -57,6 +59,7 @@ roles = [
         "lon": -83.0458,
         "time": "Jul '21 — Present",
         "accomplishments": [
+            "Responsible for coaching a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on time delivery, cost reduction and process standard work.",
             "Led cross-functional project to improve order delivery and revenue flow by developing Celonis analytics views for performance insights, automated reason codes, and proactive material visibility, resulting in a 10% delivery improvement.",
             "Enhanced business strategy by developing Supply Chain Key Performance Indicator (KPI) dashboards for tracking standard work compliance, analyzing date changes, and identifying outliers, resulting in a 20% improvement in order delivery times and optimal decision making.",
             "Designed a revenue linearity dashboard identifying past due orders across multiple dimensions and created Standard Operating Procedures for users helping enable a 30% reduction in past due backlog year over year."
