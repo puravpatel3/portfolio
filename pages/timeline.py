@@ -22,6 +22,7 @@ roles = [
         "lon": -80.1918,
         "time": "Aug '14 — Sep '16",
         "accomplishments": [
+            "Responsible for managing logistics operations for Imaging Systems inbound to the Miami & outbound to South America.", 
             "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
             "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
         ]
