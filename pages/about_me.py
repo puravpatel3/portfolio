@@ -12,6 +12,7 @@ def show_about_me():
         footer {visibility: hidden;}
         header {visibility: hidden;} /* Hide the header */
         .stImage {margin-bottom: -20px;} /* Reduce gap between images and text */
+        .css-1lcbmhc {padding: 1rem 1rem 1rem 1rem;} /* Reduce padding in the right column */
         </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -29,7 +30,7 @@ def show_about_me():
 
         # Buttons section (organized vertically below the second image)
         linkedin_url = "https://www.linkedin.com/in/puravp"
-        resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Resume_Purav_Patel.pdf'
+        resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf'
 
         st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
         st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>', unsafe_allow_html=True)
@@ -47,26 +48,35 @@ def show_about_me():
 
         # Professional Summary (reduced text size for role titles)
         st.write("""
-        ### Senior Order Fulfillment Analytics Manager
+        <style>
+        .role-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        st.write("""
+        <p class="role-title">Senior Order Fulfillment Analytics Manager</p>
         Location: Detroit, United States  
         Time Worked: Jul '21 — Present  
 
-        ### Order Execution & Logistics Analytics Manager
+        <p class="role-title">Order Execution & Logistics Analytics Manager</p>
         Location: New York, United States  
         Time Worked: Jan '19 — Jun '21  
 
-        ### Logistics Analytics Product Owner
+        <p class="role-title">Logistics Analytics Product Owner</p>
         Location: Hoboken, United States  
         Time Worked: Oct '16 — Dec '18  
 
-        ### Logistics & Distribution Leader
+        <p class="role-title">Logistics & Distribution Leader</p>
         Location: Miami, United States  
         Time Worked: Aug '14 — Sep '16  
 
-        ### Operations Management Leadership Development Program
+        <p class="role-title">Operations Management Leadership Development Program</p>
         Location: Waukesha, Wisconsin  
         Time Worked: Jul '12 — Jul '14
-        """)
+        """, unsafe_allow_html=True)
 
 # Call the function directly
 show_about_me()
