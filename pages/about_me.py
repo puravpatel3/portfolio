@@ -1,7 +1,4 @@
 import streamlit as st
-import smtplib  # For SMTP (Gmail)
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 # Function to show the About Me page content
 def show_about_me():
@@ -13,6 +10,14 @@ def show_about_me():
         header {visibility: hidden;} /* Hide the header */
         .stImage {margin-bottom: -20px;} /* Reduce gap between images and text */
         .css-1lcbmhc {padding: 1rem 1rem 1rem 1rem;} /* Reduce padding in the right column */
+        .role-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .role-details {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
         </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -46,36 +51,35 @@ def show_about_me():
         I built this web app to offer a deeper look into my expertise, showcase the projects I’ve worked on, and connect with other professionals who share similar passions. You’ll find a summary of my professional journey below, and more detailed insights about my roles and projects in the subpages.
         """)
 
-        # Professional Summary (reduced text size for role titles)
+        # Professional Summary with aligned role titles, locations, and time worked
         st.write("""
         <style>
         .role-title {
             font-size: 1.2rem;
             font-weight: bold;
         }
+        .role-details {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
         </style>
         """, unsafe_allow_html=True)
 
         st.write("""
         <p class="role-title">Senior Order Fulfillment Analytics Manager</p>
-        Location: Detroit, United States  
-        Time Worked: Jul '21 — Present  
+        <p class="role-details">Location: Detroit, United States<br>Time Worked: Jul '21 — Present</p>
 
         <p class="role-title">Order Execution & Logistics Analytics Manager</p>
-        Location: New York, United States  
-        Time Worked: Jan '19 — Jun '21  
+        <p class="role-details">Location: New York, United States<br>Time Worked: Jan '19 — Jun '21</p>
 
         <p class="role-title">Logistics Analytics Product Owner</p>
-        Location: Hoboken, United States  
-        Time Worked: Oct '16 — Dec '18  
+        <p class="role-details">Location: Hoboken, United States<br>Time Worked: Oct '16 — Dec '18</p>
 
         <p class="role-title">Logistics & Distribution Leader</p>
-        Location: Miami, United States  
-        Time Worked: Aug '14 — Sep '16  
+        <p class="role-details">Location: Miami, United States<br>Time Worked: Aug '14 — Sep '16</p>
 
         <p class="role-title">Operations Management Leadership Development Program</p>
-        Location: Waukesha, Wisconsin  
-        Time Worked: Jul '12 — Jul '14
+        <p class="role-details">Location: Waukesha, Wisconsin<br>Time Worked: Jul '12 — Jul '14</p>
         """, unsafe_allow_html=True)
 
 # Call the function directly
