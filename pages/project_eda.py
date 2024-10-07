@@ -16,21 +16,10 @@ This app demonstrates my expertise in exploratory data analysis (EDA), providing
 Users can preview their dataset, explore field relationships, review summary statistics, and create visualizations based on their data. EDA is a critical step in any data science workflow and forms the foundation of insightful data-driven decision-making.
 """)
 
-# Data Source and EDA Report
+# Data Source
 st.markdown("""
 **Data Source**: [Electric Vehicle Charging Patterns Dataset on Kaggle](https://www.kaggle.com/datasets/valakhorasani/electric-vehicle-charging-patterns)
-
-**Comprehensive Exploratory Data Analysis Report generated using ydata-profiling**: 
 """)
-
-# Providing a download button for the EDA report
-with open('ev_eda_report.html', 'rb') as file:
-    btn = st.download_button(
-        label="Download EDA Report",
-        data=file,
-        file_name='ev_eda_report.html',
-        mime='text/html'
-    )
 
 # Adding Instructions
 st.subheader("Instructions")
