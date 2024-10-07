@@ -20,8 +20,17 @@ Users can preview their dataset, explore field relationships, review summary sta
 st.markdown("""
 **Data Source**: [Electric Vehicle Charging Patterns Dataset on Kaggle](https://www.kaggle.com/datasets/valakhorasani/electric-vehicle-charging-patterns)
 
-**Comprehensive Exploratory Data Analysis Report generated using ydata-profiling**: [View Report](https://github.com/puravpatel3/portfolio/blob/main/files/ev_eda_report.html)
+**Comprehensive Exploratory Data Analysis Report generated using ydata-profiling**: 
 """)
+
+# Providing a download button for the EDA report
+with open('ev_eda_report.html', 'rb') as file:
+    btn = st.download_button(
+        label="Download EDA Report",
+        data=file,
+        file_name='ev_eda_report.html',
+        mime='text/html'
+    )
 
 # Adding Instructions
 st.subheader("Instructions")
