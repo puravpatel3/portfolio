@@ -16,13 +16,33 @@ This app demonstrates my expertise in exploratory data analysis (EDA), providing
 Users can preview their dataset, explore field relationships, review summary statistics, and create visualizations based on their data. EDA is a critical step in any data science workflow and forms the foundation of insightful data-driven decision-making.
 """)
 
-# Data Source and EDA Report
+# Data Source
 st.markdown("""
 **Data Source**: [Electric Vehicle Charging Patterns Dataset on Kaggle](https://www.kaggle.com/datasets/valakhorasani/electric-vehicle-charging-patterns)
 
 **Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here**: [Click Here](https://github.com/puravpatel3/portfolio/blob/ade4c58b1eadc880c3c15ccd0660e40242b24619/files/ev_eda_report.html)
+- *Click on the 'Download Raw File' button to access the report*
+""")
 
-*Click on Download Raw File button to access the report*
+# Adding Instructions
+st.subheader("Instructions")
+st.write("""
+By default, the app loads EV data to showcase its functionality. Users can upload their own CSV or Excel files through the 'Upload File Here' section in the sidebar. 
+Once uploaded, the app enables users to browse, analyze, and visualize their data. You can review data dimensions, field descriptions, summary statistics, and generate custom visualizations to uncover key insights.
+""")
+
+# Adding Use Case
+st.subheader("Use Case")
+st.write("""
+This app is suitable for data professionals, analysts, or businesses looking to quickly explore new datasets. It provides an efficient, no-code method for performing the initial steps of data analysis, particularly in understanding the structure and relationships within a dataset before deeper analysis or model building.
+""")
+
+# Adding Key Technologies Used
+st.subheader("Key Technologies Used")
+st.write("""
+- **Pandas**: Essential for data manipulation and preparation.  
+- **Plotly**: For generating visualizations for data analysis.  
+- **Streamlit**: Used to build the interactive web application for EDA.
 """)
 
 # ================================================================================================
