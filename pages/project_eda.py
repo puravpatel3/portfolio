@@ -16,18 +16,31 @@ This app demonstrates my expertise in exploratory data analysis (EDA), providing
 Users can preview their dataset, explore field relationships, review summary statistics, and create visualizations based on their data. EDA is a critical step in any data science workflow and forms the foundation of insightful data-driven decision-making.
 """)
 
-# Data Source and EDA Report
+# Data Source
 st.markdown("""
 **Data Source**: [Electric Vehicle Charging Patterns Dataset on Kaggle](https://www.kaggle.com/datasets/valakhorasani/electric-vehicle-charging-patterns)
-
-**Comprehensive Exploratory Data Analysis Report generated using ydata-profiling**:
 """)
 
-# Adding a download button for the EDA report hosted on GitHub
-eda_report_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/ev_eda_report.html'
+# Adding Instructions
+st.subheader("Instructions")
+st.write("""
+By default, the app loads EV data to showcase its functionality. Users can upload their own CSV or Excel files through the 'Upload File Here' section in the sidebar. 
+Once uploaded, the app enables users to browse, analyze, and visualize their data. You can review data dimensions, field descriptions, summary statistics, and generate custom visualizations to uncover key insights.
+""")
 
-# Creating a download button using Streamlit
-st.markdown(f'<a href="{eda_report_url}" download><button class="btn btn-primary">Download EDA Report</button></a>', unsafe_allow_html=True)
+# Adding Use Case
+st.subheader("Use Case")
+st.write("""
+This app is suitable for data professionals, analysts, or businesses looking to quickly explore new datasets. It provides an efficient, no-code method for performing the initial steps of data analysis, particularly in understanding the structure and relationships within a dataset before deeper analysis or model building.
+""")
+
+# Adding Key Technologies Used
+st.subheader("Key Technologies Used")
+st.write("""
+- **Pandas**: Essential for data manipulation and preparation.  
+- **Plotly**: For generating visualizations for data analysis.  
+- **Streamlit**: Used to build the interactive web application for EDA.
+""")
 
 # ================================================================================================
 # Sidebar for file upload and filtering options
@@ -153,7 +166,7 @@ if 'data' in locals() and data is not None:
         fig = px.bar(top_data, x=x_axis, y=y_axis)
     elif chart_type == "Line":
         fig = px.line(top_data, x=x_axis, y=y_axis)
-    elif chart type == "Scatter":
+    elif chart_type == "Scatter":
         fig = px.scatter(top_data, x=x_axis, y=y_axis)
 
     # Display the chart
