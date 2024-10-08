@@ -16,10 +16,9 @@ This project showcases my analytical skills in exploring sales patterns, custome
 st.header("Instructions")
 st.write("""
 1. Use the **Sales Distribution** section to view sales by dealer region and specific dealers.
-2. Check the **Income vs. Price** section to analyze how customer income correlates with car prices.
-3. Explore the **Sales by Model & Body Style** to identify top-selling models and their body styles.
-4. Use **Sales Over Time** to observe seasonal and yearly sales trends.
-5. The **Top 5 Dealers by Revenue** section highlights the top revenue-generating dealerships.
+2. Explore the **Sales by Model & Body Style** to identify top-selling models and their body styles.
+3. Use **Sales Over Time** to observe seasonal and yearly sales trends.
+4. The **Top 5 Dealers by Revenue** section highlights the top revenue-generating dealerships.
 """)
 
 # Use Case
@@ -69,48 +68,49 @@ if body_style_filter != 'All':
 
 # 1. Sales Distribution by Region and Dealer
 st.header("Sales Distribution by Region and Dealer")
-sales_by_region = df.groupby('Dealer_Region').agg(total_sales=('Car_id', 'size')).reset_index()
+sales_by_region = df.groupby('Dealer_Region').agg(total_sales=('Car_id', 'size')).reset_index().sort_values(by='total_sales', ascending=False)
 
 # Bar chart for Sales by Region
 st.write("### Sales by Region")
 fig, ax = plt.subplots()
-sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax)
+sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax, order=sales_by_region['Dealer_Region'])
+for index, value in enumerate(sales_by_region['total_sales']):
+    ax.text(index, value, f'{value/1000:.1f}k', ha='center')
 ax.set_title('Sales by Region')
 ax.set_xlabel('Region')
 ax.set_ylabel('Total Sales')
 st.pyplot(fig)
 
-# 2. Income vs. Price Correlation
-st.header("Income vs. Price Correlation")
-fig, ax = plt.subplots()
-sns.scatterplot(x='Annual Income', y='Price ($)', hue='Body Style', data=df, ax=ax)
-ax.set_title('Annual Income vs. Price ($)')
-st.pyplot(fig)
-
 # 3. Sales by Model and Body Style
 st.header("Sales by Model & Body Style")
-sales_by_model = df.groupby('Model').agg(total_sales=('Car_id', 'size')).reset_index().nlargest(10, 'total_sales')
+sales_by_model = df.groupby('Model').agg(total_sales=('Car_id', 'size')).reset_index().nlargest(5, 'total_sales')
 
-# Bar chart for Top 10 Car Models by Sales
-st.write("### Top 10 Car Models by Sales")
+# Bar chart for Top 5 Car Models by Sales
+st.write("### Top 5 Car Models by Sales")
 fig, ax = plt.subplots()
 sns.barplot(x='Model', y='total_sales', data=sales_by_model, ax=ax)
-ax.set_title('Top 10 Car Models by Sales')
+ax.set_title('Top 5 Car Models by Sales')
+ax.set_xlabel('Car Model')
+ax.set_ylabel('Total Sales')
+plt.xticks(rotation=45, ha='right', wrap=True)
 st.pyplot(fig)
 
-# 6. Sales Over Time
+# 4. Sales Over Time
 st.header("Sales Over Time")
-df['Year'] = df['Date'].dt.year
-sales_by_year = df.groupby('Year').agg(total_sales=('Car_id', 'size')).reset_index()
+df['Month-Year'] = df['Date'].dt.to_period('M')
+sales_by_month = df.groupby('Month-Year').agg(total_sales=('Car_id', 'size')).reset_index()
 
 # Line chart for Sales Over Time
-st.write("### Sales Trend Over Time")
+st.write("### Car Sales Over Time")
 fig, ax = plt.subplots()
-sns.lineplot(x='Year', y='total_sales', data=sales_by_year, ax=ax)
+sns.lineplot(x='Month-Year', y='total_sales', data=sales_by_month, ax=ax)
 ax.set_title('Car Sales Over Time')
+ax.set_xlabel('Month-Year')
+ax.set_ylabel('Total Sales')
+plt.xticks(rotation=45, ha='right')
 st.pyplot(fig)
 
-# 7. Top 5 Dealers by Revenue
+# 5. Top 5 Dealers by Revenue
 st.header("Top 5 Dealers by Revenue")
 revenue_by_dealer = df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
 
@@ -118,5 +118,10 @@ revenue_by_dealer = df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 's
 st.write("### Top 5 Dealers by Revenue")
 fig, ax = plt.subplots()
 sns.barplot(x='Dealer_Name', y='total_revenue', data=revenue_by_dealer, ax=ax)
+for index, value in enumerate(revenue_by_dealer['total_revenue']):
+    ax.text(index, value, f'${value/1_000_000:.2f}M', ha='center')
 ax.set_title('Top 5 Dealers by Revenue')
+ax.set_xlabel('Dealer Name')
+ax.set_ylabel('Total Revenue ($)')
+plt.xticks(rotation=45, ha='right', wrap=True)
 st.pyplot(fig)
