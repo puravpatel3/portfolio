@@ -3,125 +3,100 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Title Section: Car Sales Analysis
+# Title and Summary Section
 st.title("Car Sales Analysis")
 
-# Project Summary
 st.header("Project Summary")
 st.write("""
-This project showcases my analytical skills in exploring sales patterns, customer demographics, and dealer performance using a car sales dataset. The goal is to uncover insights into sales distributions, customer income-price relationships, and regional dealer performance, while also identifying top-selling car models. This analysis is valuable for car manufacturers, dealers, and marketing teams to optimize their strategies based on data-driven insights.
+This project analyzes car sales across multiple dealerships, allowing for insights into sales performance, regional breakdowns, and top models sold. You can toggle between the number of cars sold (Count) and total sales revenue (Sales) for each analysis.
 """)
 
-# Instructions
 st.header("Instructions")
 st.write("""
-1. Use the **Sales Distribution** section to view sales by dealer region and specific dealers.
-2. Explore the **Sales by Model & Body Style** to identify top-selling models and their body styles.
-3. Use **Sales Over Time** to observe seasonal and yearly sales trends.
-4. The **Top 5 Dealers by Revenue** section highlights the top revenue-generating dealerships.
+1. Use the toggle to switch between Count of car sales and Sales revenue.
+2. Visualize sales by region, top car models, sales over time, and dealer performance.
+3. For each chart, hover over bars to see additional details.
 """)
 
-# Use Case
-st.header("Use Case")
-st.write("""
-This analysis helps stakeholders understand customer behavior, sales distribution across regions, and high-performing dealerships. It enables better decision-making for inventory management, pricing strategies, and targeted marketing campaigns.
-""")
-
-# Key Technologies Used
-st.header("Key Technologies Used")
-st.write("""
-- **Pandas**: Used for data manipulation and preparation.
-- **Matplotlib & Seaborn**: For generating visualizations to track sales trends.
-- **Streamlit**: Used to build the interactive web application.
-""")
-
-# Load dataset
-csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
+# Load dataset from the uploaded file or the appropriate source
+csv_url = '/mnt/data/your_dataset.csv'  # Update this path with your dataset location
 df = pd.read_csv(csv_url)
 
 # Convert Date column to datetime format
 df['Date'] = pd.to_datetime(df['Date'])
 
-# Sidebar Filters
-st.sidebar.header('Filter Options')
+# Sidebar for toggle between Count and Sales
+toggle = st.sidebar.radio("Select View:", ['Sales', 'Count'])
 
-# Filter by Dealer Region
-dealer_region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
+# Helper function to abbreviate numbers
+def abbreviate_number(val):
+    if val >= 1e6:
+        return f"${val/1e6:.1f}M"
+    elif val >= 1e3:
+        return f"${val/1e3:.1f}k"
+    else:
+        return f"${val:.0f}"
 
-# Filter by Dealer Name
-if dealer_region_filter == 'All':
-    dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(df['Dealer_Name'].unique()))
+# Process data based on the toggle selection
+if toggle == 'Sales':
+    df['Value'] = df['Price ($)']
+    label = 'Total Sales ($)'
 else:
-    filtered_dealers = df[df['Dealer_Region'] == dealer_region_filter]['Dealer_Name'].unique()
-    dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(filtered_dealers))
+    df['Value'] = 1
+    label = 'Total Count of Cars Sold'
 
-# Filter by Body Style
-body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + sorted(df['Body Style'].unique()))
+# 1. Sales by Region (descending order)
+region_sales = df.groupby('Dealer_Region')['Value'].sum().reset_index()
+region_sales = region_sales.sort_values(by='Value', ascending=False)
 
-# Filter dataset based on user selection
-if dealer_region_filter != 'All':
-    df = df[df['Dealer_Region'] == dealer_region_filter]
-if dealer_filter != 'All':
-    df = df[df['Dealer_Name'] == dealer_filter]
-if body_style_filter != 'All':
-    df = df[df['Body Style'] == body_style_filter]
-
-# 1. Sales Distribution by Region and Dealer
-st.header("Sales Distribution by Region and Dealer")
-sales_by_region = df.groupby('Dealer_Region').agg(total_sales=('Car_id', 'size')).reset_index().sort_values(by='total_sales', ascending=False)
-
-# Bar chart for Sales by Region
-st.write("### Sales by Region")
-fig, ax = plt.subplots()
-sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax, order=sales_by_region['Dealer_Region'])
-for index, value in enumerate(sales_by_region['total_sales']):
-    ax.text(index, value, f'{value/1000:.1f}k', ha='center')
-ax.set_title('Sales by Region')
-ax.set_xlabel('Region')
-ax.set_ylabel('Total Sales')
-st.pyplot(fig)
-
-# 3. Sales by Model and Body Style
-st.header("Sales by Model & Body Style")
-sales_by_model = df.groupby('Model').agg(total_sales=('Car_id', 'size')).reset_index().nlargest(5, 'total_sales')
-
-# Bar chart for Top 5 Car Models by Sales
-st.write("### Top 5 Car Models by Sales")
-fig, ax = plt.subplots()
-sns.barplot(x='Model', y='total_sales', data=sales_by_model, ax=ax)
-ax.set_title('Top 5 Car Models by Sales')
-ax.set_xlabel('Car Model')
-ax.set_ylabel('Total Sales')
-plt.xticks(rotation=45, ha='right', wrap=True)
-st.pyplot(fig)
-
-# 4. Sales Over Time
-st.header("Sales Over Time")
-df['Month-Year'] = df['Date'].dt.to_period('M')
-sales_by_month = df.groupby('Month-Year').agg(total_sales=('Car_id', 'size')).reset_index()
-
-# Line chart for Sales Over Time
-st.write("### Car Sales Over Time")
-fig, ax = plt.subplots()
-sns.lineplot(x='Month-Year', y='total_sales', data=sales_by_month, ax=ax)
-ax.set_title('Car Sales Over Time')
-ax.set_xlabel('Month-Year')
-ax.set_ylabel('Total Sales')
+st.subheader(f"Sales by Region ({label})")
+plt.figure(figsize=(10, 6))
+ax = sns.barplot(x='Dealer_Region', y='Value', data=region_sales, palette='coolwarm')
+ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
+plt.title(f"Sales by Region ({label})")
 plt.xticks(rotation=45, ha='right')
-st.pyplot(fig)
+plt.ylabel(label)
+plt.xlabel("Region")
+st.pyplot(plt)
 
-# 5. Top 5 Dealers by Revenue
-st.header("Top 5 Dealers by Revenue")
-revenue_by_dealer = df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
+# 2. Top 5 Car Models by Sales
+model_sales = df.groupby('Model')['Value'].sum().reset_index()
+model_sales = model_sales.sort_values(by='Value', ascending=False).head(5)
 
-# Bar chart for Top 5 Dealers by Revenue
-st.write("### Top 5 Dealers by Revenue")
-fig, ax = plt.subplots()
-sns.barplot(x='Dealer_Name', y='total_revenue', data=revenue_by_dealer, ax=ax)
-for index, value in enumerate(revenue_by_dealer['total_revenue']):
-    ax.text(index, value, f'${value/1_000_000:.2f}M', ha='center')
-ax.set_title('Top 5 Dealers by Revenue')
-ax.set_xlabel('Dealer Name')
-ax.set_ylabel('Total Revenue ($)')
+st.subheader(f"Top 5 Car Models by {label}")
+plt.figure(figsize=(10, 6))
+ax = sns.barplot(x='Model', y='Value', data=model_sales, palette='muted')
+ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
+plt.title(f"Top 5 Car Models by {label}")
+plt.xticks(rotation=45, ha='right', wrap=True)  # Wrapping long x-axis labels
+plt.ylabel(label)
+plt.xlabel("Car Model")
+st.pyplot(plt)
+
+# 3. Car Sales Over Time (Month-Year)
+df['Month-Year'] = df['Date'].dt.to_period('M')
+time_sales = df.groupby('Month-Year')['Value'].sum().reset_index()
+
+st.subheader(f"Car Sales Over Time ({label})")
+plt.figure(figsize=(10, 6))
+ax = sns.barplot(x='Month-Year', y='Value', data=time_sales, palette='coolwarm')
+ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
+plt.title(f"Car Sales Over Time ({label})")
+plt.xticks(rotation=45, ha='right')
+plt.ylabel(label)
+plt.xlabel("Month-Year")
+st.pyplot(plt)
+
+# 4. Top 5 Dealers by Revenue
+dealer_sales = df.groupby('Dealer_Name')['Value'].sum().reset_index()
+dealer_sales = dealer_sales.sort_values(by='Value', ascending=False).head(5)
+
+st.subheader(f"Top 5 Dealers by {label}")
+plt.figure(figsize=(10, 6))
+ax = sns.barplot(x='Dealer_Name', y='Value', data=dealer_sales, palette='coolwarm')
+ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
+plt.title(f"Top 5 Dealers by {label}")
 plt.xticks(rotation=45, ha='right', wrap=True)
-st.pyplot(fig)
+plt.ylabel(label)
+plt.xlabel("Dealer Name")
+st.pyplot(plt)
