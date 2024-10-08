@@ -37,7 +37,7 @@ st.write("""
 """)
 
 # Load dataset
-csv_url = 'https://github.com/puravpatel3/portfolio/blob/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
+csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
 df = pd.read_csv(csv_url)
 
 # Convert Date column to datetime format
