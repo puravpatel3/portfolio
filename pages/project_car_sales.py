@@ -3,100 +3,106 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Title and Summary Section
-st.title("Car Sales Analysis")
+# Title Section: Car Sales Analysis
+st.title("Car Sales Analysis Dashboard")
 
-st.header("Project Summary")
-st.write("""
-This project analyzes car sales across multiple dealerships, allowing for insights into sales performance, regional breakdowns, and top models sold. You can toggle between the number of cars sold (Count) and total sales revenue (Sales) for each analysis.
-""")
-
-st.header("Instructions")
-st.write("""
-1. Use the toggle to switch between Count of car sales and Sales revenue.
-2. Visualize sales by region, top car models, sales over time, and dealer performance.
-3. For each chart, hover over bars to see additional details.
-""")
-
-# Load dataset from the uploaded file or the appropriate source
-csv_url = '/mnt/data/your_dataset.csv'  # Update this path with your dataset location
+# Load dataset
+csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/car_sales.csv'
 df = pd.read_csv(csv_url)
 
-# Convert Date column to datetime format
-df['Date'] = pd.to_datetime(df['Date'])
+# Convert 'User ID' to string to avoid serialization issues
+df['User ID'] = df['User ID'].astype(str)
 
-# Sidebar for toggle between Count and Sales
-toggle = st.sidebar.radio("Select View:", ['Sales', 'Count'])
+# Convert 'Date' column to datetime and format as 'MM-YY' for easier visualization
+df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%m-%y')
 
-# Helper function to abbreviate numbers
-def abbreviate_number(val):
-    if val >= 1e6:
-        return f"${val/1e6:.1f}M"
-    elif val >= 1e3:
-        return f"${val/1e3:.1f}k"
-    else:
-        return f"${val:.0f}"
+# Sidebar Filter for Sales/Count toggle
+toggle_option = st.sidebar.radio(
+    "Toggle between Sales and Count",
+    ('Sales', 'Count'),
+    index=0  # Default to Sales
+)
 
-# Process data based on the toggle selection
-if toggle == 'Sales':
-    df['Value'] = df['Price ($)']
-    label = 'Total Sales ($)'
+# Toggle logic
+if toggle_option == 'Sales':
+    metric = 'Price ($)'
+    agg_func = 'sum'
+    value_label = 'Sales ($)'
+    number_format = "${:,.0f}k"  # Format in thousands
 else:
-    df['Value'] = 1
-    label = 'Total Count of Cars Sold'
+    metric = 'Car_id'
+    agg_func = 'count'
+    value_label = 'Count'
+    number_format = "{:,.0f}k"  # Format in thousands
 
-# 1. Sales by Region (descending order)
-region_sales = df.groupby('Dealer_Region')['Value'].sum().reset_index()
-region_sales = region_sales.sort_values(by='Value', ascending=False)
+# Function to format the value as thousands for better readability
+def format_thousands(val):
+    return f"{val/1000:.0f}k"
 
-st.subheader(f"Sales by Region ({label})")
+# 1. Sales by Region
+st.subheader("Sales by Region")
+region_sales = df.groupby('Dealer_Region').agg({metric: agg_func}).reset_index()
+region_sales = region_sales.sort_values(by=metric, ascending=False)
+
 plt.figure(figsize=(10, 6))
-ax = sns.barplot(x='Dealer_Region', y='Value', data=region_sales, palette='coolwarm')
-ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
-plt.title(f"Sales by Region ({label})")
-plt.xticks(rotation=45, ha='right')
-plt.ylabel(label)
+sns.barplot(x='Dealer_Region', y=metric, data=region_sales)
+plt.title(f"{value_label} by Region")
+plt.ylabel(value_label)
 plt.xlabel("Region")
+
+# Add text on top of bars
+for i, row in region_sales.iterrows():
+    plt.text(i, row[metric], format_thousands(row[metric]), ha='center')
+
 st.pyplot(plt)
 
 # 2. Top 5 Car Models by Sales
-model_sales = df.groupby('Model')['Value'].sum().reset_index()
-model_sales = model_sales.sort_values(by='Value', ascending=False).head(5)
+st.subheader("Top 5 Car Models by Sales")
+top_models = df.groupby('Model').agg({metric: agg_func}).reset_index().nlargest(5, metric)
 
-st.subheader(f"Top 5 Car Models by {label}")
 plt.figure(figsize=(10, 6))
-ax = sns.barplot(x='Model', y='Value', data=model_sales, palette='muted')
-ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
-plt.title(f"Top 5 Car Models by {label}")
-plt.xticks(rotation=45, ha='right', wrap=True)  # Wrapping long x-axis labels
-plt.ylabel(label)
+sns.barplot(x='Model', y=metric, data=top_models)
+plt.title(f"Top 5 Car Models by {value_label}")
+plt.ylabel(value_label)
 plt.xlabel("Car Model")
+
+# Add text on top of bars
+for i, row in top_models.iterrows():
+    plt.text(i, row[metric], format_thousands(row[metric]), ha='center')
+
+plt.xticks(rotation=45, ha='right')  # Ensure text is readable
 st.pyplot(plt)
 
-# 3. Car Sales Over Time (Month-Year)
-df['Month-Year'] = df['Date'].dt.to_period('M')
-time_sales = df.groupby('Month-Year')['Value'].sum().reset_index()
+# 3. Sales Over Time (Month-Year)
+st.subheader(f"{value_label} Over Time")
+sales_time = df.groupby('Date').agg({metric: agg_func}).reset_index()
 
-st.subheader(f"Car Sales Over Time ({label})")
-plt.figure(figsize=(10, 6))
-ax = sns.barplot(x='Month-Year', y='Value', data=time_sales, palette='coolwarm')
-ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
-plt.title(f"Car Sales Over Time ({label})")
-plt.xticks(rotation=45, ha='right')
-plt.ylabel(label)
+plt.figure(figsize=(12, 6))
+sns.barplot(x='Date', y=metric, data=sales_time)
+plt.title(f"{value_label} Over Time (by Month-Year)")
+plt.ylabel(value_label)
 plt.xlabel("Month-Year")
+
+# Add text on top of bars
+for i, row in sales_time.iterrows():
+    plt.text(i, row[metric], format_thousands(row[metric]), ha='center')
+
+plt.xticks(rotation=45, ha='right')  # Ensure Month-Year is readable
 st.pyplot(plt)
 
-# 4. Top 5 Dealers by Revenue
-dealer_sales = df.groupby('Dealer_Name')['Value'].sum().reset_index()
-dealer_sales = dealer_sales.sort_values(by='Value', ascending=False).head(5)
+# 4. Top 5 Dealers by Revenue (or Count based on toggle)
+st.subheader(f"Top 5 Dealers by {value_label}")
+top_dealers = df.groupby('Dealer_Name').agg({metric: agg_func}).reset_index().nlargest(5, metric)
 
-st.subheader(f"Top 5 Dealers by {label}")
 plt.figure(figsize=(10, 6))
-ax = sns.barplot(x='Dealer_Name', y='Value', data=dealer_sales, palette='coolwarm')
-ax.bar_label(ax.containers[0], labels=[abbreviate_number(x) for x in ax.containers[0].datavalues])
-plt.title(f"Top 5 Dealers by {label}")
-plt.xticks(rotation=45, ha='right', wrap=True)
-plt.ylabel(label)
+sns.barplot(x='Dealer_Name', y=metric, data=top_dealers)
+plt.title(f"Top 5 Dealers by {value_label}")
+plt.ylabel(value_label)
 plt.xlabel("Dealer Name")
+
+# Add text on top of bars in $M format
+for i, row in top_dealers.iterrows():
+    plt.text(i, row[metric], format_thousands(row[metric]), ha='center')
+
+plt.xticks(rotation=45, ha='right')  # Ensure text is readable
 st.pyplot(plt)
