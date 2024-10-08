@@ -58,6 +58,9 @@ else:
 # Filter by Body Style
 body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + sorted(df['Body Style'].unique()))
 
+# Filter by Car Model
+car_model_filter = st.sidebar.selectbox('Select Car Model', options=['All'] + sorted(df['Model'].unique()))
+
 # Filter dataset based on user selection
 if dealer_region_filter != 'All':
     df = df[df['Dealer_Region'] == dealer_region_filter]
@@ -65,6 +68,8 @@ if dealer_filter != 'All':
     df = df[df['Dealer_Name'] == dealer_filter]
 if body_style_filter != 'All':
     df = df[df['Body Style'] == body_style_filter]
+if car_model_filter != 'All':
+    df = df[df['Model'] == car_model_filter]
 
 # 1. Sales Distribution by Region and Dealer
 st.header("Sales Distribution by Region and Dealer")
@@ -75,10 +80,26 @@ st.write("### Sales by Region")
 fig, ax = plt.subplots()
 sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax, order=sales_by_region['Dealer_Region'])
 for index, value in enumerate(sales_by_region['total_sales']):
-    ax.text(index, value, f'${value/1_000:.1f}k', ha='center')
+    ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
 ax.set_title('Sales by Region')
 ax.set_xlabel('Region')
-ax.set_ylabel('Total Sales ($)')
+ax.set_ylabel('Total Sales ($M)')
+st.pyplot(fig)
+
+# 2. Top 5 Dealers by Revenue (moved above Car Sales Over Time)
+st.header("Top 5 Dealers by Revenue")
+revenue_by_dealer = df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
+
+# Bar chart for Top 5 Dealers by Revenue
+st.write("### Top 5 Dealers by Revenue")
+fig, ax = plt.subplots()
+sns.barplot(x='Dealer_Name', y='total_revenue', data=revenue_by_dealer, ax=ax)
+for index, value in enumerate(revenue_by_dealer['total_revenue']):
+    ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
+ax.set_title('Top 5 Dealers by Revenue')
+ax.set_xlabel('Dealer Name')
+ax.set_ylabel('Total Revenue ($M)')
+plt.xticks(rotation=45, ha='right', wrap=True)
 st.pyplot(fig)
 
 # 3. Sales by Model and Body Style
@@ -89,12 +110,12 @@ sales_by_model = df.groupby('Model').agg(total_sales=('Price ($)', 'sum')).reset
 st.write("### Top 5 Car Models by Sales")
 fig, ax = plt.subplots()
 sns.barplot(x='Model', y='total_sales', data=sales_by_model, ax=ax)
+for index, value in enumerate(sales_by_model['total_sales']):
+    ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
 ax.set_title('Top 5 Car Models by Sales')
 ax.set_xlabel('Car Model')
-ax.set_ylabel('Total Sales ($)')
+ax.set_ylabel('Total Sales ($M)')
 plt.xticks(rotation=45, ha='right', wrap=True)
-for index, value in enumerate(sales_by_model['total_sales']):
-    ax.text(index, value, f'${value/1_000:.1f}k', ha='center')
 st.pyplot(fig)
 
 # 4. Sales Over Time (Aggregated by Quarter-Year)
@@ -106,26 +127,10 @@ sales_by_quarter = df.groupby('Quarter-Year').agg(total_sales=('Price ($)', 'sum
 st.write("### Car Sales Over Time (by Quarter)")
 fig, ax = plt.subplots()
 sns.barplot(x='Quarter-Year', y='total_sales', data=sales_by_quarter, ax=ax)
+for index, value in enumerate(sales_by_quarter['total_sales']):
+    ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
 ax.set_title('Car Sales Over Time (by Quarter-Year)')
 ax.set_xlabel('Quarter-Year')
-ax.set_ylabel('Total Sales ($)')
-for index, value in enumerate(sales_by_quarter['total_sales']):
-    ax.text(index, value, f'${value/1_000:.1f}k', ha='center')
+ax.set_ylabel('Total Sales ($M)')
 plt.xticks(rotation=45, ha='right')
-st.pyplot(fig)
-
-# 5. Top 5 Dealers by Revenue
-st.header("Top 5 Dealers by Revenue")
-revenue_by_dealer = df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
-
-# Bar chart for Top 5 Dealers by Revenue
-st.write("### Top 5 Dealers by Revenue")
-fig, ax = plt.subplots()
-sns.barplot(x='Dealer_Name', y='total_revenue', data=revenue_by_dealer, ax=ax)
-for index, value in enumerate(revenue_by_dealer['total_revenue']):
-    ax.text(index, value, f'${value/1_000_000:.2f}M', ha='center')
-ax.set_title('Top 5 Dealers by Revenue')
-ax.set_xlabel('Dealer Name')
-ax.set_ylabel('Total Revenue ($)')
-plt.xticks(rotation=45, ha='right', wrap=True)
 st.pyplot(fig)
