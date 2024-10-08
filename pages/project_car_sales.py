@@ -68,22 +68,22 @@ if body_style_filter != 'All':
 
 # 1. Sales Distribution by Region and Dealer
 st.header("Sales Distribution by Region and Dealer")
-sales_by_region = df.groupby('Dealer_Region').agg(total_sales=('Car_id', 'size')).reset_index().sort_values(by='total_sales', ascending=False)
+sales_by_region = df.groupby('Dealer_Region').agg(total_sales=('Price ($)', 'sum')).reset_index().sort_values(by='total_sales', ascending=False)
 
 # Bar chart for Sales by Region
 st.write("### Sales by Region")
 fig, ax = plt.subplots()
 sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax, order=sales_by_region['Dealer_Region'])
 for index, value in enumerate(sales_by_region['total_sales']):
-    ax.text(index, value, f'{value/1000:.1f}k', ha='center')
+    ax.text(index, value, f'${value/1_000:.1f}k', ha='center')
 ax.set_title('Sales by Region')
 ax.set_xlabel('Region')
-ax.set_ylabel('Total Sales')
+ax.set_ylabel('Total Sales ($)')
 st.pyplot(fig)
 
 # 3. Sales by Model and Body Style
 st.header("Sales by Model & Body Style")
-sales_by_model = df.groupby('Model').agg(total_sales=('Car_id', 'size')).reset_index().nlargest(5, 'total_sales')
+sales_by_model = df.groupby('Model').agg(total_sales=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_sales')
 
 # Bar chart for Top 5 Car Models by Sales
 st.write("### Top 5 Car Models by Sales")
@@ -91,22 +91,26 @@ fig, ax = plt.subplots()
 sns.barplot(x='Model', y='total_sales', data=sales_by_model, ax=ax)
 ax.set_title('Top 5 Car Models by Sales')
 ax.set_xlabel('Car Model')
-ax.set_ylabel('Total Sales')
+ax.set_ylabel('Total Sales ($)')
 plt.xticks(rotation=45, ha='right', wrap=True)
+for index, value in enumerate(sales_by_model['total_sales']):
+    ax.text(index, value, f'${value/1_000:.1f}k', ha='center')
 st.pyplot(fig)
 
-# 4. Sales Over Time
+# 4. Sales Over Time (Aggregated by Quarter-Year)
 st.header("Sales Over Time")
-df['Month-Year'] = df['Date'].dt.to_period('M')
-sales_by_month = df.groupby('Month-Year').agg(total_sales=('Car_id', 'size')).reset_index()
+df['Quarter-Year'] = df['Date'].dt.to_period('Q')
+sales_by_quarter = df.groupby('Quarter-Year').agg(total_sales=('Price ($)', 'sum')).reset_index()
 
-# Line chart for Sales Over Time
-st.write("### Car Sales Over Time")
+# Bar chart for Sales Over Time
+st.write("### Car Sales Over Time (by Quarter)")
 fig, ax = plt.subplots()
-sns.lineplot(x='Month-Year', y='total_sales', data=sales_by_month, ax=ax)
-ax.set_title('Car Sales Over Time')
-ax.set_xlabel('Month-Year')
-ax.set_ylabel('Total Sales')
+sns.barplot(x='Quarter-Year', y='total_sales', data=sales_by_quarter, ax=ax)
+ax.set_title('Car Sales Over Time (by Quarter-Year)')
+ax.set_xlabel('Quarter-Year')
+ax.set_ylabel('Total Sales ($)')
+for index, value in enumerate(sales_by_quarter['total_sales']):
+    ax.text(index, value, f'${value/1_000:.1f}k', ha='center')
 plt.xticks(rotation=45, ha='right')
 st.pyplot(fig)
 
