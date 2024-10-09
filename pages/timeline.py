@@ -1,23 +1,24 @@
 import streamlit as st
 import pydeck as pdk  # For map visualization
 
-# List of roles with their corresponding locations
+# List of roles with their corresponding locations and accomplishments
 roles = [
     {
         "role": "Operations Management Leadership Development Program",
-        "location": "Waukesha, Wisconsin",
+        "location": "Waukesha, WI",
         "lat": 43.0117,
         "lon": -88.2315,
         "time": "Jul '12 — Jul '14",
         "accomplishments": [
             "Held four separate supply chain roles covering manufacturing, lean, six sigma, order execution, and warehouse ops.",
             "Directed production plan to bring Accessories production line on time delivery from 45% FW13 to 89% FW23.",
-            "Implemented process standards in warehouse operations leading to a reduction of $1.1M in inventory."
+            "Implemented process standards in warehouse operations leading to a reduction of $1.1M in inventory.",
+            "Executed 100% of Q2 production plan and reduced work-in-progress inventory by 30 MR Cabinets (~$1.5M ICV)."
         ]
     },
     {
         "role": "Logistics & Distribution Leader",
-        "location": "Miami, United States",
+        "location": "Miami, FL",
         "lat": 25.7617,
         "lon": -80.1918,
         "time": "Aug '14 — Sep '16",
@@ -29,7 +30,7 @@ roles = [
     },
     {
         "role": "Logistics Analytics Product Owner",
-        "location": "Hoboken, United States",
+        "location": "Hoboken, NJ",
         "lat": 40.7433,
         "lon": -74.0324,
         "time": "Oct '16 — Dec '18",
@@ -41,7 +42,7 @@ roles = [
     },
     {
         "role": "Order Execution & Logistics Analytics Manager",
-        "location": "New York, United States",
+        "location": "Manhattan, NY",
         "lat": 40.7128,
         "lon": -74.0060,
         "time": "Jan '19 — Jun '21",
@@ -54,15 +55,16 @@ roles = [
     },
     {
         "role": "Senior Order Fulfillment Analytics Manager",
-        "location": "Detroit, United States",
+        "location": "Glen Mills, PA",
         "lat": 42.3314,
         "lon": -83.0458,
         "time": "Jul '21 — Present",
         "accomplishments": [
             "Responsible for coaching a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on time delivery, cost reduction and process standard work.",
-            "Led cross-functional project to improve order delivery and revenue flow by developing Celonis analytics views for performance insights, automated reason codes, and proactive material visibility, resulting in a 10% delivery improvement.",
-            "Enhanced business strategy by developing Supply Chain Key Performance Indicator (KPI) dashboards for tracking standard work compliance, analyzing date changes, and identifying outliers, resulting in a 20% improvement in order delivery times and optimal decision making.",
-            "Designed a revenue linearity dashboard identifying past due orders across multiple dimensions and created Standard Operating Procedures for users helping enable a 30% reduction in past due backlog year over year."
+            "Implemented a machine learning model in Python (sklearn) to predict On-Time Delivery (OTD) with 70% accuracy, enabling proactive order management and fulfillment.",
+            "Developed and deployed a machine learning model in Python to predict delivery dates with 74% accuracy, enabling supply chain teams to better anticipate delays and improve delivery reliability.",
+            "Engineered a Python-based solution to align aging inventory with open order demand, uncovering a $5M opportunity by optimizing inventory allocation across regions, sub-regions, and distribution orgs.",
+            "Hosted a company-wide ‘Intro to AI’ workshop for 200+ employees, demonstrating actionable steps to leverage AI in both professional and personal contexts to drive efficiency across everyday tasks."
         ]
     }
 ]
