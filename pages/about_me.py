@@ -10,11 +10,6 @@ def show_about_me():
     header {visibility: hidden;} /* Hide the header */
     .stImage {margin-bottom: -20px;} /* Reduce gap between images and text */
     .css-1lcbmhc {padding: 1rem 1rem 1rem 1rem;} /* Reduce padding in the right column */
-    .centered-image {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
     </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -46,11 +41,10 @@ def show_about_me():
         This web app serves as a platform to highlight my interests and technical skillsets while connecting with fellow professionals and business leaders. I invite you to explore my work and see how I integrate **data and AI** into everyday solutions.
         """)
 
-    # Right column: Display images vertically aligned
+    # Right column: Display images without captions
     with col2:
-        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg', width=300, caption="Wedding Reception")
-        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Plus_Rishi.jpg', width=300, caption="SuShi Plus Rishi")
-        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Rob_Rishi_Housewarming.jpg', width=300, caption="Rob Rishi Housewarming")
+        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg', width=300)
+        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Plus_Rishi.jpg', width=300)
 
 # Call the function directly
 show_about_me()
