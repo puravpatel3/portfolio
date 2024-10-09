@@ -56,8 +56,8 @@ roles = [
     {
         "role": "Senior Order Fulfillment Analytics Manager",
         "location": "Glen Mills, PA",
-        "lat": 42.3314,
-        "lon": -83.0458,
+        "lat": 39.8918,  # Updated latitude for Glen Mills, PA
+        "lon": -75.5346,  # Updated longitude for Glen Mills, PA
         "time": "Jul '21 — Present",
         "accomplishments": [
             "Responsible for coaching a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on time delivery, cost reduction and process standard work.",
