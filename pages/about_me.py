@@ -46,7 +46,10 @@ def show_about_me():
         # List of image URLs
         image_urls = [
             'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg',
-            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Plus_Rishi.jpg'
+            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Plus_Rishi.jpg',
+            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg',
+            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/San_Diego_Bikes.jpg',
+            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Rob_Rishi_Housewarming.jpg'
         ]
 
         # Initialize session state for the image index
