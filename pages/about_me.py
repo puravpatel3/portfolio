@@ -14,28 +14,18 @@ def show_about_me():
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-    # Create a two-column layout: left for the images and right for the text
-    col1, col2 = st.columns([1, 2])
+    # Create a two-column layout: left for the text and right for the image
+    col1, col2 = st.columns([2, 1])
 
-    # Left column: Profile pictures side by side
-    image1_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Wedding.jpg'
-    image2_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg'
-    
+    # Left column: Introduction text
     with col1:
-        col1a, col1b = st.columns(2)
-        with col1a:
-            st.image(image1_url, width=250)
-        with col1b:
-            st.image(image2_url, width=250)
-
-    # Right column: Introduction text
-    with col2:
         st.write("""
         ## Hi, I'm Purav!
 
         I'm a data analytics professional with a deep passion for **machine learning**, **AI**, and **business intelligence**. With over 10 years of experience in analytics and supply chain leadership, I’ve honed my skills in creating predictive models and data-driven solutions that **optimize operations**, **reduce inefficiencies**, and **drive smarter decision-making**.
 
         ### Education:
+        - **Executive MBA**, Quantic School of Business and Technology
         - **Bachelors in Industrial Engineering**, Penn State University
         - **Minors in Six Sigma and Entrepreneurship**
 
@@ -51,6 +41,11 @@ def show_about_me():
 
         This web app serves as a platform to highlight my interests and technical skillsets while connecting with fellow professionals and business leaders. I invite you to explore my work and see how I integrate **data and AI** into everyday solutions.
         """)
+
+    # Right column: Profile picture (Wedding Reception image)
+    image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg'
+    with col2:
+        st.image(image_url, width=300)
 
 # Call the function directly
 show_about_me()
