@@ -8,28 +8,16 @@ def main():
     # Welcome message for the default page
     st.title("Welcome to My Portfolio")
 
-    # Left align the text under the title
-    st.markdown("""
-    <div style='text-align: left'>
-        Use the links below to view my LinkedIn profile and Resume.
-    </div>
-    """, unsafe_allow_html=True)
-
     # Additional content moved from the 'about me' section
     st.write("""
-    ## Hi, I'm Purav!
+    I am a Senior Analytics Leader with 10+ years’ experience in transforming data into actionable insights. My passion lies in leveraging the power of business intelligence, machine learning, and artificial intelligence to solve complex business problems. Throughout my career, I have honed my expertise in BI and Python, building predictive models and data-driven solutions that optimize processes, reduce operational inefficiencies, and help organizations make smarter, more informed decisions.
 
-    I'm an experienced data analytics professional with a passion for machine learning and AI. My goal is to leverage my technical and leadership skills to drive business insights and innovations. With over 10 years of experience in analytics and supply chain leadership, I excel in optimizing operations, cutting costs, and boosting revenue.
+    Beyond the technical skills, I’ve always been driven by a passion for process improvement and cross-functional collaboration. I thrive in environments where I can bring people together, whether it's aligning teams across departments or working with senior leaders to drive strategic growth. My leadership style is rooted in fostering teamwork and clear communication, ensuring that everyone from developers to executives understand the impact of analytics on business performance.
 
-    I built this web app to offer a deeper look into my expertise, showcase the projects I’ve worked on, and connect with other professionals who share similar passions. You’ll find a summary of my professional journey below, and more detailed insights about my roles and projects in the subpages.
+    What excites me the most is tackling large-scale analytics challenges. I’m always looking for ways to push the boundaries of what’s possible, whether through developing dashboards aligned to functional processes, building advanced machine learning models, or exploring cutting-edge AI applications. I’m eager to take on bigger projects that allow me to apply my skills on a larger stage, continuously improving and expanding my knowledge along the way.
+
+    This web app highlights my professional interests and showcases the technical skillsets that drive my work. It serves as a platform for connecting with other professionals and business leaders, offering a glimpse into the innovative solutions I’m developing for the modern world. I invite you to explore my journey and see how data can drive real-world impact.
     """)
-
-    # Hyperlinks for LinkedIn and Resume
-    linkedin_url = "https://www.linkedin.com/in/puravp"
-    resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf'
-
-    st.markdown(f'[View my LinkedIn]({linkedin_url})')
-    st.markdown(f'[View my Resume]({resume_file})')
 
     # Professional Summary (with styling for role titles and details)
     st.write("""
