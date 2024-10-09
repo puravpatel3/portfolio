@@ -51,7 +51,7 @@ def show_about_me():
     # Right column: Profile picture (Wedding Reception image)
     image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg'
     with col2:
-        st.image(image_url, width=250, use_column_width='auto', classes='centered-image')
+        st.image(image_url, width=250)
 
 # Call the function directly
 show_about_me()
