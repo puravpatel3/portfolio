@@ -1,11 +1,11 @@
 import streamlit as st
 
+# Set page configuration with the new page title
+st.set_page_config(page_title="Welcome", layout="wide")
+
 # Main App layout
 def main():
-    # Set page title and layout
-    st.set_page_config(page_title="My Portfolio", layout="wide")
-
-    # Welcome message for the default page
+    # Title for the Welcome page
     st.title("Welcome to My Portfolio")
 
     # Create two columns
