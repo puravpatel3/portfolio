@@ -10,6 +10,13 @@ def show_about_me():
     header {visibility: hidden;} /* Hide the header */
     .stImage {margin-bottom: -20px;} /* Reduce gap between images and text */
     .css-1lcbmhc {padding: 1rem 1rem 1rem 1rem;} /* Reduce padding in the right column */
+    .centered-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
     </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -27,7 +34,6 @@ def show_about_me():
         ### Education:
         - **Executive MBA**, Quantic School of Business and Technology
         - **Bachelors in Industrial Engineering**, Penn State University
-        - **Minors in Six Sigma and Entrepreneurship**
 
         ### Interests:
         - **Fitness**: I enjoy staying active with **Orange Theory**, **Boxing**, and **Weightlifting**.
@@ -45,7 +51,7 @@ def show_about_me():
     # Right column: Profile picture (Wedding Reception image)
     image_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg'
     with col2:
-        st.image(image_url, width=300)
+        st.image(image_url, width=250, use_column_width='auto', classes='centered-image')
 
 # Call the function directly
 show_about_me()
