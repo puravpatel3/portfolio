@@ -41,10 +41,33 @@ def show_about_me():
         This web app serves as a platform to highlight my interests and technical skillsets while connecting with fellow professionals and business leaders. I invite you to explore my work and see how I integrate **data and AI** into everyday solutions.
         """)
 
-    # Right column: Display images without captions
+    # Right column: Scrollable images using Previous and Next buttons
     with col2:
-        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg', width=300)
-        st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Plus_Rishi.jpg', width=300)
+        # List of image URLs
+        image_urls = [
+            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Wedding_Reception.jpg',
+            'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/SuShi_Plus_Rishi.jpg'
+        ]
+
+        # Initialize session state for the image index
+        if 'image_index' not in st.session_state:
+            st.session_state['image_index'] = 0
+
+        # Show current image
+        st.image(image_urls[st.session_state['image_index']], width=300)
+
+        # Navigation buttons
+        col1_btn, col2_btn = st.columns([1, 1])
+
+        # Previous button
+        with col1_btn:
+            if st.button('Previous'):
+                st.session_state['image_index'] = (st.session_state['image_index'] - 1) % len(image_urls)
+
+        # Next button
+        with col2_btn:
+            if st.button('Next'):
+                st.session_state['image_index'] = (st.session_state['image_index'] + 1) % len(image_urls)
 
 # Call the function directly
 show_about_me()
