@@ -30,7 +30,7 @@ def main():
         **Key Career Highlights**:
         - **Proven Leadership**: A track record of leading teams and driving strategic growth by leveraging data and analytics to make impactful business decisions.
         - **Advanced Analytics**: Consistently pushing boundaries through the development of machine learning models and AI-driven applications.
-        - View my [Resume](https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf) or [Timeline page](/Timeline) to see more details on my career.
+        - View my [Resume](https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf) or Timeline page to see more details on my career.
         """)
 
         # Adding hyperlinks for LinkedIn and Resume
