@@ -15,36 +15,31 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # Buttons section (LinkedIn and Resume arranged vertically)
+    # Buttons section (organized horizontally below the title)
     linkedin_url = "https://www.linkedin.com/in/puravp"
     resume_file = 'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf'
+    contact_email = "mailto:patel.a.purav@gmail.com"
 
-    # Creating layout for the buttons
-    col1, col2, col3 = st.columns([0.5, 1, 0.5])  # Added empty columns for better centering
+    # Creating horizontal layout for the buttons
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
 
     with col2:
-        st.write(f'<a href="{linkedin_url}" target="_blank"><button class="btn btn-primary">LinkedIn Profile</button></a>', unsafe_allow_html=True)
         st.write(f'<a href="{resume_file}" download><button class="btn btn-primary">Resume</button></a>', unsafe_allow_html=True)
 
-    # Shrink the width of the text section
-    st.markdown("""
-    <style>
-    .shrink-text {
-        max-width: 50%;  /* Shrinking the text width */
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    with col3:
+        st.write(f'<a href="{contact_email}"><button class="btn btn-primary">Contact Me</button></a>', unsafe_allow_html=True)
 
-    # Additional content with reduced text width
+    # Additional content moved from the 'about me' section
     st.write("""
-    <div class="shrink-text">
-        ## Hi, I'm Purav!
+    ## Hi, I'm Purav!
 
-        I'm an experienced data analytics professional with a passion for machine learning and AI. My goal is to leverage my technical and leadership skills to drive business insights and innovations. With over 10 years of experience in analytics and supply chain leadership, I excel in optimizing operations, cutting costs, and boosting revenue.
+    I'm an experienced data analytics professional with a passion for machine learning and AI. My goal is to leverage my technical and leadership skills to drive business insights and innovations. With over 10 years of experience in analytics and supply chain leadership, I excel in optimizing operations, cutting costs, and boosting revenue.
 
-        I built this web app to offer a deeper look into my expertise, showcase the projects I’ve worked on, and connect with other professionals who share similar passions. You’ll find a summary of my professional journey below, and more detailed insights about my roles and projects in the subpages.
-    </div>
-    """, unsafe_allow_html=True)
+    I built this web app to offer a deeper look into my expertise, showcase the projects I’ve worked on, and connect with other professionals who share similar passions. You’ll find a summary of my professional journey below, and more detailed insights about my roles and projects in the subpages.
+    """)
 
     # Professional Summary (with styling for role titles and details)
     st.write("""
