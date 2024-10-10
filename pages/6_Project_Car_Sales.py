@@ -127,6 +127,7 @@ with col3:
     ax.set_title('Top 5 Dealers by Revenue', fontsize=12)
     ax.set_xlabel('Dealer Name', fontsize=10)
     ax.set_ylabel('Total Revenue ($M)', fontsize=10)
+    ax.set_yticklabels([f'${int(tick * 10)}M' for tick in ax.get_yticks()])  # Update y-axis labels
     plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
 
@@ -139,6 +140,7 @@ with col4:
     ax.set_title('Top 5 Car Models by Sales', fontsize=12)
     ax.set_xlabel('Car Model', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
+    ax.set_yticklabels([f'${int(tick * 10)}M' for tick in ax.get_yticks()])  # Update y-axis labels
     plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
 
@@ -217,7 +219,7 @@ if not filtered_df.empty:
             # Formatting x-axis and y-axis
             ax.set_xlabel('Quarter')
             ax.set_ylabel('Revenue ($)')
-            ax.xaxis.set_major_formatter(mdates.DateFormatter('%YQ%q'))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%YQ'))
             plt.xticks(rotation=45)
 
             # Set x-axis limits using datetime objects
