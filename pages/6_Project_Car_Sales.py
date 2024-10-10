@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from prophet import Prophet
+import matplotlib.dates as mdates
 
 # Title Section: Car Sales Analysis
 st.title("Car Sales Analysis")
@@ -46,13 +48,13 @@ df['Date'] = pd.to_datetime(df['Date'])
 st.sidebar.header('Filter Options')
 
 # Filter by Dealer Region
-dealer_region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
+region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
 
 # Filter by Dealer Name
-if dealer_region_filter == 'All':
+if region_filter == 'All':
     dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(df['Dealer_Name'].unique()))
 else:
-    filtered_dealers = df[df['Dealer_Region'] == dealer_region_filter]['Dealer_Name'].unique()
+    filtered_dealers = df[df['Dealer_Region'] == region_filter]['Dealer_Name'].unique()
     dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(filtered_dealers))
 
 # Filter by Body Style
@@ -62,22 +64,23 @@ body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + 
 car_model_filter = st.sidebar.selectbox('Select Car Model', options=['All'] + sorted(df['Model'].unique()))
 
 # Filter dataset based on user selection
-if dealer_region_filter != 'All':
-    df = df[df['Dealer_Region'] == dealer_region_filter]
+filtered_df = df.copy()
+if region_filter != 'All':
+    filtered_df = filtered_df[filtered_df['Dealer_Region'] == region_filter]
 if dealer_filter != 'All':
-    df = df[df['Dealer_Name'] == dealer_filter]
+    filtered_df = filtered_df[filtered_df['Dealer_Name'] == dealer_filter]
 if body_style_filter != 'All':
-    df = df[df['Body Style'] == body_style_filter]
+    filtered_df = filtered_df[filtered_df['Body Style'] == body_style_filter]
 if car_model_filter != 'All':
-    df = df[df['Model'] == car_model_filter]
+    filtered_df = filtered_df[filtered_df['Model'] == car_model_filter]
 
 # 1. Sales Distribution by Region and Dealer
 st.header("Sales Distribution by Region and Dealer")
-sales_by_region = df.groupby('Dealer_Region').agg(total_sales=('Price ($)', 'sum')).reset_index().sort_values(by='total_sales', ascending=False)
+sales_by_region = filtered_df.groupby('Dealer_Region').agg(total_sales=('Price ($)', 'sum')).reset_index().sort_values(by='total_sales', ascending=False)
 
 # 2. Car Sales Over Time (Aggregated by Quarter-Year)
-df['Quarter-Year'] = df['Date'].dt.to_period('Q')
-sales_by_quarter = df.groupby('Quarter-Year').agg(total_sales=('Price ($)', 'sum')).reset_index()
+filtered_df['Quarter-Year'] = filtered_df['Date'].dt.to_period('Q')
+sales_by_quarter = filtered_df.groupby('Quarter-Year').agg(total_sales=('Price ($)', 'sum')).reset_index()
 
 # First row: Sales by Region and Car Sales Over Time side by side
 col1, col2 = st.columns(2)
@@ -107,10 +110,10 @@ with col2:
     st.pyplot(fig)
 
 # 3. Top 5 Dealers by Revenue
-revenue_by_dealer = df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
+revenue_by_dealer = filtered_df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
 
 # 4. Top 5 Car Models by Sales
-sales_by_model = df.groupby('Model').agg(total_sales=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_sales')
+sales_by_model = filtered_df.groupby('Model').agg(total_sales=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_sales')
 
 # Second row: Top 5 Dealers by Revenue and Top 5 Car Models by Sales side by side
 col3, col4 = st.columns(2)
@@ -140,7 +143,7 @@ with col4:
     st.pyplot(fig)
 
 # Clean the column names by stripping whitespace
-df.columns = df.columns.str.strip()
+filtered_df.columns = filtered_df.columns.str.strip()
 
 # Advanced Analytics Section
 st.header("Advanced Analytics")
@@ -155,7 +158,7 @@ Focus on the top-performing car models in high-sales regions to optimize invento
 """)
 
 # Aggregating sales by region and car model
-sales_by_region_model = df.groupby(['Dealer_Region', 'Model']).agg(total_sales=('Price ($)', 'sum')).reset_index()
+sales_by_region_model = filtered_df.groupby(['Dealer_Region', 'Model']).agg(total_sales=('Price ($)', 'sum')).reset_index()
 
 # Get the top 10 car models by total sales
 top_models = sales_by_region_model.groupby('Model').agg(total_sales=('total_sales', 'sum')).nlargest(10, 'total_sales').index
@@ -176,49 +179,6 @@ ax.set_ylabel('Dealer Region')
 # Display the heatmap
 st.pyplot(fig)
 
-from prophet import Prophet
-import matplotlib.dates as mdates
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import streamlit as st
-
-# Load dataset
-csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
-df = pd.read_csv(csv_url)
-
-# Convert Date column to datetime format
-df['Date'] = pd.to_datetime(df['Date'])
-
-# Sidebar Filters
-st.sidebar.header('Filter Options')
-
-# Filter by Dealer Region
-dealer_region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
-
-# Filter by Dealer Name
-if dealer_region_filter == 'All':
-    dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(df['Dealer_Name'].unique()))
-else:
-    filtered_dealers = df[df['Dealer_Region'] == dealer_region_filter]['Dealer_Name'].unique()
-    dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(filtered_dealers))
-
-# Filter by Body Style
-body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + sorted(df['Body Style'].unique()))
-
-# Filter by Car Model
-car_model_filter = st.sidebar.selectbox('Select Car Model', options=['All'] + sorted(df['Model'].unique()))
-
-# Filter dataset based on user selection
-if dealer_region_filter != 'All':
-    df = df[df['Dealer_Region'] == dealer_region_filter]
-if dealer_filter != 'All':
-    df = df[df['Dealer_Name'] == dealer_filter]
-if body_style_filter != 'All':
-    df = df[df['Body Style'] == body_style_filter]
-if car_model_filter != 'All':
-    df = df[df['Model'] == car_model_filter]
-
 # 2. Revenue Forecasting for Regions
 st.subheader("Revenue Forecasting for Regions")
 st.write("""
@@ -229,9 +189,9 @@ Use the forecasted data to plan for inventory, marketing, and regional strategy 
 """)
 
 # Ensure we have data to work with
-if not df.empty:
+if not filtered_df.empty:
     # Aggregating data to prepare for forecasting
-    region_data = df.groupby('Date').agg(total_sales=('Price ($)', 'sum')).reset_index()
+    region_data = filtered_df.groupby('Date').agg(total_sales=('Price ($)', 'sum')).reset_index()
 
     # Check if we have enough data for a meaningful forecast
     if len(region_data) > 30:  # Ensure we have at least 30 data points for a reasonable forecast
@@ -252,7 +212,7 @@ if not df.empty:
             # Plotting the forecast
             fig2, ax = plt.subplots()
             model.plot(forecast, ax=ax)
-            ax.set_title(f'Revenue Forecast for {dealer_region_filter} Region')
+            ax.set_title(f'Revenue Forecast for {region_filter} Region')
 
             # Formatting x-axis and y-axis
             ax.set_xlabel('Quarter')
