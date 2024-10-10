@@ -84,7 +84,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.write("### Sales by Region")
-    fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
+    fig, ax = plt.subplots(figsize=(3, 1.5))  # Adjusting figure size
     sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax)
     for index, value in enumerate(sales_by_region['total_sales']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
@@ -95,7 +95,7 @@ with col1:
 
 with col2:
     st.write("### Car Sales Over Time (by Quarter)")
-    fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
+    fig, ax = plt.subplots(figsize=(3, 1.5))  # Adjusting figure size
     sns.barplot(x='Quarter-Year', y='total_sales', data=sales_by_quarter, ax=ax)
     for index, value in enumerate(sales_by_quarter['total_sales']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
