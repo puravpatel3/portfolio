@@ -175,3 +175,56 @@ ax.set_ylabel('Dealer Region')
 
 # Display the heatmap
 st.pyplot(fig)
+
+from fbprophet import Prophet  # Make sure Prophet is imported
+
+# 2. Revenue Forecasting for Regions
+st.subheader("Revenue Forecasting for Regions")
+st.write("""
+This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
+
+**Key Takeaways:**
+Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
+""")
+
+# Sidebar filter to select the region for forecasting
+region_filter = st.sidebar.selectbox('Select Dealer Region for Forecasting', options=['All'] + sorted(df['Dealer_Region'].unique()))
+
+# Filter dataset based on selected region
+if region_filter != 'All':
+    region_data = df[df['Dealer_Region'] == region_filter]
+else:
+    st.warning("Please select a specific region for more accurate forecasting.")
+    region_data = df.copy()
+
+# Ensure we have data to work with
+if not region_data.empty:
+    # Aggregating data to prepare for forecasting
+    region_data = region_data.groupby('Date').agg(total_sales=('Price ($)', 'sum')).reset_index()
+
+    # Check if we have enough data for a meaningful forecast
+    if len(region_data) > 30:  # Ensure we have at least 30 data points for a reasonable forecast
+        # Renaming columns for Prophet
+        region_data = region_data.rename(columns={'Date': 'ds', 'total_sales': 'y'})
+
+        # Initializing and fitting the Prophet model
+        model = Prophet()
+        try:
+            model.fit(region_data)
+
+            # Creating a future dataframe to forecast 365 days ahead
+            future = model.make_future_dataframe(periods=365)
+
+            # Predicting future sales
+            forecast = model.predict(future)
+
+            # Plotting the forecast
+            fig2 = model.plot(forecast)
+            plt.title(f'Revenue Forecast for {region_filter} Region')
+            st.pyplot(fig2)
+        except Exception as e:
+            st.error(f"An error occurred while forecasting: {str(e)}")
+    else:
+        st.warning(f"Not enough data points available to forecast for the {region_filter} region. Please select a different region.")
+else:
+    st.warning("No data available for the selected region. Please choose a different region.")
