@@ -95,8 +95,8 @@ with col1:
     ax.set_xlabel('Region', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
     ax.tick_params(axis='x', labelsize=8, rotation=30)
-    ax.set_yticks([i for i in range(0, int(sales_by_region['total_sales'].max() // 1_000_000) + 2)])
-    ax.set_yticklabels([f'${tick}M' for tick in ax.get_yticks()])
+    ax.set_yticks([i * 5_000_000 for i in range(0, int(sales_by_region['total_sales'].max() // 5_000_000) + 2)])
+    ax.set_yticklabels([f'${tick/1_000_000:.1f}M' for tick in ax.get_yticks()])
     st.pyplot(fig)
 
 with col2:
@@ -109,8 +109,8 @@ with col2:
     ax.set_xlabel('Quarter-Year', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
     plt.xticks(rotation=45, fontsize=8)
-    ax.set_yticks([i for i in range(0, int(sales_by_quarter['total_sales'].max() // 1_000_000) + 2)])
-    ax.set_yticklabels([f'${tick}M' for tick in ax.get_yticks()])
+    ax.set_yticks([i * 5_000_000 for i in range(0, int(sales_by_quarter['total_sales'].max() // 5_000_000) + 2)])
+    ax.set_yticklabels([f'${tick/1_000_000:.1f}M' for tick in ax.get_yticks()])
     st.pyplot(fig)
 
 # 3. Top 5 Dealers by Revenue
@@ -131,8 +131,8 @@ with col3:
     ax.set_title('Top 5 Dealers by Revenue', fontsize=12)
     ax.set_xlabel('Dealer Name', fontsize=10)
     ax.set_ylabel('Total Revenue ($M)', fontsize=10)
-    ax.set_yticks([i for i in range(0, int(revenue_by_dealer['total_revenue'].max() // 1_000_000) + 2)])
-    ax.set_yticklabels([f'${tick}M' for tick in ax.get_yticks()])
+    ax.set_yticks([i * 5_000_000 for i in range(0, int(revenue_by_dealer['total_revenue'].max() // 5_000_000) + 2)])
+    ax.set_yticklabels([f'${tick/1_000_000:.1f}M' for tick in ax.get_yticks()])
     plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
 
@@ -145,8 +145,8 @@ with col4:
     ax.set_title('Top 5 Car Models by Sales', fontsize=12)
     ax.set_xlabel('Car Model', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
-    ax.set_yticks([i for i in range(0, int(sales_by_model['total_sales'].max() // 1_000_000) + 2)])
-    ax.set_yticklabels([f'${tick}M' for tick in ax.get_yticks()])
+    ax.set_yticks([i * 5_000_000 for i in range(0, int(sales_by_model['total_sales'].max() // 5_000_000) + 2)])
+    ax.set_yticklabels([f'${tick/1_000_000:.1f}M' for tick in ax.get_yticks()])
     plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
 
