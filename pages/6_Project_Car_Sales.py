@@ -84,7 +84,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.write("### Sales by Region")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax)
     for index, value in enumerate(sales_by_region['total_sales']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
@@ -95,7 +95,7 @@ with col1:
 
 with col2:
     st.write("### Car Sales Over Time (by Quarter)")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Quarter-Year', y='total_sales', data=sales_by_quarter, ax=ax)
     for index, value in enumerate(sales_by_quarter['total_sales']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
@@ -116,7 +116,7 @@ col3, col4 = st.columns(2)
 
 with col3:
     st.write("### Top 5 Dealers by Revenue")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Dealer_Name', y='total_revenue', data=revenue_by_dealer, ax=ax)
     for index, value in enumerate(revenue_by_dealer['total_revenue']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
@@ -128,7 +128,7 @@ with col3:
 
 with col4:
     st.write("### Top 5 Car Models by Sales")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Model', y='total_sales', data=sales_by_model, ax=ax)
     for index, value in enumerate(sales_by_model['total_sales']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
