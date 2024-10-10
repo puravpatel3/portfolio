@@ -194,19 +194,44 @@ df['Date'] = pd.to_datetime(df['Date'])
 st.sidebar.header('Filter Options')
 
 # Filter by Dealer Region
-region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
+dealer_region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
 
-# Filter dataset based on selected region
-if region_filter != 'All':
-    region_data = df[df['Dealer_Region'] == region_filter]
+# Filter by Dealer Name
+if dealer_region_filter == 'All':
+    dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(df['Dealer_Name'].unique()))
 else:
-    st.warning("Please select a specific region for more accurate forecasting.")
-    region_data = df.copy()
+    filtered_dealers = df[df['Dealer_Region'] == dealer_region_filter]['Dealer_Name'].unique()
+    dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(filtered_dealers))
+
+# Filter by Body Style
+body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + sorted(df['Body Style'].unique()))
+
+# Filter by Car Model
+car_model_filter = st.sidebar.selectbox('Select Car Model', options=['All'] + sorted(df['Model'].unique()))
+
+# Filter dataset based on user selection
+if dealer_region_filter != 'All':
+    df = df[df['Dealer_Region'] == dealer_region_filter]
+if dealer_filter != 'All':
+    df = df[df['Dealer_Name'] == dealer_filter]
+if body_style_filter != 'All':
+    df = df[df['Body Style'] == body_style_filter]
+if car_model_filter != 'All':
+    df = df[df['Model'] == car_model_filter]
+
+# 2. Revenue Forecasting for Regions
+st.subheader("Revenue Forecasting for Regions")
+st.write("""
+This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
+
+**Key Takeaways:**
+Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
+""")
 
 # Ensure we have data to work with
-if not region_data.empty:
+if not df.empty:
     # Aggregating data to prepare for forecasting
-    region_data = region_data.groupby('Date').agg(total_sales=('Price ($)', 'sum')).reset_index()
+    region_data = df.groupby('Date').agg(total_sales=('Price ($)', 'sum')).reset_index()
 
     # Check if we have enough data for a meaningful forecast
     if len(region_data) > 30:  # Ensure we have at least 30 data points for a reasonable forecast
@@ -227,7 +252,7 @@ if not region_data.empty:
             # Plotting the forecast
             fig2, ax = plt.subplots()
             model.plot(forecast, ax=ax)
-            ax.set_title(f'Revenue Forecast for {region_filter} Region')
+            ax.set_title(f'Revenue Forecast for {dealer_region_filter} Region')
 
             # Formatting x-axis and y-axis
             ax.set_xlabel('Quarter')
@@ -244,6 +269,6 @@ if not region_data.empty:
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
     else:
-        st.warning(f"Not enough data points available to forecast for the {region_filter} region. Please select a different region.")
+        st.warning(f"Not enough data points available to forecast for the selected region. Please select a different region.")
 else:
-    st.warning("No data available for the selected region. Please choose a different region.")
+    st.warning("No data available for the selected filters. Please choose different filter options.")
