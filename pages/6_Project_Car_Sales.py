@@ -176,8 +176,6 @@ ax.set_ylabel('Dealer Region')
 # Display the heatmap
 st.pyplot(fig)
 
-from fbprophet import Prophet  # Make sure Prophet is imported
-
 # 2. Revenue Forecasting for Regions
 st.subheader("Revenue Forecasting for Regions")
 st.write("""
@@ -219,8 +217,9 @@ if not region_data.empty:
             forecast = model.predict(future)
 
             # Plotting the forecast
-            fig2 = model.plot(forecast)
-            plt.title(f'Revenue Forecast for {region_filter} Region')
+            fig2, ax = plt.subplots()
+            model.plot(forecast, ax=ax)
+            ax.set_title(f'Revenue Forecast for {region_filter} Region')
             st.pyplot(fig2)
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
