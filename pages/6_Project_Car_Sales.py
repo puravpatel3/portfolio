@@ -145,24 +145,23 @@ df.columns = df.columns.str.strip()
 # Advanced Analytics Section
 st.header("Advanced Analytics")
 
-# 1. Sales Breakdown by Region, Car Model, and Dealer
-st.subheader("Sales Breakdown by Region, Car Model, and Dealer")
+# 1. Sales Breakdown by Region and Car Model
+st.subheader("Sales Breakdown by Region and Car Model")
 st.write("""
-This heatmap visualizes the sales breakdown by region, car model, and dealer. The colors represent the volume of sales, with green indicating higher sales and red indicating lower sales. This is helpful for identifying high-performing regions and models.
-**Key Takeaways:** Focus on top-performing regions and models to optimize inventory and marketing strategies.
+This heatmap visualizes the sales breakdown by region and car model. The colors represent the volume of sales, with green indicating higher sales and red indicating lower sales. This is helpful for identifying high-performing regions and car models.
+
+**Key Takeaways:**
+Focus on the top-performing car models in high-sales regions to optimize inventory management and marketing strategies. By understanding which regions and models drive the highest sales, stakeholders can make more informed decisions about resource allocation, promotional focus, and dealership support.
 """)
 
-# Aggregating sales by region, car model, and dealer
-sales_by_region_model_dealer = df.groupby(['Dealer_Region', 'Model', 'Dealer_Name']).agg(total_sales=('Price ($)', 'sum')).reset_index()
+# Aggregating sales by region and car model
+sales_by_region_model = df.groupby(['Dealer_Region', 'Model']).agg(total_sales=('Price ($)', 'sum')).reset_index()
 
 # Get the top 10 car models by total sales
-top_models = sales_by_region_model_dealer.groupby('Model').agg(total_sales=('total_sales', 'sum')).nlargest(10, 'total_sales').index
+top_models = sales_by_region_model.groupby('Model').agg(total_sales=('total_sales', 'sum')).nlargest(10, 'total_sales').index
 
-# Get the top 10 dealers by total sales
-top_dealers = sales_by_region_model_dealer.groupby('Dealer_Name').agg(total_sales=('total_sales', 'sum')).nlargest(10, 'total_sales').index
-
-# Filter the dataset for the top 10 models and dealers
-filtered_sales = sales_by_region_model_dealer[(sales_by_region_model_dealer['Model'].isin(top_models)) & (sales_by_region_model_dealer['Dealer_Name'].isin(top_dealers))]
+# Filter the dataset for the top 10 models
+filtered_sales = sales_by_region_model[sales_by_region_model['Model'].isin(top_models)]
 
 # Pivot the data to create a heatmap-compatible format
 heatmap_data = filtered_sales.pivot_table(index='Dealer_Region', columns='Model', values='total_sales', aggfunc='sum')
@@ -170,7 +169,7 @@ heatmap_data = filtered_sales.pivot_table(index='Dealer_Region', columns='Model'
 # Creating the heatmap visualization with green for high sales and red for low sales
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.heatmap(heatmap_data / 1_000_000, cmap='RdYlGn', annot=True, fmt='.1f', linewidths=.5, ax=ax, cbar_kws={'label': 'Total Sales ($M)'})
-ax.set_title('Sales Breakdown by Region, Car Model, and Dealer')
+ax.set_title('Sales Breakdown by Region and Car Model')
 ax.set_xlabel('Car Model')
 ax.set_ylabel('Dealer Region')
 
