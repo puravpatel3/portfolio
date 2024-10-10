@@ -225,12 +225,13 @@ if not filtered_df.empty:
             # Formatting x-axis and y-axis
             ax.set_xlabel('Quarter')
             ax.set_ylabel('Revenue ($)')
-            ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-Q%q'))
+            ax.set_xticks(pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS'))
+            ax.set_xticklabels([f'{date.year}Q{((date.month - 1) // 3) + 1}' for date in ax.get_xticks()])
             plt.xticks(rotation=45)
 
             # Set x-axis limits using datetime objects
             start_date = pd.to_datetime('2023-01-01')
-            end_date = pd.to_datetime('2024-12-31')
+            end_date = pd.to_datetime('2025-12-31')
             ax.set_xlim([start_date, end_date])
 
             # Update y-axis tick labels to show as dollars in millions
