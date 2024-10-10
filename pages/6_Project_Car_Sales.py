@@ -138,3 +138,73 @@ with col4:
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
     plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
+
+# Advanced Analytics Section
+st.header("Advanced Analytics")
+
+# 1. Sales Breakdown by Region, Car Model, and Dealer
+st.subheader("Sales Breakdown by Region, Car Model, and Dealer")
+st.write("""
+This heatmap visualizes sales across different regions and car models, providing insights into which regions and car models are performing best. This helps business leaders decide where to allocate marketing resources and inventory. 
+**Key Takeaways:** Focus on regions with the highest sales to maximize revenue potential.
+""")
+
+# Grouping sales by region and car model
+sales_by_region_model = df.groupby(['Dealer_Region', 'Model']).agg(total_sales=('Price ($)', 'sum')).reset_index()
+
+# Pivoting the data to create a heatmap-compatible format
+sales_pivot = sales_by_region_model.pivot("Dealer_Region", "Model", "total_sales")
+
+# Creating the heatmap visualization
+fig, ax = plt.subplots(figsize=(10, 8))
+sns.heatmap(sales_pivot, cmap="YlGnBu", annot=True, fmt=".0f", linewidths=0.5, ax=ax)
+plt.title('Sales by Region and Car Model')
+st.pyplot(fig)
+
+# 2. Revenue Forecasting for Regions
+st.subheader("Revenue Forecasting for Regions")
+st.write("""
+This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
+**Key Takeaways:** Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments.
+""")
+
+# Preparing data for Prophet: filtering for a specific region (e.g., Austin)
+region_data = df[df['Dealer_Region'] == 'Austin']
+region_data = region_data.groupby('Date').agg(total_sales=('Price ($)', 'sum')).reset_index()
+
+# Renaming columns for Prophet
+region_data = region_data.rename(columns={'Date': 'ds', 'total_sales': 'y'})
+
+# Initializing Prophet model and fitting the data
+model = Prophet()
+model.fit(region_data)
+
+# Creating a future dataframe to forecast 365 days ahead
+future = model.make_future_dataframe(periods=365)
+
+# Predicting future sales
+forecast = model.predict(future)
+
+# Plotting the forecast
+fig2 = model.plot(forecast)
+plt.title('Revenue Forecast for Austin Region')
+st.pyplot(fig2)
+
+# 3. Sales Focus by Region, Model, and Dealer
+st.subheader("Focus Areas for Sales Growth by Region, Model, and Dealer")
+st.write("""
+This bar chart showcases the sales potential by car model across various regions, helping decision-makers focus on areas that will drive the highest growth.
+**Key Takeaways:** Prioritize sales focus on the top-performing models in the most profitable regions for maximum ROI.
+""")
+
+# Grouping sales data by region, model, and dealer for analysis
+sales_focus = df.groupby(['Dealer_Region', 'Model', 'Dealer_Name']).agg(total_sales=('Price ($)', 'sum')).reset_index()
+
+# Plotting a bar chart to show sales focus by region and model
+fig3, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(x='Dealer_Region', y='total_sales', hue='Model', data=sales_focus, ax=ax)
+ax.set_title('Sales Focus by Region, Model, and Dealer')
+ax.set_xlabel('Region')
+ax.set_ylabel('Total Sales ($)')
+st.pyplot(fig3)
+
