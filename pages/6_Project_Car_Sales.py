@@ -176,10 +176,13 @@ ax.set_ylabel('Dealer Region')
 # Display the heatmap
 st.pyplot(fig)
 
+
+# 2. Revenue Forecasting for Regions
+from prophet import Prophet
+
 csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
 df = pd.read_csv(csv_url)  # Load dataframe from GitHub URL
 
-# 2. Revenue Forecasting for Regions
 st.subheader("Revenue Forecasting for Regions")
 st.write("""
 This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
