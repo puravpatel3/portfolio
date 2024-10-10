@@ -91,6 +91,7 @@ with col1:
     ax.set_title('Sales by Region')
     ax.set_xlabel('Region')
     ax.set_ylabel('Total Sales ($M)')
+    plt.xticks(rotation=45)
     st.pyplot(fig)
 
 with col2:
