@@ -79,8 +79,8 @@ st.header("Sales Distribution by Region and Dealer")
 sales_by_region = filtered_df.groupby('Dealer_Region').agg(total_sales=('Price ($)', 'sum')).reset_index().sort_values(by='total_sales', ascending=False)
 
 # 2. Car Sales Over Time (Aggregated by Quarter-Year)
-filtered_df['Quarter-Year'] = filtered_df['Date'].dt.to_period('Q')
-sales_by_quarter = filtered_df.groupby('Quarter-Year').agg(total_sales=('Price ($)', 'sum')).reset_index()
+filtered_df['YearQuarter'] = filtered_df['Date'].dt.year.astype(str) + "Q" + ((filtered_df['Date'].dt.month - 1) // 3 + 1).astype(str)
+sales_by_quarter = filtered_df.groupby('YearQuarter').agg(total_sales=('Price ($)', 'sum')).reset_index()
 
 # First row: Sales by Region and Car Sales Over Time side by side
 col1, col2 = st.columns(2)
@@ -102,11 +102,11 @@ with col1:
 with col2:
     st.write("### Car Sales Over Time (by Quarter)")
     fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
-    sns.barplot(x='Quarter-Year', y='total_sales', data=sales_by_quarter, ax=ax)
+    sns.barplot(x='YearQuarter', y='total_sales', data=sales_by_quarter, ax=ax)
     for index, value in enumerate(sales_by_quarter['total_sales']):
         ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center', fontsize=10)
-    ax.set_title('Car Sales Over Time (by Quarter-Year)', fontsize=12)
-    ax.set_xlabel('Quarter-Year', fontsize=10)
+    ax.set_title('Car Sales Over Time (by YearQuarter)', fontsize=12)
+    ax.set_xlabel('YearQuarter', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
     plt.xticks(rotation=45, fontsize=8)
     ax.set_yticks([i * 10_000_000 for i in range(0, int(sales_by_quarter['total_sales'].max() // 10_000_000) + 2)])
@@ -223,10 +223,10 @@ if not filtered_df.empty:
             ax.set_title(f'Revenue Forecast for {region_filter} Region')
 
             # Formatting x-axis and y-axis
-            ax.set_xlabel('Quarter')
+            ax.set_xlabel('YearQuarter')
             ax.set_ylabel('Revenue ($)')
             ax.set_xticks(pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS'))
-            ax.set_xticklabels([f'{date.year}Q{((date.month - 1) // 3) + 1}' for date in ax.get_xticks()])
+            ax.set_xticklabels([f'{date.year}Q{((date.month - 1) // 3) + 1}' for date in pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS')])
             plt.xticks(rotation=45)
 
             # Set x-axis limits using datetime objects
