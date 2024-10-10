@@ -178,21 +178,23 @@ st.pyplot(fig)
 
 from prophet import Prophet
 import matplotlib.dates as mdates
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import streamlit as st
 
+# Load dataset
 csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
-df = pd.read_csv(csv_url)  # Load dataframe from GitHub URL
+df = pd.read_csv(csv_url)
 
-# 2. Revenue Forecasting for Regions
-st.subheader("Revenue Forecasting for Regions")
-st.write("""
-This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
+# Convert Date column to datetime format
+df['Date'] = pd.to_datetime(df['Date'])
 
-**Key Takeaways:**
-Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
-""")
+# Sidebar Filters
+st.sidebar.header('Filter Options')
 
-# Sidebar filter to select the region for forecasting
-region_filter = st.sidebar.selectbox('Select Dealer Region for Forecasting', options=['All'] + sorted(df['Dealer_Region'].unique()))
+# Filter by Dealer Region
+region_filter = st.sidebar.selectbox('Select Dealer Region', options=['All'] + sorted(df['Dealer_Region'].unique()))
 
 # Filter dataset based on selected region
 if region_filter != 'All':
@@ -230,9 +232,13 @@ if not region_data.empty:
             # Formatting x-axis and y-axis
             ax.set_xlabel('Quarter')
             ax.set_ylabel('Revenue ($)')
-            ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-Q%q'))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%YQ%q'))
             plt.xticks(rotation=45)
-            ax.set_xlim(['2023-01-01', '2024-12-31'])
+
+            # Set x-axis limits using datetime objects
+            start_date = pd.to_datetime('2023-01-01')
+            end_date = pd.to_datetime('2024-12-31')
+            ax.set_xlim([start_date, end_date])
 
             st.pyplot(fig2)
         except Exception as e:
@@ -240,4 +246,4 @@ if not region_data.empty:
     else:
         st.warning(f"Not enough data points available to forecast for the {region_filter} region. Please select a different region.")
 else:
-    st.warning("No data available for the selected region. Please choose a different region.")    
+    st.warning("No data available for the selected region. Please choose a different region.")
