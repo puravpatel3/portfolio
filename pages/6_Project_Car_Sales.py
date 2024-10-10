@@ -176,13 +176,13 @@ ax.set_ylabel('Dealer Region')
 # Display the heatmap
 st.pyplot(fig)
 
-
-# 2. Revenue Forecasting for Regions
 from prophet import Prophet
+import matplotlib.dates as mdates
 
 csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
 df = pd.read_csv(csv_url)  # Load dataframe from GitHub URL
 
+# 2. Revenue Forecasting for Regions
 st.subheader("Revenue Forecasting for Regions")
 st.write("""
 This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
@@ -226,10 +226,18 @@ if not region_data.empty:
             fig2, ax = plt.subplots()
             model.plot(forecast, ax=ax)
             ax.set_title(f'Revenue Forecast for {region_filter} Region')
+
+            # Formatting x-axis and y-axis
+            ax.set_xlabel('Quarter')
+            ax.set_ylabel('Revenue ($)')
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-Q%q'))
+            plt.xticks(rotation=45)
+            ax.set_xlim(['2023-01-01', '2024-12-31'])
+
             st.pyplot(fig2)
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
     else:
         st.warning(f"Not enough data points available to forecast for the {region_filter} region. Please select a different region.")
 else:
-    st.warning("No data available for the selected region. Please choose a different region.")
+    st.warning("No data available for the selected region. Please choose a different region.")    
