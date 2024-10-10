@@ -87,11 +87,11 @@ with col1:
     fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Dealer_Region', y='total_sales', data=sales_by_region, ax=ax)
     for index, value in enumerate(sales_by_region['total_sales']):
-        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
-    ax.set_title('Sales by Region')
-    ax.set_xlabel('Region')
-    ax.set_ylabel('Total Sales ($M)')
-    plt.xticks(rotation=45)
+        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center', fontsize=10)
+    ax.set_title('Sales by Region', fontsize=12)
+    ax.set_xlabel('Region', fontsize=10)
+    ax.set_ylabel('Total Sales ($M)', fontsize=10)
+    ax.tick_params(axis='x', labelsize=8, rotation=30)
     st.pyplot(fig)
 
 with col2:
@@ -99,11 +99,11 @@ with col2:
     fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Quarter-Year', y='total_sales', data=sales_by_quarter, ax=ax)
     for index, value in enumerate(sales_by_quarter['total_sales']):
-        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
-    ax.set_title('Car Sales Over Time (by Quarter-Year)')
-    ax.set_xlabel('Quarter-Year')
-    ax.set_ylabel('Total Sales ($M)')
-    plt.xticks(rotation=45)
+        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center', fontsize=10)
+    ax.set_title('Car Sales Over Time (by Quarter-Year)', fontsize=12)
+    ax.set_xlabel('Quarter-Year', fontsize=10)
+    ax.set_ylabel('Total Sales ($M)', fontsize=10)
+    plt.xticks(rotation=45, fontsize=8)
     st.pyplot(fig)
 
 # 3. Top 5 Dealers by Revenue
@@ -120,11 +120,11 @@ with col3:
     fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Dealer_Name', y='total_revenue', data=revenue_by_dealer, ax=ax)
     for index, value in enumerate(revenue_by_dealer['total_revenue']):
-        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
-    ax.set_title('Top 5 Dealers by Revenue')
-    ax.set_xlabel('Dealer Name')
-    ax.set_ylabel('Total Revenue ($M)')
-    plt.xticks(rotation=45, ha='right', wrap=True)
+        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center', fontsize=10)
+    ax.set_title('Top 5 Dealers by Revenue', fontsize=12)
+    ax.set_xlabel('Dealer Name', fontsize=10)
+    ax.set_ylabel('Total Revenue ($M)', fontsize=10)
+    plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
 
 with col4:
@@ -132,9 +132,9 @@ with col4:
     fig, ax = plt.subplots(figsize=(5, 3))  # Adjusting figure size
     sns.barplot(x='Model', y='total_sales', data=sales_by_model, ax=ax)
     for index, value in enumerate(sales_by_model['total_sales']):
-        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center')
-    ax.set_title('Top 5 Car Models by Sales')
-    ax.set_xlabel('Car Model')
-    ax.set_ylabel('Total Sales ($M)')
-    plt.xticks(rotation=45, ha='right', wrap=True)
+        ax.text(index, value, f'${value/1_000_000:.1f}M', ha='center', fontsize=10)
+    ax.set_title('Top 5 Car Models by Sales', fontsize=12)
+    ax.set_xlabel('Car Model', fontsize=10)
+    ax.set_ylabel('Total Sales ($M)', fontsize=10)
+    plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
