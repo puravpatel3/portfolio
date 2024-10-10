@@ -225,7 +225,7 @@ if not filtered_df.empty:
             # Formatting x-axis and y-axis
             ax.set_xlabel('YearQuarter')
             ax.set_ylabel('Revenue ($)')
-            ax.set_xticks(pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS'))
+            ax.set_xticks(pd.date_range(start='2023-01-01', end='2025-12-31', freq='QS'))
             ax.set_xticklabels([f'{date.year}Q{((date.month - 1) // 3) + 1}' for date in pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS')])
             plt.xticks(rotation=45)
 
