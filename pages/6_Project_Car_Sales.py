@@ -142,23 +142,34 @@ with col4:
 # Advanced Analytics Section
 st.header("Advanced Analytics")
 
-# 1. Sales Breakdown by Region, Car Model, and Dealer
-st.subheader("Sales Breakdown by Region, Car Model, and Dealer")
+# 1. Sales Breakdown by Top 10 Dealers and Car Models
+st.subheader("Sales Breakdown by Top 10 Car Models and Dealers")
 st.write("""
-This heatmap visualizes sales across different regions and car models, providing insights into which regions and car models are performing best. This helps business leaders decide where to allocate marketing resources and inventory. 
-**Key Takeaways:** Focus on regions with the highest sales to maximize revenue potential.
+This heatmap visualizes sales for the top 10 car models and dealers, helping business leaders identify key performers. The red-to-green color scale indicates the performance, with green representing higher sales and red indicating lower sales. 
+**Key Takeaways:** Focus on top-performing car models and dealers for maximizing revenue potential.
 """)
 
-# Grouping sales by region and car model
-sales_by_region_model = df.groupby(['Dealer_Region', 'Model']).agg(total_sales=('Price ($)', 'sum')).reset_index()
+# Grouping sales by region, model, and dealer
+sales_by_region_model_dealer = df.groupby(['Dealer_Region', 'Model', 'Dealer_Name']).agg(total_sales=('Price ($)', 'sum')).reset_index()
 
-# Pivoting the data to create a heatmap-compatible format
-sales_pivot = sales_by_region_model.pivot(index='Dealer_Region', columns='Model', values='total_sales')
+# Get the top 10 car models by sales
+top_models = sales_by_region_model_dealer.groupby('Model').agg(total_sales=('Price ($)', 'sum')).nlargest(10, 'total_sales').index
 
-# Creating the heatmap visualization
+# Get the top 10 dealers by sales
+top_dealers = sales_by_region_model_dealer.groupby('Dealer_Name').agg(total_sales=('Price ($)', 'sum')).nlargest(10, 'total_sales').index
+
+# Filter the dataset to only include top 10 models and top 10 dealers
+filtered_sales = sales_by_region_model_dealer[sales_by_region_model_dealer['Model'].isin(top_models) & sales_by_region_model_dealer['Dealer_Name'].isin(top_dealers)]
+
+# Pivot the data for the heatmap
+sales_pivot = filtered_sales.pivot_table(index='Dealer_Name', columns='Model', values='total_sales', aggfunc='sum', fill_value=0)
+
+# Create the heatmap with red-green color scheme
 fig, ax = plt.subplots(figsize=(10, 8))
-sns.heatmap(sales_pivot, cmap="YlGnBu", annot=True, fmt=".0f", linewidths=0.5, ax=ax)
-plt.title('Sales by Region and Car Model')
+sns.heatmap(sales_pivot, cmap='RdYlGn', annot=True, fmt=".0f", linewidths=0.5, ax=ax)
+plt.title('Sales by Top 10 Car Models and Dealers')
+plt.xlabel('Car Model')
+plt.ylabel('Dealer Name')
 st.pyplot(fig)
 
 # 2. Revenue Forecasting for Regions
