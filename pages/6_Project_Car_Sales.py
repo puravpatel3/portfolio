@@ -142,9 +142,6 @@ with col4:
 # Clean the column names by stripping whitespace
 df.columns = df.columns.str.strip()
 
-# Inspect columns before Advanced Analytics section
-st.write("Columns in DataFrame before advanced analytics:", df.columns)
-
 # Advanced Analytics Section
 st.header("Advanced Analytics")
 
@@ -157,9 +154,6 @@ This heatmap visualizes the sales breakdown by region, car model, and dealer. Th
 
 # Aggregating sales by region, car model, and dealer
 sales_by_region_model_dealer = df.groupby(['Dealer_Region', 'Model', 'Dealer_Name']).agg(total_sales=('Price ($)', 'sum')).reset_index()
-
-# Re-check columns to verify if 'Price ($)' exists
-st.write("Columns in sales_by_region_model_dealer DataFrame:", sales_by_region_model_dealer.columns)
 
 # Get the top 10 car models by total sales
 top_models = sales_by_region_model_dealer.groupby('Model').agg(total_sales=('total_sales', 'sum')).nlargest(10, 'total_sales').index
@@ -175,7 +169,7 @@ heatmap_data = filtered_sales.pivot_table(index='Dealer_Region', columns='Model'
 
 # Creating the heatmap visualization with green for high sales and red for low sales
 fig, ax = plt.subplots(figsize=(10, 6))
-sns.heatmap(heatmap_data, cmap='RdYlGn', annot=True, fmt='.1f', linewidths=.5, ax=ax, cbar_kws={'label': 'Total Sales ($)'})
+sns.heatmap(heatmap_data / 1_000_000, cmap='RdYlGn', annot=True, fmt='.1f', linewidths=.5, ax=ax, cbar_kws={'label': 'Total Sales ($M)'})
 ax.set_title('Sales Breakdown by Region, Car Model, and Dealer')
 ax.set_xlabel('Car Model')
 ax.set_ylabel('Dealer Region')
