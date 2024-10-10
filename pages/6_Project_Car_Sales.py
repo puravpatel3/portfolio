@@ -95,7 +95,7 @@ with col1:
     ax.set_xlabel('Region', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
     ax.tick_params(axis='x', labelsize=8, rotation=30)
-    ax.set_yticks([i * 5_000_000 for i in range(0, int(sales_by_region['total_sales'].max() // 5_000_000) + 2)])
+    ax.set_yticks([i * 10_000_000 for i in range(0, int(sales_by_region['total_sales'].max() // 10_000_000) + 2)])
     ax.set_yticklabels([f'${tick/1_000_000:.1f}M' for tick in ax.get_yticks()])
     st.pyplot(fig)
 
@@ -109,7 +109,7 @@ with col2:
     ax.set_xlabel('Quarter-Year', fontsize=10)
     ax.set_ylabel('Total Sales ($M)', fontsize=10)
     plt.xticks(rotation=45, fontsize=8)
-    ax.set_yticks([i * 5_000_000 for i in range(0, int(sales_by_quarter['total_sales'].max() // 5_000_000) + 2)])
+    ax.set_yticks([i * 10_000_000 for i in range(0, int(sales_by_quarter['total_sales'].max() // 10_000_000) + 2)])
     ax.set_yticklabels([f'${tick/1_000_000:.1f}M' for tick in ax.get_yticks()])
     st.pyplot(fig)
 
