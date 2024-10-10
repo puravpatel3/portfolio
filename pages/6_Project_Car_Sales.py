@@ -153,7 +153,7 @@ This heatmap visualizes sales across different regions and car models, providing
 sales_by_region_model = df.groupby(['Dealer_Region', 'Model']).agg(total_sales=('Price ($)', 'sum')).reset_index()
 
 # Pivoting the data to create a heatmap-compatible format
-sales_pivot = sales_by_region_model.pivot("Dealer_Region", "Model", "total_sales")
+sales_pivot = sales_by_region_model.pivot(index='Dealer_Region', columns='Model', values='total_sales')
 
 # Creating the heatmap visualization
 fig, ax = plt.subplots(figsize=(10, 8))
