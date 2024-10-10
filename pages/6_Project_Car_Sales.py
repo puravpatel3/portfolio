@@ -225,7 +225,7 @@ if not filtered_df.empty:
             # Formatting x-axis and y-axis
             ax.set_xlabel('Quarter')
             ax.set_ylabel('Revenue ($)')
-            ax.xaxis.set_major_formatter(mdates.DateFormatter('%YQ'))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%YQ%q'))
             plt.xticks(rotation=45)
 
             # Set x-axis limits using datetime objects
@@ -233,7 +233,18 @@ if not filtered_df.empty:
             end_date = pd.to_datetime('2024-12-31')
             ax.set_xlim([start_date, end_date])
 
+            # Update y-axis tick labels to show as dollars in millions
+            ax.set_yticklabels([f'${tick / 1_000_000:.1f}M' for tick in ax.get_yticks()])
+
             st.pyplot(fig2)
+
+            # Adding explanation below the chart
+            st.write("""
+            **Chart Explanation:**
+            - **Black dots**: Represent the actual historical revenue data points.
+            - **Darker blue line**: Represents the predicted revenue trend for the next year.
+            - **Lighter blue shaded area**: Represents the uncertainty interval (confidence interval) around the forecast.
+            """)
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
     else:
