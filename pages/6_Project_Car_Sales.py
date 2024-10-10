@@ -176,6 +176,9 @@ ax.set_ylabel('Dealer Region')
 # Display the heatmap
 st.pyplot(fig)
 
+csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
+df = pd.read_csv(csv_url)  # Load dataframe from GitHub URL
+
 # 2. Revenue Forecasting for Regions
 st.subheader("Revenue Forecasting for Regions")
 st.write("""
@@ -223,4 +226,7 @@ if not region_data.empty:
             st.pyplot(fig2)
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
+    else:
+        st.warning(f"Not enough data points available to forecast for the {region_filter} region. Please select a different region.")
+else:
     st.warning("No data available for the selected region. Please choose a different region.")
