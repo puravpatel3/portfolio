@@ -17,16 +17,17 @@ This project showcases my analytical skills in exploring sales patterns, custome
 # Instructions
 st.header("Instructions")
 st.write("""
-1. Use the **Sales Distribution** section to view sales by dealer region and specific dealers.
-2. Explore the **Sales by Model & Body Style** to identify top-selling models and their body styles.
+1. Use the **Sales Distribution** section to view sales by dealer region and top dealers.
+2. Explore the **Sales by Car Model** to identify top-selling models.
 3. Use **Sales Over Time** to observe seasonal and yearly sales trends.
-4. The **Top 5 Dealers by Revenue** section highlights the top revenue-generating dealerships.
+4. Filter on any Region, Dealer, Car Model or Body Style to take a deeper look.
 """)
 
 # Use Case
 st.header("Use Case")
 st.write("""
 This analysis helps stakeholders understand customer behavior, sales distribution across regions, and high-performing dealerships. It enables better decision-making for inventory management, pricing strategies, and targeted marketing campaigns.
+The advanced analytics section helps identify the best selling regions and car models through a Heat Map and the Revenue Forecasting helps predict expected revenue for the following year.
 """)
 
 # Key Technologies Used
