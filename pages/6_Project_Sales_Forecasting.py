@@ -11,7 +11,9 @@ st.title("Car Sales Analysis")
 # Project Summary
 st.header("Project Summary")
 st.write("""
-This project showcases my analytical skills in exploring sales patterns, customer demographics, and dealer performance using a car sales dataset. The goal is to uncover insights into sales distributions, customer income-price relationships, and regional dealer performance, while also identifying top-selling car models. This analysis is valuable for car manufacturers, dealers, and marketing teams to optimize their strategies based on data-driven insights.
+This project focuses on analyzing car sales data to uncover sales distribution patterns, regional trends, and dealership performance. 
+By breaking down car sales by model, region, and time, and employing advanced analytics like heatmaps, high and low-performing areas are identified. 
+Another key component of the project is the development of a sales forecasting model, which assists car manufacturers and dealers in anticipating future demand and making informed strategic decisions.
 """)
 
 # Instructions
