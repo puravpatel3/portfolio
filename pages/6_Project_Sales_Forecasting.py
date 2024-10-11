@@ -36,6 +36,8 @@ st.write("""
 - **Pandas**: Used for data manipulation and preparation.
 - **Matplotlib & Seaborn**: For generating visualizations to track sales trends.
 - **Streamlit**: Used to build the interactive web application.
+- **Prophet**: Used for time series forecasting to predict future revenue trends.
+- **NumPy**: Utilized for numerical operations and array manipulations.
 """)
 
 # Load dataset
