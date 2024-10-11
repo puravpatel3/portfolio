@@ -26,7 +26,7 @@ st.write("""
 # Use Case
 st.header("Use Case")
 st.write("""
-This analysis helps stakeholders understand customer behavior, sales distribution across regions, and high-performing dealerships. It enables better decision-making for inventory management, pricing strategies, and targeted marketing campaigns.
+This analysis helps stakeholders understand customer behavior, sales distribution across regions, and high-performing dealerships. It enables better decision-making for inventory management, pricing strategies, and targeted marketing campaigns. Additionally, the insights can help identify underperforming regions or models that need more focus and provide a benchmark for dealer performance comparisons. The analysis also supports resource allocation and helps in optimizing marketing efforts based on regional demand patterns.
 """)
 
 # Key Technologies Used
@@ -59,11 +59,11 @@ else:
     filtered_dealers = df[df['Dealer_Region'] == region_filter]['Dealer_Name'].unique()
     dealer_filter = st.sidebar.selectbox('Select Dealer', options=['All'] + sorted(filtered_dealers))
 
-# Filter by Body Style
-body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + sorted(df['Body Style'].unique()))
-
 # Filter by Car Model
 car_model_filter = st.sidebar.selectbox('Select Car Model', options=['All'] + sorted(df['Model'].unique()))
+
+# Filter by Body Style
+body_style_filter = st.sidebar.selectbox('Select Body Style', options=['All'] + sorted(df['Body Style'].unique()))
 
 # Filter dataset based on user selection
 filtered_df = df.copy()
@@ -71,10 +71,10 @@ if region_filter != 'All':
     filtered_df = filtered_df[filtered_df['Dealer_Region'] == region_filter]
 if dealer_filter != 'All':
     filtered_df = filtered_df[filtered_df['Dealer_Name'] == dealer_filter]
-if body_style_filter != 'All':
-    filtered_df = filtered_df[filtered_df['Body Style'] == body_style_filter]
 if car_model_filter != 'All':
     filtered_df = filtered_df[filtered_df['Model'] == car_model_filter]
+if body_style_filter != 'All':
+    filtered_df = filtered_df[filtered_df['Body Style'] == body_style_filter]
 
 # 1. Sales Distribution by Region and Dealer
 st.header("Sales Distribution by Region and Dealer")
@@ -198,9 +198,9 @@ This time series forecast predicts the revenue for a specific region for the nex
 Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
 
 **Chart Explanation:**
-- **Black dots**: Represent the actual historical revenue data points.
-- **Darker blue line**: Represents the predicted revenue trend for the next year.
-- **Lighter blue shaded area**: Represents the uncertainty interval (confidence interval) around the forecast.
+- **Black Dots**: Represent the actual historical revenue data points.
+- **Darker Blue Line**: Represents the predicted revenue trend for the next year.
+- **Lighter Blue Shaded Area**: Represents the uncertainty interval (confidence interval) around the forecast.
 """)
 
 # Ensure we have data to work with
