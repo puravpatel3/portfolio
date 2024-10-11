@@ -27,7 +27,6 @@ st.write("""
 st.header("Use Case")
 st.write("""
 This analysis helps stakeholders understand customer behavior, sales distribution across regions, and high-performing dealerships. It enables better decision-making for inventory management, pricing strategies, and targeted marketing campaigns.
-The advanced analytics section helps identify the best selling regions and car models through a Heat Map and the Revenue Forecasting helps predict expected revenue for the following year.
 """)
 
 # Key Technologies Used
@@ -197,6 +196,11 @@ This time series forecast predicts the revenue for a specific region for the nex
 
 **Key Takeaways:**
 Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
+
+**Chart Explanation:**
+- **Black dots**: Represent the actual historical revenue data points.
+- **Darker blue line**: Represents the predicted revenue trend for the next year.
+- **Lighter blue shaded area**: Represents the uncertainty interval (confidence interval) around the forecast.
 """)
 
 # Ensure we have data to work with
@@ -214,8 +218,8 @@ if not filtered_df.empty:
         try:
             model.fit(region_data)
 
-            # Creating a future dataframe to forecast 365 days ahead
-            future = model.make_future_dataframe(periods=365)
+            # Creating a future dataframe to forecast 730 days ahead (2 years)
+            future = model.make_future_dataframe(periods=730)
 
             # Predicting future sales
             forecast = model.predict(future)
@@ -228,27 +232,19 @@ if not filtered_df.empty:
             # Formatting x-axis and y-axis
             ax.set_xlabel('YearQuarter')
             ax.set_ylabel('Revenue ($)')
-            ax.set_xticks(pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS'))
-            ax.set_xticklabels([f'{date.year}Q{((date.month - 1) // 3) + 1}' for date in pd.date_range(start='2023-01-01', end='2024-12-31', freq='QS')])
+            ax.set_xticks(pd.date_range(start='2023-01-01', end='2025-12-31', freq='QS'))
+            ax.set_xticklabels([f'{date.year}Q{((date.month - 1) // 3) + 1}' for date in pd.date_range(start='2023-01-01', end='2025-12-31', freq='QS')])
             plt.xticks(rotation=45)
 
             # Set x-axis limits using datetime objects
             start_date = pd.to_datetime('2023-01-01')
-            end_date = pd.to_datetime('2024-12-31')
+            end_date = pd.to_datetime('2025-12-31')
             ax.set_xlim([start_date, end_date])
 
             # Update y-axis tick labels to show as dollars in millions
             ax.set_yticklabels([f'${tick / 1_000_000:.1f}M' for tick in ax.get_yticks()])
 
             st.pyplot(fig2)
-
-            # Adding explanation below the chart
-            st.write("""
-            **Chart Explanation:**
-            - **Black dots**: Represent the actual historical revenue data points.
-            - **Darker blue line**: Represents the predicted revenue trend for the next year.
-            - **Lighter blue shaded area**: Represents the uncertainty interval (confidence interval) around the forecast.
-            """)
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
     else:
