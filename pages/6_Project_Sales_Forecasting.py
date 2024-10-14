@@ -11,9 +11,7 @@ st.title("Car Sales Analysis")
 # Project Summary
 st.header("Project Summary")
 st.write("""
-This project focuses on analyzing car sales data to uncover sales distribution patterns, regional trends, and dealership performance. 
-By breaking down car sales by model, region, and time, and employing advanced analytics like heatmaps, high and low-performing areas are identified. 
-Another key component of the project is the development of a sales forecasting model, which assists car manufacturers and dealers in anticipating future demand and making informed strategic decisions.
+This project focuses on analyzing car sales data to uncover sales distribution patterns, regional trends, and dealership performance. By breaking down car sales by model, region, and time, and employing advanced analytics like heatmaps, high and low-performing areas are identified. A key component of the project is the development of a sales forecasting model, which assists car manufacturers and dealers in anticipating future demand and making informed strategic decisions.
 """)
 
 # Instructions
@@ -73,10 +71,10 @@ if region_filter != 'All':
     filtered_df = filtered_df[filtered_df['Dealer_Region'] == region_filter]
 if dealer_filter != 'All':
     filtered_df = filtered_df[filtered_df['Dealer_Name'] == dealer_filter]
-if car_model_filter != 'All':
-    filtered_df = filtered_df[filtered_df['Model'] == car_model_filter]
 if body_style_filter != 'All':
     filtered_df = filtered_df[filtered_df['Body Style'] == body_style_filter]
+if car_model_filter != 'All':
+    filtered_df = filtered_df[filtered_df['Model'] == car_model_filter]
 
 # 1. Sales Distribution by Region and Dealer
 st.header("Sales Distribution by Region and Dealer")
@@ -200,9 +198,9 @@ This time series forecast predicts the revenue for a specific region for the nex
 Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
 
 **Chart Explanation:**
-- **Black Dots**: Represent the actual historical revenue data points.
-- **Darker Blue Line**: Represents the predicted revenue trend for the next year.
-- **Lighter Blue Shaded Area**: Represents the uncertainty interval (confidence interval) around the forecast.
+- **Black dots**: Represent the actual historical revenue data points.
+- **Darker blue line**: Represents the predicted revenue trend for the next year.
+- **Lighter blue shaded area**: Represents the uncertainty interval (confidence interval) around the forecast.
 """)
 
 # Ensure we have data to work with
@@ -253,3 +251,22 @@ if not filtered_df.empty:
         st.warning(f"Not enough data points available to forecast for the selected region. Please select a different region.")
 else:
     st.warning("No data available for the selected filters. Please choose different filter options.")
+
+# 3. Revenue Forecast by Week for 2025
+st.subheader("Revenue Forecast by Week for 2025")
+
+# Filter forecast data for the year 2025
+forecast_2025 = forecast[(forecast['ds'] >= '2025-01-01') & (forecast['ds'] <= '2025-12-31')]
+
+# Plotting the weekly forecast for 2025
+fig3, ax = plt.subplots()
+ax.plot(forecast_2025['ds'], forecast_2025['yhat'], color='blue', label='Predicted Revenue')
+ax.fill_between(forecast_2025['ds'], forecast_2025['yhat_lower'], forecast_2025['yhat_upper'], color='skyblue', alpha=0.3, label='Uncertainty Interval')
+ax.set_title('Revenue Forecast by Week for 2025')
+ax.set_xlabel('Week')
+ax.set_ylabel('Revenue ($M)')
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%W'))
+plt.xticks(rotation=45)
+ax.set_yticklabels([f'${tick / 1_000_000:.1f}M' for tick in ax.get_yticks()])
+
+st.pyplot(fig3)
