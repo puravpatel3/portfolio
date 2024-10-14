@@ -252,25 +252,25 @@ if not filtered_df.empty:
 else:
     st.warning("No data available for the selected filters. Please choose different filter options.")
 
-# 3. Revenue Forecast for 2025
-st.subheader("Revenue Forecast for 2025")
+# 3. Revenue Forecast for 2024
+st.subheader("Revenue Forecast for 2024")
 
-# Filter forecast data for the year 2025
-forecast_2025 = forecast[(forecast['ds'] >= '2025-01-01') & (forecast['ds'] <= '2025-12-31')]
+# Filter forecast data for the year 2024
+forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
 
-# Creating monthly aggregation for 2025
-forecast_2025['YearMonth'] = forecast_2025['ds'].dt.to_period('M')
-monthly_forecast = forecast_2025.groupby('YearMonth').agg(revenue_forecast=('yhat', 'sum')).reset_index()
+# Creating monthly aggregation for 2024
+forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
+monthly_forecast = forecast_2024.groupby('YearMonth').agg(revenue_forecast=('yhat', 'sum')).reset_index()
 monthly_forecast['Cumulative'] = monthly_forecast['revenue_forecast'].cumsum()
 
-# Plotting the monthly forecast for 2025
+# Plotting the monthly forecast for 2024
 col5, col6 = st.columns(2)
 
 with col5:
     fig3, ax = plt.subplots()
     ax.plot(monthly_forecast['YearMonth'].dt.to_timestamp(), monthly_forecast['revenue_forecast'], color='blue', label='Predicted Revenue')
-    ax.fill_between(monthly_forecast['YearMonth'].dt.to_timestamp(), forecast_2025.groupby('YearMonth').agg(yhat_lower=('yhat_lower', 'sum')).reset_index()['yhat_lower'], forecast_2025.groupby('YearMonth').agg(yhat_upper=('yhat_upper', 'sum')).reset_index()['yhat_upper'], color='skyblue', alpha=0.3, label='Uncertainty Interval')
-    ax.set_title('Revenue Forecast for 2025')
+    ax.fill_between(monthly_forecast['YearMonth'].dt.to_timestamp(), forecast_2024.groupby('YearMonth').agg(yhat_lower=('yhat_lower', 'sum')).reset_index()['yhat_lower'], forecast_2024.groupby('YearMonth').agg(yhat_upper=('yhat_upper', 'sum')).reset_index()['yhat_upper'], color='skyblue', alpha=0.3, label='Uncertainty Interval')
+    ax.set_title('Revenue Forecast for 2024')
     ax.set_xlabel('Month')
     ax.set_ylabel('Revenue ($M)')
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
@@ -280,5 +280,5 @@ with col5:
     st.pyplot(fig3)
 
 with col6:
-    st.write("### Revenue Forecast Table for 2025")
+    st.write("### Revenue Forecast Table for 2024")
     st.table(monthly_forecast.rename(columns={'YearMonth': 'Year-Month', 'revenue_forecast': 'Revenue Forecast ($)', 'Cumulative': 'Cumulative Revenue ($)'}))
