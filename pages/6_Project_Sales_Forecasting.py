@@ -252,21 +252,33 @@ if not filtered_df.empty:
 else:
     st.warning("No data available for the selected filters. Please choose different filter options.")
 
-# 3. Revenue Forecast by Week for 2025
-st.subheader("Revenue Forecast by Week for 2025")
+# 3. Revenue Forecast for 2025
+st.subheader("Revenue Forecast for 2025")
 
 # Filter forecast data for the year 2025
 forecast_2025 = forecast[(forecast['ds'] >= '2025-01-01') & (forecast['ds'] <= '2025-12-31')]
 
-# Plotting the weekly forecast for 2025
-fig3, ax = plt.subplots()
-ax.plot(forecast_2025['ds'], forecast_2025['yhat'], color='blue', label='Predicted Revenue')
-ax.fill_between(forecast_2025['ds'], forecast_2025['yhat_lower'], forecast_2025['yhat_upper'], color='skyblue', alpha=0.3, label='Uncertainty Interval')
-ax.set_title('Revenue Forecast by Week for 2025')
-ax.set_xlabel('Month')
-ax.set_ylabel('Revenue ($M)')
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-plt.xticks(rotation=45, fontsize=8)
-ax.set_yticklabels([f'${tick / 1_000_000:.1f}M' for tick in ax.get_yticks()])
+# Creating monthly aggregation for 2025
+forecast_2025['YearMonth'] = forecast_2025['ds'].dt.to_period('M')
+monthly_forecast = forecast_2025.groupby('YearMonth').agg(revenue_forecast=('yhat', 'sum')).reset_index()
+monthly_forecast['Cumulative'] = monthly_forecast['revenue_forecast'].cumsum()
 
-st.pyplot(fig3)
+# Plotting the monthly forecast for 2025
+col5, col6 = st.columns(2)
+
+with col5:
+    fig3, ax = plt.subplots()
+    ax.plot(monthly_forecast['YearMonth'].dt.to_timestamp(), monthly_forecast['revenue_forecast'], color='blue', label='Predicted Revenue')
+    ax.fill_between(monthly_forecast['YearMonth'].dt.to_timestamp(), forecast_2025.groupby('YearMonth').agg(yhat_lower=('yhat_lower', 'sum')).reset_index()['yhat_lower'], forecast_2025.groupby('YearMonth').agg(yhat_upper=('yhat_upper', 'sum')).reset_index()['yhat_upper'], color='skyblue', alpha=0.3, label='Uncertainty Interval')
+    ax.set_title('Revenue Forecast for 2025')
+    ax.set_xlabel('Month')
+    ax.set_ylabel('Revenue ($M)')
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+    plt.xticks(rotation=45, fontsize=8)
+    ax.set_yticklabels([f'${tick / 1_000_000:.1f}M' for tick in ax.get_yticks()])
+
+    st.pyplot(fig3)
+
+with col6:
+    st.write("### Revenue Forecast Table for 2025")
+    st.table(monthly_forecast.rename(columns={'YearMonth': 'Year-Month', 'revenue_forecast': 'Revenue Forecast ($)', 'Cumulative': 'Cumulative Revenue ($)'}))
