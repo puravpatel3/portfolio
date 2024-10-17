@@ -245,14 +245,14 @@ if not filtered_df.empty:
             historical_annual_total = sum(historical_monthly_totals)
             historical_monthly_percentages = [month_total / historical_annual_total for month_total in historical_monthly_totals]
 
-            forecast_2024['YearMonth'] = adjusted_forecast['ds'].dt.to_period('M')
-            forecast_2024['Month'] = adjusted_forecast['ds'].dt.month
+            forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
+            forecast_2024['Month'] = forecast_2024['ds'].dt.month
 
             # Adjust the forecast for each month based on historical percentages
             for month, percentage in enumerate(historical_monthly_percentages, start=1):
                 monthly_data = forecast_2024[forecast_2024['Month'] == month]
                 current_sum = monthly_data['yhat'].sum()
-                target_sum = current_sum * percentage
+                target_sum = historical_annual_total * percentage
                 adjustment_factor = target_sum / current_sum if current_sum != 0 else 1
                 forecast_2024.loc[forecast_2024['Month'] == month, 'yhat'] *= adjustment_factor
 
@@ -288,7 +288,7 @@ else:
 st.subheader("Revenue Forecast for 2024")
 
 # Filter adjusted forecast data for the year 2024
-forecast_2024 = adjusted_forecast[(adjusted_forecast['ds'] >= '2024-01-01') & (adjusted_forecast['ds'] <= '2024-12-31')]
+forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
 
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
@@ -320,4 +320,5 @@ with col5:
 with col6:
     st.write("### Revenue Forecast Table for 2024")
     st.table(monthly_forecast[['YearMonth', 'Month', 'Revenue Forecast ($)', 'Cumulative Revenue ($)']])
+
 
