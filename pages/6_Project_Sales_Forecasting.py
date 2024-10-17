@@ -226,14 +226,17 @@ if not filtered_df.empty:
             # Predicting future sales
             forecast = model.predict(future)
 
-            # Adjust the 2024 forecast to follow the given quarterly percentage distribution
+            # Adjust the 2024 forecast to follow historical quarterly percentage distribution
             forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
-            total_revenue_2024 = forecast_2024['yhat'].sum()
-            quarterly_distribution = [0.12, 0.22, 0.28, 0.37]
+            historical_revenue = region_data[(region_data['ds'] >= '2022-01-01') & (region_data['ds'] <= '2023-12-31')]['y'].sum()
+            expected_growth_factor = 1.2  # Assume a 20% growth compared to historical revenue
+            target_revenue_2024 = historical_revenue * expected_growth_factor
+
+            quarterly_distribution = [0.12, 0.22, 0.28, 0.38]  # Based on historical seasonality
             quarterly_dates = ['2024-03-31', '2024-06-30', '2024-09-30', '2024-12-31']
 
             # Calculate cumulative revenue targets for each quarter
-            cumulative_targets = [total_revenue_2024 * sum(quarterly_distribution[:i+1]) for i in range(len(quarterly_distribution))]
+            cumulative_targets = [target_revenue_2024 * sum(quarterly_distribution[:i+1]) for i in range(len(quarterly_distribution))]
 
             # Adjust monthly forecast to match quarterly targets
             forecast_2024['Quarter'] = pd.cut(forecast_2024['ds'], bins=pd.to_datetime(['2024-01-01'] + quarterly_dates), labels=['Q1', 'Q2', 'Q3', 'Q4'])
