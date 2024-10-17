@@ -226,9 +226,39 @@ if not filtered_df.empty:
             # Predicting future sales
             forecast = model.predict(future)
 
-            # Plotting the forecast
+            # Adjust the 2024 forecast to follow historical monthly percentage distribution
+            historical_monthly_totals = [
+                (8_931_920 + 12_764_298) / 2,  # Jan
+                (8_795_365 + 11_848_580) / 2,  # Feb
+                (19_502_059 + 22_203_814) / 2, # Mar
+                (22_748_867 + 24_115_567) / 2, # Apr
+                (20_608_086 + 32_613_157) / 2, # May
+                (19_604_211 + 28_901_691) / 2, # Jun
+                (19_935_002 + 28_243_030) / 2, # Jul
+                (23_631_362 + 25_162_276) / 2, # Aug
+                (42_218_216 + 51_416_962) / 2, # Sep
+                (23_991_509 + 28_043_756) / 2, # Oct
+                (45_389_290 + 51_590_388) / 2, # Nov
+                (44_984_458 + 54_281_601) / 2  # Dec
+            ]
+
+            historical_annual_total = sum(historical_monthly_totals)
+            historical_monthly_percentages = [month_total / historical_annual_total for month_total in historical_monthly_totals]
+
+            forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
+            forecast_2024['Month'] = forecast_2024['ds'].dt.month
+
+            # Adjust the forecast for each month based on historical percentages
+            for month, percentage in enumerate(historical_monthly_percentages, start=1):
+                monthly_data = forecast_2024[forecast_2024['Month'] == month]
+                current_sum = monthly_data['yhat'].sum()
+                target_sum = current_sum * percentage
+                adjustment_factor = target_sum / current_sum if current_sum != 0 else 1
+                forecast_2024.loc[forecast_2024['Month'] == month, 'yhat'] *= adjustment_factor
+
+            # Plotting the adjusted forecast
             fig2, ax = plt.subplots()
-            model.plot(forecast, ax=ax)
+            model.plot(forecast_2024, ax=ax)
             ax.set_title(f'Revenue Forecast for {region_filter} Region')
 
             # Formatting x-axis and y-axis
@@ -257,8 +287,8 @@ else:
 # 3. Revenue Forecast for 2024
 st.subheader("Revenue Forecast for 2024")
 
-# Filter forecast data for the year 2024
-forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
+# Filter adjusted forecast data for the year 2024
+forecast_2024 = forecast_2024[(forecast_2024['ds'] >= '2024-01-01') & (forecast_2024['ds'] <= '2024-12-31')]
 
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
@@ -290,3 +320,4 @@ with col5:
 with col6:
     st.write("### Revenue Forecast Table for 2024")
     st.table(monthly_forecast[['YearMonth', 'Month', 'Revenue Forecast ($)', 'Cumulative Revenue ($)']])
+
