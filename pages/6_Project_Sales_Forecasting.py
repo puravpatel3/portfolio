@@ -226,9 +226,27 @@ if not filtered_df.empty:
             # Predicting future sales
             forecast = model.predict(future)
 
-            # Plotting the forecast
+            # Adjust the 2024 forecast to follow the given quarterly percentage distribution
+            forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
+            total_revenue_2024 = forecast_2024['yhat'].sum()
+            quarterly_distribution = [0.12, 0.22, 0.28, 0.37]
+            quarterly_dates = ['2024-03-31', '2024-06-30', '2024-09-30', '2024-12-31']
+
+            # Calculate cumulative revenue targets for each quarter
+            cumulative_targets = [total_revenue_2024 * sum(quarterly_distribution[:i+1]) for i in range(len(quarterly_distribution))]
+
+            # Adjust monthly forecast to match quarterly targets
+            forecast_2024['Quarter'] = pd.cut(forecast_2024['ds'], bins=pd.to_datetime(['2024-01-01'] + quarterly_dates), labels=['Q1', 'Q2', 'Q3', 'Q4'])
+            adjusted_forecast = forecast_2024.copy()
+            for i, quarter in enumerate(['Q1', 'Q2', 'Q3', 'Q4']):
+                quarterly_data = adjusted_forecast[adjusted_forecast['Quarter'] == quarter]
+                current_sum = quarterly_data['yhat'].sum()
+                adjustment_factor = cumulative_targets[i] / current_sum if current_sum != 0 else 1
+                adjusted_forecast.loc[adjusted_forecast['Quarter'] == quarter, 'yhat'] *= adjustment_factor
+
+            # Plotting the adjusted forecast
             fig2, ax = plt.subplots()
-            model.plot(forecast, ax=ax)
+            model.plot(adjusted_forecast, ax=ax)
             ax.set_title(f'Revenue Forecast for {region_filter} Region')
 
             # Formatting x-axis and y-axis
@@ -257,8 +275,8 @@ else:
 # 3. Revenue Forecast for 2024
 st.subheader("Revenue Forecast for 2024")
 
-# Filter forecast data for the year 2024
-forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
+# Filter adjusted forecast data for the year 2024
+forecast_2024 = adjusted_forecast[(adjusted_forecast['ds'] >= '2024-01-01') & (adjusted_forecast['ds'] <= '2024-12-31')]
 
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
