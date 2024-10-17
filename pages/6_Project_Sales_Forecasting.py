@@ -214,7 +214,7 @@ if not filtered_df.empty:
         region_data = region_data.rename(columns={'Date': 'ds', 'total_sales': 'y'})
 
         # Initializing and fitting the Prophet model with adjusted parameters
-        model = Prophet(changepoint_prior_scale=0.01, seasonality_prior_scale=5)
+        model = Prophet(changepoint_prior_scale=0.001, seasonality_prior_scale=1)
         model.add_seasonality(name='monthly', period=30.5, fourier_order=3)
         model.add_seasonality(name='quarterly', period=91.25, fourier_order=5)
         try:
