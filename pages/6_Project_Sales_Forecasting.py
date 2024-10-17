@@ -226,6 +226,11 @@ if not filtered_df.empty:
             # Predicting future sales
             forecast = model.predict(future)
 
+            # Applying quarterly weights to adjust the forecast
+            quarterly_weights = {1: 0.12, 2: 0.22, 3: 0.28, 4: 0.37}
+            forecast['quarter'] = forecast['ds'].dt.quarter
+            forecast['weighted_yhat'] = forecast.apply(lambda row: row['yhat'] * quarterly_weights.get(row['quarter'], 1), axis=1)
+
             # Plotting the forecast
             fig2, ax = plt.subplots()
             model.plot(forecast, ax=ax)
@@ -262,31 +267,17 @@ forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '
 
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
-forecast_2024['Month'] = forecast_2024['ds'].dt.strftime('%b')
-monthly_forecast = forecast_2024.groupby('YearMonth').agg(revenue_forecast=('yhat', 'sum')).reset_index()
-monthly_forecast['Month'] = monthly_forecast['YearMonth'].dt.strftime('%b')
+forecast_2024['MonthName'] = forecast_2024['ds'].dt.strftime('%b')
+monthly_forecast = forecast_2024.groupby(['YearMonth', 'MonthName']).agg(revenue_forecast=('weighted_yhat', 'sum')).reset_index()
 monthly_forecast['Cumulative'] = monthly_forecast['revenue_forecast'].cumsum()
 
-# Format the Revenue Forecast and Cumulative columns
-monthly_forecast['Revenue Forecast ($)'] = monthly_forecast['revenue_forecast'].apply(lambda x: f'${int(x):,}')
-monthly_forecast['Cumulative Revenue ($)'] = monthly_forecast['Cumulative'].apply(lambda x: f'${int(x):,}')
+# Format values in the table
+monthly_forecast['revenue_forecast'] = monthly_forecast['revenue_forecast'].apply(lambda x: f'${x:,.0f}')
+monthly_forecast['Cumulative'] = monthly_forecast['Cumulative'].apply(lambda x: f'${x:,.0f}')
 
 # Plotting the monthly forecast for 2024
 col5, col6 = st.columns(2)
 
 with col5:
     fig3, ax = plt.subplots()
-    ax.plot(monthly_forecast['YearMonth'].dt.to_timestamp(), monthly_forecast['revenue_forecast'], color='blue', label='Predicted Revenue')
-    ax.fill_between(monthly_forecast['YearMonth'].dt.to_timestamp(), forecast_2024.groupby('YearMonth').agg(yhat_lower=('yhat_lower', 'sum')).reset_index()['yhat_lower'], forecast_2024.groupby('YearMonth').agg(yhat_upper=('yhat_upper', 'sum')).reset_index()['yhat_upper'], color='skyblue', alpha=0.3, label='Uncertainty Interval')
-    ax.set_title('Revenue Forecast for 2024')
-    ax.set_xlabel('Month')
-    ax.set_ylabel('Revenue ($M)')
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-    plt.xticks(rotation=45, fontsize=8)
-    ax.set_yticklabels([f'${tick / 1_000_000:.1f}M' for tick in ax.get_yticks()])
-
-    st.pyplot(fig3)
-
-with col6:
-    st.write("### Revenue Forecast Table for 2024")
-    st.table(monthly_forecast[['YearMonth', 'Month', 'Revenue Forecast ($)', 'Cumulative Revenue ($)']])
+    ax.plot(monthly_forecast['YearMonth'].dt.to_timestamp(), forecast_2024.groupby('YearMonth').agg(revenue_forecast=('weighted_yhat', 'sum')).reset_index()['revenue_forecast'], color='blue', label='Predicted Revenue')
