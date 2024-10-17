@@ -152,7 +152,7 @@ with col4:
     plt.xticks(rotation=45, ha='right', wrap=True, fontsize=8)
     st.pyplot(fig)
 
-# Clean the column names by stripping whitespace
+# Clean the column names
 filtered_df.columns = filtered_df.columns.str.strip()
 
 # Advanced Analytics Section
@@ -214,7 +214,9 @@ if not filtered_df.empty:
         region_data = region_data.rename(columns={'Date': 'ds', 'total_sales': 'y'})
 
         # Initializing and fitting the Prophet model
-        model = Prophet()
+        model = Prophet(changepoint_prior_scale=0.05)
+        model.add_seasonality(name='monthly', period=30.5, fourier_order=5)
+        model.add_seasonality(name='quarterly', period=91.25, fourier_order=7)
         try:
             model.fit(region_data)
 
@@ -260,8 +262,14 @@ forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '
 
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
+forecast_2024['Month'] = forecast_2024['ds'].dt.strftime('%b')
 monthly_forecast = forecast_2024.groupby('YearMonth').agg(revenue_forecast=('yhat', 'sum')).reset_index()
+monthly_forecast['Month'] = monthly_forecast['YearMonth'].dt.strftime('%b')
 monthly_forecast['Cumulative'] = monthly_forecast['revenue_forecast'].cumsum()
+
+# Format the Revenue Forecast and Cumulative columns
+monthly_forecast['Revenue Forecast ($)'] = monthly_forecast['revenue_forecast'].apply(lambda x: f'${int(x):,}')
+monthly_forecast['Cumulative Revenue ($)'] = monthly_forecast['Cumulative'].apply(lambda x: f'${int(x):,}')
 
 # Plotting the monthly forecast for 2024
 col5, col6 = st.columns(2)
@@ -281,4 +289,4 @@ with col5:
 
 with col6:
     st.write("### Revenue Forecast Table for 2024")
-    st.table(monthly_forecast.rename(columns={'YearMonth': 'Year-Month', 'revenue_forecast': 'Revenue Forecast ($)', 'Cumulative': 'Cumulative Revenue ($)'}))
+    st.table(monthly_forecast[['YearMonth', 'Month', 'Revenue Forecast ($)', 'Cumulative Revenue ($)']])
