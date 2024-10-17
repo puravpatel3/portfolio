@@ -226,6 +226,9 @@ if not filtered_df.empty:
             # Predicting future sales
             forecast = model.predict(future)
 
+            # Filter adjusted forecast data for the year 2024
+            forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
+
             # Adjust the 2024 forecast to follow historical monthly percentage distribution
             historical_monthly_totals = [
                 (8_931_920 + 12_764_298) / 2,  # Jan
@@ -287,9 +290,6 @@ else:
 # 3. Revenue Forecast for 2024
 st.subheader("Revenue Forecast for 2024")
 
-# Filter adjusted forecast data for the year 2024
-forecast_2024 = forecast[(forecast['ds'] >= '2024-01-01') & (forecast['ds'] <= '2024-12-31')]
-
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
 forecast_2024['Month'] = forecast_2024['ds'].dt.strftime('%b')
@@ -320,5 +320,3 @@ with col5:
 with col6:
     st.write("### Revenue Forecast Table for 2024")
     st.table(monthly_forecast[['YearMonth', 'Month', 'Revenue Forecast ($)', 'Cumulative Revenue ($)']])
-
-
