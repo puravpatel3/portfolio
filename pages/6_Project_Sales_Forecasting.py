@@ -215,8 +215,8 @@ if not filtered_df.empty:
 
         # Initializing and fitting the Prophet model with adjusted parameters
         model = Prophet(changepoint_prior_scale=0.001, seasonality_prior_scale=1)
-        model.add_seasonality(name='monthly', period=30.5, fourier_order=1)
-        model.add_seasonality(name='quarterly', period=91.25, fourier_order=1)
+        model.add_seasonality(name='monthly', period=30.5, fourier_order=8)
+        model.add_seasonality(name='quarterly', period=91.25, fourier_order=10)
         try:
             model.fit(region_data)
 
