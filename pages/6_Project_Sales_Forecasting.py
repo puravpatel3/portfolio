@@ -245,8 +245,8 @@ if not filtered_df.empty:
             historical_annual_total = sum(historical_monthly_totals)
             historical_monthly_percentages = [month_total / historical_annual_total for month_total in historical_monthly_totals]
 
-            forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
-            forecast_2024['Month'] = forecast_2024['ds'].dt.month
+            forecast_2024['YearMonth'] = adjusted_forecast['ds'].dt.to_period('M')
+            forecast_2024['Month'] = adjusted_forecast['ds'].dt.month
 
             # Adjust the forecast for each month based on historical percentages
             for month, percentage in enumerate(historical_monthly_percentages, start=1):
@@ -288,7 +288,7 @@ else:
 st.subheader("Revenue Forecast for 2024")
 
 # Filter adjusted forecast data for the year 2024
-forecast_2024 = forecast_2024[(forecast_2024['ds'] >= '2024-01-01') & (forecast_2024['ds'] <= '2024-12-31')]
+forecast_2024 = adjusted_forecast[(adjusted_forecast['ds'] >= '2024-01-01') & (adjusted_forecast['ds'] <= '2024-12-31')]
 
 # Creating monthly aggregation for 2024
 forecast_2024['YearMonth'] = forecast_2024['ds'].dt.to_period('M')
