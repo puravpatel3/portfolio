@@ -33,39 +33,48 @@ st.write("""
 st.header("Project Steps")
 with st.expander("Step 1: Perform Exploratory Data Analysis (EDA)"):
     st.write("Exploratory Data Analysis was performed to understand the distribution and relationships between features.")
-    st.image('https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_age_weight_cardio.png', caption='EDA Visualization')
+    
 
 with st.expander("Step 2: Prepare the Data for Unsupervised Learning"):
     st.write("Data preparation involved filtering outliers and engineering features to make the dataset ready for clustering.")
-    st.markdown("**Binning Age and Weight**: Used K-means to create bins for age and weight.")
-    st.markdown("**Binning Categorical Variables**: Categorical variables such as blood pressure, cholesterol, and glucose were also grouped.")
-    st.image('https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_blood_pressure_cardio.png', caption='Data Preparation Visualization')
+    st.markdown("**Binning Age and Weight**: K-means binning was used to create bins for age and weight, allowing us to group continuous variables into meaningful segments. This helps in simplifying the clustering process and makes it easier to identify patterns.")
+    st.markdown("**Binning Categorical Variables**: Categorical variables such as blood pressure, cholesterol, and glucose were grouped into categories like 'Normal', 'Above Normal', and 'Well Above Normal'. This binning helps capture the different health levels of patients in a structured way, making it easier for clustering algorithms to differentiate between varying risk levels.")
+    
 
 with st.expander("Step 3: Correlation Analysis"):
     st.write("A correlation analysis was conducted to understand which features were most related to cardiovascular disease.")
-    st.image('https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_blood_pressure_cardio_disease.png', caption='Correlation Heatmap')
+    
     st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease.")
 
 with st.expander("Step 4: Unsupervised Learning - Clustering"):
     st.write("K-means clustering was used to group patients based on their cardiovascular-related features.")
     st.markdown("We identified four distinct clusters, each representing patients with different risk levels.")
-    st.image('https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_cardio_disease.png', caption='Clustering Visualization')
+    
 
 # Key Takeaways
 st.header("Key Takeaways")
 
 st.subheader("Correlation Analysis")
 st.write("The following features showed the highest correlation with cardiovascular disease:")
-# Placeholder for correlation table
 correlation_data = pd.DataFrame({
-    'Feature': ['Age', 'Systolic Blood Pressure', 'Cholesterol'],
-    'Correlation with Cardio': [0.68, 0.54, 0.49]
+    'Variable': ['age_years', 'height', 'weight', 'ap_hi', 'ap_lo', 'gender', 'smoke', 'alco', 'active', 'cholesterol', 'gluc'],
+    'Correlation': [0.239164, -0.011358, 0.179144, 0.427449, 0.337459, 0.006763, -0.016299, -0.008289, -0.037419, 0.221265, 0.091994],
+    'P-value': ['0.000000e+00', '2.921999e-03', '0.000000e+00', '0.000000e+00', '0.000000e+00', '7.641558e-02', '1.951802e-05', '2.988575e-02', '1.054363e-22', '0.000000e+00', '7.233263e-127']
 })
-st.table(correlation_data)
+
+# Bold the highest correlated rows
+def highlight_high_corr(s):
+    if s['Variable'] in ['age_years', 'weight', 'ap_hi', 'ap_lo', 'cholesterol', 'gluc']:
+        return ['font-weight: bold'] * len(s)
+    else:
+        return [''] * len(s)
+
+styled_correlation_data = correlation_data.style.apply(highlight_high_corr, axis=1)
+st.write(styled_correlation_data)
 
 st.subheader("Unsupervised Learning Insights")
 st.write("Scatter plots of clusters provide insights into the characteristics of each group.")
-st.image('https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_no_cardio_disease.png', caption='Scatter Plot of Clusters')
+
 
 st.write("**Cluster Definitions**:")
 st.markdown("""
@@ -84,4 +93,4 @@ Based on the clustering results, healthcare providers can:
 """)
 
 # Placeholder for more visualizations or detailed analysis
-st.image('https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_cardio_disease.png', caption='Further Analysis Placeholder')
+
