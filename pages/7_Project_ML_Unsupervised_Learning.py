@@ -101,16 +101,18 @@ st.markdown("""
 - **Cluster 3**: Mixed-age group with varying levels of cholesterol and blood pressure, but generally high cardiovascular disease prevalence.
 """)
 
-with st.expander("Step 1: Perform Exploratory Data Analysis (EDA)"):
-    st.write("•	Cardio Distribution: Approximately 62% of Cluster 0 has cardiovascular disease (cardio = 1), making it a cluster with a relatively higher presence of cardiovascular disease.
-•	Age: Majority of individuals fall in the age ranges of 50-64 years, with a slight skew toward older individuals (55.02 to 64.97 years).
-•	Weight: Individuals are spread across different weight categories, with the largest representation in the 65-76 kg range. There is also a significant number in the 76-88 kg range, especially among those with cardiovascular disease.
-•	Systolic Blood Pressure: Most individuals fall under the "Normal" systolic blood pressure category (90-120 mmHg), while there are also a considerable number in the "High" range, particularly those with cardiovascular disease.
-•	Diastolic Blood Pressure: The majority of individuals in this cluster have "Normal" diastolic blood pressure (60-80 mmHg). There are also a significant number with "High" diastolic blood pressure.
-•	Cholesterol: Most people have normal cholesterol levels, with a significant proportion also falling into the above-normal or well-above-normal categories.
-•	Glucose: Glucose levels are mixed, with a substantial number in the "well above normal" category (cardio = 1).
-Summary: Cluster 0 is characterized by individuals mostly in their late 50s to early 60s, with a significant proportion having cardiovascular disease. Blood pressure tends to be in the normal range, but a considerable number have high systolic and diastolic pressure. Cholesterol and glucose levels vary, with a noticeable number having elevated values."
-)
+st.write("**Cluster 0**:")
+st.markdown("""
+- **Cardio Distribution**: Approximately 62% of Cluster 0 has cardiovascular disease (cardio = 1), making it a cluster with a relatively higher presence of cardiovascular disease.
+- **Age**: Majority of individuals fall in the age ranges of 50-64 years, with a slight skew toward older individuals (55.02 to 64.97 years).
+- **Weight**: Individuals are spread across different weight categories, with the largest representation in the 65-76 kg range. There is also a significant number in the 76-88 kg range, especially among those with cardiovascular disease.
+- **Systolic Blood Pressure**: Most individuals fall under the "Normal" systolic blood pressure category (90-120 mmHg), while there are also a considerable number in the "High" range, particularly those with cardiovascular disease.
+- **Diastolic Blood Pressure**: The majority of individuals in this cluster have "Normal" diastolic blood pressure (60-80 mmHg). There are also a significant number with "High" diastolic blood pressure.
+- **Cholesterol**: Most people have normal cholesterol levels, with a significant proportion also falling into the above-normal or well-above-normal categories.
+- **Glucose**: Glucose levels are mixed, with a substantial number in the "well above normal" category (cardio = 1).
+
+**Cluster 0 Summary** is characterized by individuals mostly in their late 50s to early 60s, with a significant proportion having cardiovascular disease. Blood pressure tends to be in the normal range, but a considerable number have high systolic and diastolic pressure. Cholesterol and glucose levels vary, with a noticeable number having elevated values.
+""")
 
 # Next Steps
 st.header("Next Steps")
