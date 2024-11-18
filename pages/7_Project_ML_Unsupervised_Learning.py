@@ -154,7 +154,7 @@ st.markdown("""
 """)
 
 # Connect to and read CSV file from Github
-url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cardio_data_clean_bins_kmeans.csv'
+url = 'https://github.com/puravpatel3/portfolio/blob/128c49aa83fb82e0d7fc7d720a20a2016480626f/files/cardio_data_cluster_kmeans.csv'
 df = pd.read_csv(url)
 
 # Create a scatter plot
