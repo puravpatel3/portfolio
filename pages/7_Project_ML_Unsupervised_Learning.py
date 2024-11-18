@@ -49,16 +49,11 @@ with st.expander("Step 2: Prepare the Data for Unsupervised Learning"):
 with st.expander("Step 3: Correlation Analysis"):
     st.write("Correlation analysis identifies which features are most strongly related to cardiovascular disease. Pearson's correlation coefficient was used to determine the strength and direction of relationships between different variables and cardiovascular disease. Understanding these relationships helps in determining which factors may contribute to the onset of cardiovascular issues and in prioritizing those for further analysis or intervention.")
     st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease, highlighting the significance of these features in predicting cardiovascular risks.")
-    st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease, highlighting the significance of these features in predicting cardiovascular risks.")
-    
-    st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease.")
 
 with st.expander("Step 4: Unsupervised Learning - Clustering"):
     st.write("Unsupervised learning methods, such as K-means clustering, are used to identify natural groupings within the data. In this project, the K-means algorithm was used to develop four clusters of patients. K-means works by assigning data points to clusters such that the sum of squared distances between the data points and the cluster centroids is minimized. Clustering patients provides insights into different patient profiles and determines which groups are at higher risk for cardiovascular disease, allowing for targeted healthcare interventions and personalized treatment plans.")
     st.markdown("Four distinct clusters were identified, each representing patients with different risk levels and health characteristics.")
-    st.markdown("We identified four distinct clusters, each representing patients with different risk levels and health characteristics.")
-    st.markdown("We identified four distinct clusters, each representing patients with different risk levels.")
-    
+   
 
 # Key Takeaways
 st.header("Key Takeaways")
