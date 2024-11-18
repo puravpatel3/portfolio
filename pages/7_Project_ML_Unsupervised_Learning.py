@@ -3,8 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cardio_data_clean_bins_kmeans.csv')
-
 # Title Section: Cardiovascular Disease Clustering
 st.title("Cardiovascular Disease Clustering")
 
