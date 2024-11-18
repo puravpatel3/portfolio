@@ -18,6 +18,11 @@ st.markdown("Download Comprehensive Exploratory Data Analysis Report generated u
 st.header("Use Case")
 st.write("""
 This project is crucial in the healthcare industry for identifying patient groups at high risk for cardiovascular disease. The insights gained can help healthcare professionals create targeted treatment plans, preventive strategies, and effective interventions to mitigate risks.
+
+Unsupervised learning techniques, such as clustering, can also be used to solve a wide range of business problems, including:
+- **Customer Segmentation**: Clustering customers together based on purchasing behavior to design better marketing strategies.
+- **Operational Insights**: Finding patterns in operational data to focus on specific problem areas and gain new insights for improving processes and efficiency.
+These methods allow businesses and healthcare providers to better understand underlying patterns in the data and make informed, strategic decisions.
 """)
 
 # Key Technologies Used
@@ -32,7 +37,7 @@ st.write("""
 # Project Steps
 st.header("Project Steps")
 with st.expander("Step 1: Perform Exploratory Data Analysis (EDA)"):
-    st.write("Exploratory Data Analysis was performed to understand the distribution and relationships between features.")
+    st.write("Exploratory Data Analysis is essential to understanding the initial characteristics of the dataset, identifying trends, and detecting anomalies or outliers. It helps build a foundation for further analysis by ensuring that data quality issues are addressed early.")
     
 
 with st.expander("Step 2: Prepare the Data for Unsupervised Learning"):
@@ -42,12 +47,12 @@ with st.expander("Step 2: Prepare the Data for Unsupervised Learning"):
     
 
 with st.expander("Step 3: Correlation Analysis"):
-    st.write("A correlation analysis was conducted to understand which features were most related to cardiovascular disease.")
+    st.write("Correlation analysis helps identify which features are most strongly related to cardiovascular disease. By understanding these relationships, we can determine which factors may contribute to the onset of cardiovascular issues and prioritize those for further analysis or intervention.")
     
     st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease.")
 
 with st.expander("Step 4: Unsupervised Learning - Clustering"):
-    st.write("K-means clustering was used to group patients based on their cardiovascular-related features.")
+    st.write("Unsupervised learning methods, such as K-means clustering, are used to identify natural groupings within the data. By clustering patients, we can gain insights into different patient profiles and determine which groups are at higher risk for cardiovascular disease. This allows for targeted healthcare interventions.")
     st.markdown("We identified four distinct clusters, each representing patients with different risk levels.")
     
 
@@ -59,7 +64,20 @@ st.write("The following features showed the highest correlation with cardiovascu
 correlation_data = pd.DataFrame({
     'Variable': ['age_years', 'height', 'weight', 'ap_hi', 'ap_lo', 'gender', 'smoke', 'alco', 'active', 'cholesterol', 'gluc'],
     'Correlation': [0.239164, -0.011358, 0.179144, 0.427449, 0.337459, 0.006763, -0.016299, -0.008289, -0.037419, 0.221265, 0.091994],
-    'P-value': ['0.000000e+00', '2.921999e-03', '0.000000e+00', '0.000000e+00', '0.000000e+00', '7.641558e-02', '1.951802e-05', '2.988575e-02', '1.054363e-22', '0.000000e+00', '7.233263e-127']
+    'P-value': ['0.000000e+00', '2.921999e-03', '0.000000e+00', '0.000000e+00', '0.000000e+00', '7.641558e-02', '1.951802e-05', '2.988575e-02', '1.054363e-22', '0.000000e+00', '7.233263e-127'],
+    'Explanation': [
+        'age_years has a moderate positive correlation with cardiovascular disease, which is statistically significant.',
+        'height has a very weak negative correlation, and the p-value indicates it is statistically significant.',
+        'weight has a moderate positive correlation with cardiovascular disease, which is statistically significant.',
+        'ap_hi (systolic blood pressure) has a strong positive correlation with cardiovascular disease, indicating its importance.',
+        'ap_lo (diastolic blood pressure) has a moderate positive correlation, also significant for cardiovascular health.',
+        'gender shows a very weak correlation, which is not statistically significant at conventional levels.',
+        'smoke has a very weak negative correlation, but it is statistically significant.',
+        'alco shows a very weak negative correlation, which is statistically significant.',
+        'active has a weak negative correlation, suggesting physically active individuals are at slightly lower risk.',
+        'cholesterol has a moderate positive correlation with cardiovascular disease, indicating it is a significant factor.',
+        'gluc has a weak positive correlation, suggesting that elevated glucose levels are linked to cardiovascular disease.'
+    ]
 })
 
 # Bold the highest correlated rows
@@ -78,6 +96,53 @@ st.write("Scatter plots of clusters provide insights into the characteristics of
 
 st.write("**Cluster Definitions**:")
 st.markdown("""
+- **Cluster 0**: Primarily younger individuals with lower blood pressure and cholesterol levels. Low cardiovascular disease prevalence.
+- **Cluster 1**: Middle-aged individuals with normal cholesterol but elevated blood pressure. Moderate cardiovascular disease prevalence.
+- **Cluster 2**: Older individuals with high cholesterol and high blood pressure. High cardiovascular disease prevalence.
+- **Cluster 3**: Mixed-age group with varying levels of cholesterol and blood pressure, but generally high cardiovascular disease prevalence.
+""")
+
+# Detailed Cluster Analysis
+with st.expander("Cluster 0 Analysis"):
+    st.write("""
+    - **Cardio Distribution**: Approximately 62% of Cluster 0 has cardiovascular disease (cardio = 1), making it a cluster with a relatively higher presence of cardiovascular disease.
+    - **Age**: Majority of individuals fall in the age ranges of 50-64 years, with a slight skew toward older individuals (55.02 to 64.97 years).
+    - **Weight**: Individuals are spread across different weight categories, with the largest representation in the 65-76 kg range. There is also a significant number in the 76-88 kg range, especially among those with cardiovascular disease.
+    - **Systolic Blood Pressure**: Most individuals fall under the "Normal" systolic blood pressure category (90-120 mmHg), while there are also a considerable number in the "High" range, particularly those with cardiovascular disease.
+    - **Diastolic Blood Pressure**: The majority of individuals in this cluster have "Normal" diastolic blood pressure (60-80 mmHg). There are also a significant number with "High" diastolic blood pressure.
+    - **Cholesterol**: Most people have normal cholesterol levels, with a significant proportion also falling into the above-normal or well-above-normal categories.
+    - **Glucose**: Glucose levels are mixed, with a substantial number in the "well above normal" category (cardio = 1).
+    - **Summary**: Cluster 0 is characterized by individuals mostly in their late 50s to early 60s, with a significant proportion having cardiovascular disease. Blood pressure tends to be in the normal range, but a considerable number have high systolic and diastolic pressure. Cholesterol and glucose levels vary, with a noticeable number having elevated values.
+    """)
+
+with st.expander("Cluster 1 Analysis"):
+    st.write("""
+    - **Cardio Distribution**: Cluster 1 has the lowest percentage of individuals with cardiovascular disease, with only about 24% (cardio = 1).
+    - **Age**: Most individuals in this cluster are between the ages of 39-50 years, making this the youngest cluster.
+    - **Weight**: The majority fall into the 50-76 kg range, making it the cluster with generally lower weight compared to others.
+    - **Systolic Blood Pressure**: The majority fall under the "Normal" category, with very few individuals classified in other categories.
+    - **Diastolic Blood Pressure**: Most individuals have "Normal" diastolic blood pressure, with few in the "High" or "Very High" categories.
+    - **Cholesterol**: Most people have normal cholesterol levels.
+    - **Glucose**: Almost all individuals in this cluster have normal glucose levels.
+    - **Summary**: Cluster 1 is the healthiest cluster, consisting mainly of younger individuals (39-50 years), with normal systolic and diastolic blood pressure, cholesterol, and glucose levels. This cluster also has the lowest prevalence of cardiovascular disease.
+    """)
+
+with st.expander("Cluster 2 Analysis"):
+    st.write("""
+    - **Cardio Distribution**: Cluster 2 has the highest percentage of individuals with cardiovascular disease, with approximately 82% of individuals being cardio = 1.
+    - **Age**: Most individuals in this cluster are in the age ranges of 55-65 years.
+    - **Weight**: There is a mix of weights, with a significant representation across all weight ranges, particularly in the 65-88 kg category.
+    - **Systolic Blood Pressure**: This cluster has a significant presence of individuals with "High" and "Very High" systolic blood pressure, especially among those with cardiovascular disease.
+    - **Diastolic Blood Pressure**: There is a notable prevalence of individuals with "High" diastolic blood pressure.
+    - **Cholesterol**: Elevated cholesterol levels are common, with many individuals in the "well above normal" category.
+    - **Glucose**: Many individuals have elevated glucose levels, particularly among those with cardiovascular disease.
+    - **Summary**: Cluster 2 primarily represents individuals with cardiovascular disease. It includes older individuals (55-65 years) with predominantly high systolic and diastolic blood pressure, and many have elevated cholesterol and glucose levels.
+    """)
+
+with st.expander("Cluster 3 Analysis"):
+    st.write("""
+    - **Cardio Distribution**: Approximately 45% of individuals in Cluster 3 have cardiovascular disease, indicating a somewhat balanced mix of health statuses.
+    - **Age**: The majority of individuals are in the 50-64 age range,st.markdown("""
 - **Cluster 0**: Primarily younger individuals with lower blood pressure and cholesterol levels. Low cardiovascular disease prevalence.
 - **Cluster 1**: Middle-aged individuals with normal cholesterol but elevated blood pressure. Moderate cardiovascular disease prevalence.
 - **Cluster 2**: Older individuals with high cholesterol and high blood pressure. High cardiovascular disease prevalence.
