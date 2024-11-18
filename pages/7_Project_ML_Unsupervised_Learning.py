@@ -153,6 +153,19 @@ st.markdown("""
 **Cluster 3 Summary**: Cluster 3 is a mixed group, primarily consisting of individuals aged 50-64 years, with both cardiovascular and non-cardiovascular disease cases. Blood pressure tends to be in the normal range, but there are elevated values in those with cardiovascular disease, and cholesterol and glucose levels also show variation.
 """)
 
+# Connect to and read CSV file from Github
+url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cardio_data_clean_bins_kmeans.csv'
+df = pd.read_csv(url)
+
+# Create a scatter plot
+st.subheader("Scatter Plot of Clustering")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(data=df[df['cardio'] == 0], x='age_years', y='weight', hue='cluster', palette='viridis', alpha=0.6, ax=ax)
+plt.title('Clustering of Patients Without Cardiovascular Disease (cardio = 0)')
+plt.xlabel('Age (years)')
+plt.ylabel('Weight (kg)')
+st.pyplot(fig)
+
 # Next Steps
 st.header("Next Steps")
 st.write("""
