@@ -37,22 +37,26 @@ st.write("""
 # Project Steps
 st.header("Project Steps")
 with st.expander("Step 1: Perform Exploratory Data Analysis (EDA)"):
-    st.write("Exploratory Data Analysis is essential to understanding the initial characteristics of the dataset, identifying trends, and detecting anomalies or outliers. It helps build a foundation for further analysis by ensuring that data quality issues are addressed early.")
+    st.write("Exploratory Data Analysis (EDA) is essential to understanding the dataset's characteristics, including identifying trends, distributions, and outliers. It is the first step in any data science project to ensure data quality, highlight anomalies, and provide insights into which features are relevant. This builds a foundation for further analysis by addressing data quality issues early and understanding data patterns.")
     
 
 with st.expander("Step 2: Prepare the Data for Unsupervised Learning"):
-    st.write("Data preparation involved filtering outliers and engineering features to make the dataset ready for clustering.")
-    st.markdown("**Binning Age and Weight**: K-means binning was used to create bins for age and weight, allowing us to group continuous variables into meaningful segments. This helps in simplifying the clustering process and makes it easier to identify patterns.")
-    st.markdown("**Binning Categorical Variables**: Categorical variables such as blood pressure, cholesterol, and glucose were grouped into categories like 'Normal', 'Above Normal', and 'Well Above Normal'. This binning helps capture the different health levels of patients in a structured way, making it easier for clustering algorithms to differentiate between varying risk levels.")
+    st.write("Data preparation involved filtering outliers and engineering features to make the dataset ready for clustering. Proper data preparation ensures that the clustering results are meaningful and accurate.")
+    st.markdown("**Binning Age and Weight**: K-means binning was used to create bins for age and weight, allowing for grouping continuous variables into meaningful segments. This simplifies the clustering process and makes it easier to identify patterns in patient demographics.")
+    st.markdown("**Binning Categorical Variables**: Categorical variables such as blood pressure, cholesterol, and glucose were grouped into categories like 'Normal', 'Above Normal', and 'Well Above Normal'. This binning captures the different health levels of patients in a structured way, making it easier for clustering algorithms to differentiate between varying risk levels.")
     
 
 with st.expander("Step 3: Correlation Analysis"):
-    st.write("Correlation analysis helps identify which features are most strongly related to cardiovascular disease. By understanding these relationships, we can determine which factors may contribute to the onset of cardiovascular issues and prioritize those for further analysis or intervention.")
+    st.write("Correlation analysis identifies which features are most strongly related to cardiovascular disease. Pearson's correlation coefficient was used to determine the strength and direction of relationships between different variables and cardiovascular disease. Understanding these relationships helps in determining which factors may contribute to the onset of cardiovascular issues and in prioritizing those for further analysis or intervention.")
+    st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease, highlighting the significance of these features in predicting cardiovascular risks.")
+    st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease, highlighting the significance of these features in predicting cardiovascular risks.")
     
     st.markdown("**Key Insights**: Age, systolic blood pressure, and cholesterol levels showed the highest correlation with cardiovascular disease.")
 
 with st.expander("Step 4: Unsupervised Learning - Clustering"):
-    st.write("Unsupervised learning methods, such as K-means clustering, are used to identify natural groupings within the data. By clustering patients, we can gain insights into different patient profiles and determine which groups are at higher risk for cardiovascular disease. This allows for targeted healthcare interventions.")
+    st.write("Unsupervised learning methods, such as K-means clustering, are used to identify natural groupings within the data. In this project, the K-means algorithm was used to develop four clusters of patients. K-means works by assigning data points to clusters such that the sum of squared distances between the data points and the cluster centroids is minimized. Clustering patients provides insights into different patient profiles and determines which groups are at higher risk for cardiovascular disease, allowing for targeted healthcare interventions and personalized treatment plans.")
+    st.markdown("Four distinct clusters were identified, each representing patients with different risk levels and health characteristics.")
+    st.markdown("We identified four distinct clusters, each representing patients with different risk levels and health characteristics.")
     st.markdown("We identified four distinct clusters, each representing patients with different risk levels.")
     
 
