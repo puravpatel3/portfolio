@@ -265,12 +265,24 @@ with col6:
     - Blood pressure serves as a critical feature for identifying high-risk patients. The clustering pattern justifies its inclusion as a primary variable in further analyses, such as clustering algorithms or predictive models.
     """)
 
-# Placeholder for more visualizations or detailed analysis
 
 # Next Steps
 st.header("Next Steps")
 st.write("""
-Based on the clustering results, healthcare providers can:
-- **Identify High-Risk Patients**: Use the clustering information to identify patients at high risk for cardiovascular disease.
-- **Develop Targeted Interventions**: Create personalized treatment and preventive plans for each cluster.
+Based on the clustering results, healthcare providers can take the following actionable steps:
+
+1. **Identify High-Risk Patients**: Leverage the clustering information to pinpoint patients who are at a significantly higher risk for cardiovascular disease. 
+   This segmentation allows for more precise monitoring and prioritization of resources.
+
+2. **Develop Targeted Interventions**: Design personalized treatment plans, lifestyle recommendations, and preventive strategies tailored to the unique characteristics of each cluster. 
+   This ensures that healthcare interventions are both effective and efficient.
+
+3. **Optimize Resource Allocation**: Use cluster insights to allocate healthcare resources, such as medical staff, diagnostic tools, and educational programs, more effectively 
+   toward high-risk groups.
+
+4. **Monitor and Evaluate**: Continuously monitor the health outcomes of each cluster to assess the effectiveness of implemented interventions. Use this feedback to refine 
+   clustering models and improve patient care strategies.
+
+5. **Expand to Other Use Cases**: Apply a similar clustering methodology to other healthcare datasets, such as those related to diabetes or hypertension, to identify additional 
+   risk factors and patterns that could benefit from data-driven segmentation.
 """)
