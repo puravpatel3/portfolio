@@ -101,6 +101,15 @@ st.markdown("""
 - **Cluster 3**: Mixed-age group with varying levels of cholesterol and blood pressure, but generally high cardiovascular disease prevalence.
 """)
 
+# Patients Scatterplot by Cardiovascular Disease
+col1, col2 = st.columns(2)
+
+with col1:
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_no_cardio_disease.png', caption='Cluster of Patients by Age & Weight without Cardiovascular Disease', use_column_width=True)
+
+with col2:
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_cardio_disease.png', caption='Cluster of Patients by Age & Weight with Cardiovascular Disease', use_column_width=True)
+
 with st.expander("Cluster 0 Definition"):
     st.markdown("""
     - **Cardio Distribution**: Approximately 62% of Cluster 0 has cardiovascular disease (cardio = 1), making it a cluster with a relatively higher presence of cardiovascular disease.
@@ -152,15 +161,6 @@ with st.expander("Cluster 3 Definition"):
 
     **Cluster 3 Summary**: Cluster 3 is a mixed group, primarily consisting of individuals aged 50-64 years, with both cardiovascular and non-cardiovascular disease cases. Blood pressure tends to be in the normal range, but there are elevated values in those with cardiovascular disease, and cholesterol and glucose levels also show variation.
     """)
-
-# Adding Pictures Side by Side
-col1, col2 = st.columns(2)
-
-with col1:
-    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_no_cardio_disease.png', caption='Cluster of Patients by Age & Weight without Cardiovascular Disease', use_column_width=True)
-
-with col2:
-    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_cardio_disease.png', caption='Cluster of Patients by Age & Weight with Cardiovascular Disease', use_column_width=True)
 
 # Placeholder for more visualizations or detailed analysis
 
