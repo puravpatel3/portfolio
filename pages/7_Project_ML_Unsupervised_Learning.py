@@ -117,15 +117,8 @@ correlation_data = pd.DataFrame({
     ]
 })
 
-# Bold the highest correlated rows
-def highlight_high_corr(s):
-    if s['Variable'] in ['age_years', 'weight', 'ap_hi', 'ap_lo', 'cholesterol', 'gluc']:
-        return ['font-weight: bold'] * len(s)
-    else:
-        return [''] * len(s)
-
-styled_correlation_data = correlation_data.style.apply(highlight_high_corr, axis=1)
-st.write(styled_correlation_data)
+# Displaying full dataframe without scroll and with expanded column widths
+st.dataframe(correlation_data, width=1500, height=600)
 
 st.subheader("Unsupervised Learning Insights")
 st.write("Scatter plots of clusters provide insights into the characteristics of each group.")
@@ -209,6 +202,46 @@ with col3:
 with col4:
     st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_blood_pressure_cardio.png', caption='Scatter Plot by Blood Pressure with Cardiovascular Disease', use_column_width=True)
 
+# Adding Insights Below the Images
+col5, col6 = st.columns(2)
+
+with col5:
+    st.write("**Age vs. Weight and Cardiovascular Disease (Scatter Plot 1):**")
+    st.markdown("""
+    The scatter plot illustrates the relationship between patient age (x-axis) and weight (y-axis), also color-coded by cardiovascular disease presence. Key insights include:
+
+    **Distribution Across Ages**:
+    - Patients with cardiovascular disease (red points) appear consistently distributed across the age range but show increased density in higher weight categories.
+    - This suggests that while age alone may not be the strongest differentiator, higher weight combined with age increases cardiovascular disease risk.
+
+    **Weight as a Risk Factor**:
+    - Blue points (no disease) are more evenly distributed across lower and moderate weight ranges, with fewer appearing in the higher weight bands.
+    - This reinforces weight as a significant factor for cardiovascular disease, especially when considered alongside other risk features like blood pressure.
+
+    **No Clear Age Threshold**:
+    - Unlike blood pressure, no definitive threshold for age seems to differentiate patients with and without cardiovascular disease. Instead, age acts as a complementary factor when combined with others, like weight or blood pressure.
+
+    **Implications**:
+    - Weight should be prioritized as an influential feature in clustering and prediction models. While age contributes, its interaction with other variables likely provides more value than age alone.
+    """)
+
+with col6:
+    st.write("**Blood Pressure vs. Cardiovascular Disease (Scatter Plot 2):**")
+    st.markdown("""
+    The scatter plot shows the relationship between systolic (x-axis) and diastolic (y-axis) blood pressure, color-coded by cardiovascular disease presence (blue = no disease, red = disease). Key observations include:
+
+    **Higher Blood Pressure Correlation**:
+    - Red points (patients with cardiovascular disease) are concentrated in areas with higher systolic and diastolic blood pressure values.
+    - This suggests a strong association between elevated blood pressure levels and the likelihood of cardiovascular disease.
+
+    **Clear Thresholds**:
+    - Many blue points (no disease) cluster in the lower ranges of both systolic and diastolic blood pressure, indicating that normal or low blood pressure is more common among patients without cardiovascular disease.
+    - A noticeable separation begins at systolic values of around 140 and diastolic values of 90, aligning with clinical hypertension thresholds.
+
+    **Implications**:
+    - Blood pressure serves as a critical feature for identifying high-risk patients. The clustering pattern justifies its inclusion as a primary variable in further analyses, such as clustering algorithms or predictive models.
+    """)
+
 # Placeholder for more visualizations or detailed analysis
 
 # Next Steps
@@ -218,4 +251,3 @@ Based on the clustering results, healthcare providers can:
 - **Identify High-Risk Patients**: Use the clustering information to identify patients at high risk for cardiovascular disease.
 - **Develop Targeted Interventions**: Create personalized treatment and preventive plans for each cluster.
 """)
-
