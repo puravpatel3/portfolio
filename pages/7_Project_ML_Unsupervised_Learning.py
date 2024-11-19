@@ -62,9 +62,22 @@ with st.expander("Step 3: Correlation Analysis"):
     )
 
 with st.expander("Step 4: Unsupervised Learning - Clustering"):
-    st.write("Unsupervised learning methods, such as K-means clustering, are used to identify natural groupings within the data. In this project, the K-means algorithm was used to develop four clusters of patients. K-means works by assigning data points to clusters such that the sum of squared distances between the data points and the cluster centroids is minimized. Clustering patients provides insights into different patient profiles and determines which groups are at higher risk for cardiovascular disease, allowing for targeted healthcare interventions and personalized treatment plans.")
-    st.markdown("**Four distinct clusters were identified**, each representing patients with different risk levels and health characteristics.")
-   
+    st.write(
+        "Unsupervised learning techniques, such as K-means clustering, are employed to uncover natural groupings within the dataset without predefined labels. "
+        "In this project, the K-means algorithm was utilized to segment patients into four distinct clusters. The algorithm operates by iteratively assigning data points to clusters, "
+        "aiming to minimize the sum of squared distances between data points and their respective cluster centroids. This process ensures that each cluster is as homogeneous as possible, "
+        "while maintaining clear distinctions from other clusters."
+    )
+    st.write(
+        "Clustering patients serves as a powerful tool for gaining deeper insights into varying patient profiles, enabling the identification of groups with higher cardiovascular disease risk. "
+        "This segmentation facilitates targeted healthcare strategies, including risk-specific interventions, personalized treatment plans, and resource allocation to improve overall patient outcomes."
+    )
+    st.markdown(
+        "**Key Insights**: "
+        "The analysis resulted in the identification of four distinct clusters, each representing unique risk levels and health characteristics. "
+        "These clusters provide actionable insights for healthcare providers to develop data-driven approaches to patient care and disease prevention."
+    )
+
 
 # Key Takeaways
 st.header("Key Takeaways")
