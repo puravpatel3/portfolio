@@ -9,9 +9,16 @@ st.title("Cardiovascular Disease Patient Clustering")
 # Project Summary
 st.header("Project Summary")
 st.write("""
-This project aims to identify different segments of patients based on various features related to cardiovascular health. By using unsupervised learning techniques like K-means clustering, we grouped patients to gain insights into the factors contributing to cardiovascular disease.
-The objective is to better understand patient profiles, allowing healthcare providers to focus on high-risk groups more effectively.
+This project leverages unsupervised learning techniques, specifically K-means clustering, to segment patients based on key features related to cardiovascular health, 
+such as blood pressure, cholesterol, age, weight, and glucose levels. The primary goal is to uncover distinct patient profiles and identify the factors most strongly 
+associated with cardiovascular disease. By clustering patients into meaningful groups, we aim to provide actionable insights that can help healthcare providers target 
+high-risk groups with tailored preventive measures, personalized treatment plans, and resource optimization.
+
+The findings from this project not only enhance our understanding of the underlying patterns in cardiovascular health data but also demonstrate the potential of machine 
+learning in addressing complex healthcare challenges. This approach can be extended to other domains to enable data-driven decision-making and improve patient outcomes 
+across diverse populations.
 """)
+
 st.markdown("Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here: [Click Here](https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cardio_eda_report.html)\n\nClick on the 'Download raw file' button in Github to access the report")
 
 # Use Case
