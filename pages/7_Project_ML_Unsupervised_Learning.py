@@ -45,10 +45,21 @@ with st.expander("Step 2: Prepare the Data for Unsupervised Learning"):
     st.markdown("**Binning Age and Weight**: K-means binning was used to create bins for age and weight, allowing for grouping continuous variables into meaningful segments. This simplifies the clustering process and makes it easier to identify patterns in patient demographics.")
     st.markdown("**Binning Categorical Variables**: Categorical variables such as blood pressure, cholesterol, and glucose were grouped into categories like 'Normal', 'Above Normal', and 'Well Above Normal'. This binning captures the different health levels of patients in a structured way, making it easier for clustering algorithms to differentiate between varying risk levels.")
     
-
 with st.expander("Step 3: Correlation Analysis"):
-    st.write("Correlation analysis identifies which features are most strongly related to cardiovascular disease. Pearson's correlation coefficient was used to determine the strength and direction of relationships between different variables and cardiovascular disease. Understanding these relationships helps in determining which factors may contribute to the onset of cardiovascular issues and in prioritizing those for further analysis or intervention.")
-    st.markdown("**Key Insights**: Systolic & Diastolic blood pressure showed the highest correlation with cardiovascular disease followed by Cholesterol, Age, Weight and Glucose levels.  These would be considered the most significant features and what we'll run the clustering algorithm on to segment patients.")
+    st.write(
+        "Correlation analysis plays a critical role in identifying the features most strongly associated with cardiovascular disease. "
+        "Using Pearson's correlation coefficient, we analyzed the strength and direction of relationships between various variables "
+        "and the presence of cardiovascular disease. This step is crucial for uncovering potential contributing factors to the onset "
+        "of cardiovascular conditions, providing a foundation for prioritizing features for further analysis, predictive modeling, or targeted interventions."
+    )
+    st.markdown(
+        "**Key Insights**: "
+        "The analysis revealed that systolic and diastolic blood pressure exhibited the highest correlation with cardiovascular disease, "
+        "underscoring their importance as primary predictive factors. These were followed by cholesterol levels, patient age, body weight, "
+        "and glucose levels, which also demonstrated significant correlations with the target variable. These findings highlight the most impactful features, "
+        "which will serve as the basis for the clustering algorithm. By leveraging these variables, we aim to segment patients into distinct groups, "
+        "enabling a more refined understanding of cardiovascular risk profiles and facilitating data-driven strategies for prevention and treatment."
+    )
 
 with st.expander("Step 4: Unsupervised Learning - Clustering"):
     st.write("Unsupervised learning methods, such as K-means clustering, are used to identify natural groupings within the data. In this project, the K-means algorithm was used to develop four clusters of patients. K-means works by assigning data points to clusters such that the sum of squared distances between the data points and the cluster centroids is minimized. Clustering patients provides insights into different patient profiles and determines which groups are at higher risk for cardiovascular disease, allowing for targeted healthcare interventions and personalized treatment plans.")
