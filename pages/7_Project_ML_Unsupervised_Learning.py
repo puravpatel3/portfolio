@@ -27,7 +27,7 @@ The applications of unsupervised learning techniques, such as clustering, extend
 - **Customer Segmentation**: Clustering customers based on purchasing behavior, preferences, or demographics to enable more personalized marketing strategies, 
 optimize product offerings, and improve customer retention.
 
-- **Operational Insights**: Identifying patterns in operational data, such as supply chain inefficiencies, production bottlenecks, or service delays, to focus on problem areas, 
+- **Operational Insights**: Identifying patterns in operational data, such as supply chain inefficiencies, bottlenecks, or service delays, to focus on problem areas, 
 enhance process efficiency, and reduce costs.
 
 - **Risk Management**: Segmenting financial or operational risks to create targeted mitigation strategies, enabling organizations to respond proactively to potential challenges.
