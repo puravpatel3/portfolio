@@ -112,7 +112,7 @@ with st.expander("Cluster 0 Definition"):
     - **Glucose**: Glucose levels are mixed, with a substantial number in the "well above normal" category (cardio = 1).
 
     **Cluster 0 Summary**: Cluster 0 is characterized by individuals mostly in their late 50s to early 60s, with a significant proportion having cardiovascular disease. Blood pressure tends to be in the normal range, but a considerable number have high systolic and diastolic pressure. Cholesterol and glucose levels vary, with a noticeable number having elevated values.
-    "")
+    """)
 
 with st.expander("Cluster 1 Definition"):
     st.markdown("""
@@ -125,7 +125,7 @@ with st.expander("Cluster 1 Definition"):
     - **Glucose**: Almost all individuals in this cluster have normal glucose levels.
 
     **Cluster 1 Summary**: Cluster 1 is the healthiest cluster, consisting mainly of younger individuals (39-50 years), with normal systolic and diastolic blood pressure, cholesterol, and glucose levels. This cluster also has the lowest prevalence of cardiovascular disease.
-    "")
+    """)
 
 with st.expander("Cluster 2 Definition"):
     st.markdown("""
@@ -138,7 +138,7 @@ with st.expander("Cluster 2 Definition"):
     - **Glucose**: Many individuals have elevated glucose levels, particularly among those with cardiovascular disease.
 
     **Cluster 2 Summary**: Cluster 2 primarily represents individuals with cardiovascular disease. It includes older individuals (55-65 years) with predominantly high systolic and diastolic blood pressure, and many have elevated cholesterol and glucose levels.
-    "")
+    """)
 
 with st.expander("Cluster 3 Definition"):
     st.markdown("""
@@ -151,7 +151,7 @@ with st.expander("Cluster 3 Definition"):
     - **Glucose**: There is a notable presence of elevated glucose levels among individuals with cardiovascular disease.
 
     **Cluster 3 Summary**: Cluster 3 is a mixed group, primarily consisting of individuals aged 50-64 years, with both cardiovascular and non-cardiovascular disease cases. Blood pressure tends to be in the normal range, but there are elevated values in those with cardiovascular disease, and cholesterol and glucose levels also show variation.
-    "")
+    """)
 
 # Adding Pictures Side by Side
 col1, col2 = st.columns(2)
