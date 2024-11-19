@@ -124,8 +124,14 @@ def highlight_high_corr(s):
     else:
         return [''] * len(s)
 
-styled_correlation_data = correlation_data.style.apply(highlight_high_corr, axis=1)
-st.write(styled_correlation_data)
+styled_correlation_data = correlation_data.style.apply(highlight_high_corr, axis=1).set_table_styles(
+    [{'selector': 'th', 'props': [('font-size', '14px')]},
+     {'selector': 'td', 'props': [('font-size', '12px'), ('white-space', 'nowrap')]},
+     {'selector': '.col_heading', 'props': [('width', '200px')]},
+     {'selector': '.row_heading', 'props': [('width', '200px')]}]
+).set_properties(**{'max-width': '800px'}).hide_index()
+
+st.dataframe(styled_correlation_data, use_container_width=True)
 
 st.subheader("Unsupervised Learning Insights")
 st.write("Scatter plots of clusters provide insights into the characteristics of each group.")
@@ -218,4 +224,3 @@ Based on the clustering results, healthcare providers can:
 - **Identify High-Risk Patients**: Use the clustering information to identify patients at high risk for cardiovascular disease.
 - **Develop Targeted Interventions**: Create personalized treatment and preventive plans for each cluster.
 """)
-
