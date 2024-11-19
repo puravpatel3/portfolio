@@ -162,6 +162,15 @@ with st.expander("Cluster 3 Definition"):
     **Cluster 3 Summary**: Cluster 3 is a mixed group, primarily consisting of individuals aged 50-64 years, with both cardiovascular and non-cardiovascular disease cases. Blood pressure tends to be in the normal range, but there are elevated values in those with cardiovascular disease, and cholesterol and glucose levels also show variation.
     """)
 
+# Adding Pictures Side by Side After Cluster 3 Definition
+col3, col4 = st.columns(2)
+
+with col3:
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_age_weight_cardio.png', caption='Scatter Plot by Age & Weight with Cardiovascular Disease', use_column_width=True)
+
+with col4:
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_blood_pressure_cardio.png', caption='Scatter Plot by Blood Pressure with Cardiovascular Disease', use_column_width=True)
+
 # Placeholder for more visualizations or detailed analysis
 
 # Next Steps
@@ -171,5 +180,4 @@ Based on the clustering results, healthcare providers can:
 - **Identify High-Risk Patients**: Use the clustering information to identify patients at high risk for cardiovascular disease.
 - **Develop Targeted Interventions**: Create personalized treatment and preventive plans for each cluster.
 """)
-
 
