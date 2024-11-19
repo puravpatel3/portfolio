@@ -19,7 +19,13 @@ learning in addressing complex healthcare challenges. This approach can be exten
 across diverse populations.
 """)
 
-st.markdown("Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here: [Click Here](https://github.com/puravpatel3/portfolio/blob/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cardio_eda_report.html)\n\nClick on the 'Download raw file' button in Github to access the report")
+# Data Source
+st.markdown("""
+**Data Source**: [Cardio Disease Data with Clusters](https://github.com/puravpatel3/portfolio/blob/be95e60ee22c948974068134804e96b9d9a0be69/files/cardio_data_cluster_kmeans.csv)
+
+**Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here**: [Click Here](https://github.com/puravpatel3/portfolio/blob/be95e60ee22c948974068134804e96b9d9a0be69/files/cardio_eda_report.html)
+- *Click on the 'Download raw file' button in Github to access the report*
+""")
 
 # Use Case
 st.header("Use Case")
