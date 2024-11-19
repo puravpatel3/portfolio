@@ -117,8 +117,18 @@ correlation_data = pd.DataFrame({
     ]
 })
 
+# Bold the highest correlated rows
+def highlight_high_corr(s):
+    if s['Variable'] in ['age_years', 'weight', 'ap_hi', 'ap_lo', 'cholesterol', 'gluc']:
+        return ['font-weight: bold'] * len(s)
+    else:
+        return [''] * len(s)
+
+styled_correlation_data = correlation_data.style.apply(highlight_high_corr, axis=1)
+st.write(styled_correlation_data)
+
 # Displaying full dataframe without scroll and with expanded column widths
-st.dataframe(correlation_data, width=1500, height=600)
+#st.dataframe(correlation_data, width=1500, height=600)
 
 st.subheader("Unsupervised Learning Insights")
 st.write("Scatter plots of clusters provide insights into the characteristics of each group.")
@@ -206,7 +216,7 @@ with col4:
 col5, col6 = st.columns(2)
 
 with col5:
-    st.write("**Age vs. Weight and Cardiovascular Disease (Scatter Plot 1):**")
+    st.write("**Age vs. Weight Relationship by Cardiovascular Disease (Scatter Plot 1):**")
     st.markdown("""
     The scatter plot illustrates the relationship between patient age (x-axis) and weight (y-axis), also color-coded by cardiovascular disease presence. Key insights include:
 
@@ -226,7 +236,7 @@ with col5:
     """)
 
 with col6:
-    st.write("**Blood Pressure vs. Cardiovascular Disease (Scatter Plot 2):**")
+    st.write("**Blood Pressure Relationship by Cardiovascular Disease (Scatter Plot 2):**")
     st.markdown("""
     The scatter plot shows the relationship between systolic (x-axis) and diastolic (y-axis) blood pressure, color-coded by cardiovascular disease presence (blue = no disease, red = disease). Key observations include:
 
