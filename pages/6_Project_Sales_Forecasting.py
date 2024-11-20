@@ -189,7 +189,7 @@ filtered_df.columns = filtered_df.columns.str.strip()
 st.header("Advanced Analytics")
 
 # Sales Breakdown by Region and Car Model
-st.header("Sales Breakdown by Region and Car Model")
+st.subheader("Sales Breakdown by Region and Car Model")
 st.write("""
 This heatmap visualizes the sales performance of various car models across different dealer regions. The color gradient represents the total sales volume in millions of dollars, 
 ranging from green for higher sales to red for lower sales. By analyzing this visualization, key trends and patterns in sales distribution can be identified, aiding in strategic decision-making.
