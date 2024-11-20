@@ -126,7 +126,6 @@ correlation_data = pd.DataFrame({
         'gluc has a weak positive correlation, suggesting that elevated glucose levels are linked to cardiovascular disease.'
     ]
 })
-st.dataframe(correlation_data)
 
 # Bold the highest correlated rows
 def highlight_high_corr(s):
