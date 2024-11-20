@@ -188,13 +188,25 @@ filtered_df.columns = filtered_df.columns.str.strip()
 # Advanced Analytics Section
 st.header("Advanced Analytics")
 
-# 1. Sales Breakdown by Region and Car Model
-st.subheader("Sales Breakdown by Region and Car Model")
+# Sales Breakdown by Region and Car Model
+st.header("Sales Breakdown by Region and Car Model")
 st.write("""
-This heatmap visualizes the sales breakdown by region and car model. The colors represent the volume of sales, with green indicating higher sales and red indicating lower sales. This is helpful for identifying high-performing regions and car models.
+This heatmap visualizes the sales performance of various car models across different dealer regions. The color gradient represents the total sales volume in millions of dollars, 
+ranging from green for higher sales to red for lower sales. By analyzing this visualization, key trends and patterns in sales distribution can be identified, aiding in strategic decision-making.
 
-**Key Takeaways:**
-Focus on the top-performing car models in high-sales regions to optimize inventory management and marketing strategies. By understanding which regions and models drive the highest sales, stakeholders can make more informed decisions about resource allocation, promotional focus, and dealership support.
+**Key Insights:**  
+1. **Top-Performing Regions and Models**:  
+   Regions such as Austin and Janesville show consistently higher sales for models like the LS400 and Ram Pickup, suggesting strong demand and successful dealership operations in these areas.  
+   
+2. **Underperforming Models and Regions**:  
+   Models like Montero Sport and Prizm have significantly lower sales across most regions, indicating potential issues with market appeal or availability.  
+
+3. **Strategic Applications**:  
+   - Focus marketing efforts and promotional campaigns on high-performing regions and models to maximize returns.  
+   - Allocate inventory to regions with consistent demand for specific models to reduce overstocking in underperforming areas.  
+   - Investigate underperforming regions and models to identify potential factors such as pricing, competition, or local preferences that could be addressed to improve sales.  
+
+This heatmap highlights critical opportunities for optimizing resource allocation, refining inventory management, and tailoring marketing strategies to regional and model-specific trends. Stakeholders can use these insights to enhance dealership support and drive higher overall performance.
 """)
 
 # Aggregating sales by region and car model
