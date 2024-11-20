@@ -18,7 +18,7 @@ st.markdown("""
 
 **Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here**: [Click Here](https://github.com/puravpatel3/portfolio/blob/4e61793ecc3404ce11f9bcd576de021d9f19c674/files/drugreview_eda_report.html)
 
-*Click on the 'Download raw file' button in Github to access the report*
+*Click on the 'Download raw file' button in Github to access the data or report*
 """)
 
 # Instructions
