@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 
 # Setting up web app page
-st.set_page_config(page_title='Exploratory Data Analysis', page_icon=None, layout="wide")
+st.set_page_config(page_title='Interactive Exploratory Data Analysis (EDA) Application', page_icon=None, layout="wide")
 
 # Adding the title and structured sections to the top of the app
 st.title("**Exploratory Data Analysis**")
