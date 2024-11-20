@@ -9,14 +9,14 @@ st.title("Sentiment Analysis")
 # Project Summary
 st.header("Project Summary")
 st.write("""
-This project focuses on extracting actionable insights from customer feedback through sentiment analysis, demonstrating both technical expertise and strategic thinking. Using Python and libraries such as `sklearn`, `textblob`, and `pandas`, I conducted an in-depth analysis of customer reviews on pharmaceutical drugs. The workflow included preprocessing and cleaning text data, quantifying sentiment scores, and identifying trends in customer satisfaction.  
+This project demonstrates the ability to extract actionable insights from customer feedback through sentiment analysis, showcasing both technical expertise and strategic thinking. Using Python and libraries such as `sklearn`, `textblob`, and `pandas`, the analysis involved preprocessing and cleaning text data, quantifying sentiment scores, and identifying trends in customer satisfaction.  
 
 Key highlights of this project include:  
 - **Sentiment Scoring and Trends**: Quantified sentiment to uncover how customers perceive different pharmaceutical products, providing a clear picture of satisfaction and dissatisfaction trends.  
 - **Insights into Key Factors**: Extracted common themes from the reviews, such as mentions of drug effectiveness, side effects, and user experiences, helping to pinpoint drivers of sentiment.  
 - **Business Impact**: Provided data-driven insights to help pharmaceutical companies optimize resource allocation, whether for improving underperforming products through R&D, promoting successful drugs via marketing, or enhancing customer support strategies.  
 
-This project highlights the practical applications of sentiment analysis in identifying patterns and trends that influence business decisions. By bridging technical implementation with strategic insights, this work showcases how data science can empower organizations to enhance customer satisfaction, improve operational efficiency, and make more informed decisions.  
+The project highlights the practical applications of sentiment analysis in identifying patterns and trends that influence business decisions. By bridging technical implementation with strategic insights, it demonstrates how data science can empower organizations to enhance customer satisfaction, improve operational efficiency, and make more informed decisions.  
 
 Additionally, the skills and techniques demonstrated in this project—such as working with unstructured text data, applying natural language processing (NLP), and creating actionable insights—are highly transferable across industries, making sentiment analysis a versatile and impactful tool for any organization seeking to better understand its customers.
 """)
