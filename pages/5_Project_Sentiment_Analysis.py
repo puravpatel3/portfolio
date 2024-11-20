@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Title Section: Sentiment Analysis
-st.title("Sentiment Analysis")
+st.title("Customer Sentiment Analysis for Pharmaceutical Products")
 
 # Project Summary
 st.header("Project Summary")
