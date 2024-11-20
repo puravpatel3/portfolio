@@ -37,12 +37,26 @@ st.write("""
 # Use Case
 st.header("Use Case")
 st.write("""
-Many companies want to understand customer feedback to decide where to focus their resources. In the pharmaceutical industry, sentiment analysis can highlight the most popular or least popular drugs, which helps companies focus their R&D efforts and marketing strategies. For example, pharmaceutical companies may use this analysis to:
-1. **Refine R&D efforts**: Allocate research and development resources to improve poorly rated drugs.
-2. **Optimize marketing strategy**: Promote high-performing drugs based on positive customer sentiment.
-3. **Enhance product development**: Identify common pain points in reviews to develop better products.
-Sentiment analysis has broad applications beyond pharmaceuticals, helping any company with customer feedback improve its products and services.
+Customer feedback is a critical resource for any company seeking to improve its products and services. In the pharmaceutical industry, sentiment analysis offers unique value by providing an objective view of how customers perceive drugs and their effectiveness. Through this project, I demonstrated how sentiment analysis can drive data-informed decisions across key business functions:  
+
+1. **Refine R&D Efforts**:  
+   Sentiment analysis can identify drugs with low customer satisfaction or recurring complaints in reviews, enabling pharmaceutical companies to focus their research and development resources on improving those products. For instance, reviews highlighting side effects or limited effectiveness can guide the refinement of formulations.  
+
+2. **Optimize Marketing Strategy**:  
+   Positive sentiment trends can be used to identify high-performing drugs and inform marketing campaigns. Companies can allocate advertising budgets to promote these products more effectively, enhancing their market presence and profitability.  
+
+3. **Enhance Product Development**:  
+   By extracting common themes and pain points from reviews, companies can identify areas for product improvement. For example, if reviews frequently mention confusing dosage instructions, this feedback can inform updates to packaging or educational materials.  
+
+4. **Broader Applications Beyond Pharmaceuticals**:  
+   The versatility of sentiment analysis extends far beyond pharmaceuticals. Any industry reliant on customer feedback—such as retail, technology, or hospitality—can leverage similar techniques to improve products, refine services, and better understand customer needs. For example:  
+   - **E-commerce**: Analyze product reviews to identify popular products or common complaints.  
+   - **Hospitality**: Evaluate guest reviews to improve services and drive customer loyalty.  
+   - **Technology**: Understand user feedback on software to prioritize features or address bugs.  
+
+Sentiment analysis serves as a vital tool for modern businesses, enabling them to make strategic, data-driven decisions that enhance customer satisfaction and operational efficiency.
 """)
+
 
 # Key Technologies
 st.header("Key Technologies Used")
