@@ -21,7 +21,8 @@ st.markdown("""
 **Data Source**: [Electric Vehicle Charging Patterns Dataset on Kaggle](https://www.kaggle.com/datasets/valakhorasani/electric-vehicle-charging-patterns)
 
 **Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here**: [Click Here](https://github.com/puravpatel3/portfolio/blob/ade4c58b1eadc880c3c15ccd0660e40242b24619/files/ev_eda_report.html)
-- *Click on the 'Download raw file' button in Github to access the report*
+
+*Click on the 'Download raw file' button in Github to access the report*
 """)
 
 # Adding Instructions
