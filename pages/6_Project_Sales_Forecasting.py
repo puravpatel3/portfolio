@@ -23,6 +23,15 @@ The project underscores the importance of leveraging data analytics to transform
 and improving operational efficiency in the automotive industry.
 """)
 
+# Data Source
+st.markdown("""
+**Data Source**: [Car Sales Data](https://github.com/puravpatel3/portfolio/blob/018984013112e43d9f5447b7ce51bfd4d764f7cc/files/car_sales.csv)
+
+**Download Comprehensive Exploratory Data Analysis Report generated using ydata-profiling here**: [Click Here](https://github.com/puravpatel3/portfolio/blob/018984013112e43d9f5447b7ce51bfd4d764f7cc/files/car_sales_eda_report.html)
+
+*Click on the 'Download raw file' button in Github to access the data or report*
+""")
+
 # Instructions
 st.header("Instructions")
 st.write("""
