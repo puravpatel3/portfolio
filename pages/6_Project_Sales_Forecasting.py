@@ -6,7 +6,7 @@ from prophet import Prophet
 import matplotlib.dates as mdates
 
 # Title Section: Car Sales Analysis
-st.title("Car Sales Analysis")
+st.title("Sales Analysis and Forecasting for Automotive Industry")
 
 # Project Summary
 st.header("Project Summary")
