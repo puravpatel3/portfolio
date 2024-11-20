@@ -231,18 +231,29 @@ ax.set_ylabel('Dealer Region')
 # Display the heatmap
 st.pyplot(fig)
 
-# 2. Revenue Forecasting for Regions
+# Revenue Forecasting for Regions
 st.subheader("Revenue Forecasting for Regions")
 st.write("""
-This time series forecast predicts the revenue for a specific region for the next year based on historical data. It allows business leaders to anticipate future trends in sales performance and adjust strategies accordingly.
+This time series forecast predicts revenue trends for all regions over the next year based on historical data. By analyzing past sales performance and projecting future revenue, 
+this forecast enables business leaders to make proactive and informed decisions. The ability to anticipate revenue fluctuations across quarters ensures more strategic resource allocation 
+and improved operational efficiency.
 
-**Key Takeaways:**
-Use the forecasted data to plan for inventory, marketing, and regional strategy adjustments. Forecasting can help decision-makers understand future demand and align resources accordingly.
+**Key Insights:**  
+1. **Future Demand Prediction**:  
+   The forecast provides a clear picture of expected revenue trends, helping businesses plan inventory levels, marketing strategies, and regional initiatives in advance.  
 
-**Chart Explanation:**
-- **Black dots**: Represent the actual historical revenue data points.
-- **Darker blue line**: Represents the predicted revenue trend for the next year.
-- **Lighter blue shaded area**: Represents the uncertainty interval (confidence interval) around the forecast.
+2. **Strategic Adjustments**:  
+   Insights from the forecast enable adjustments to production schedules, staffing, and advertising budgets to align with anticipated demand.  
+
+3. **Risk Management**:  
+   The confidence intervals highlight potential volatility in revenue, allowing decision-makers to prepare for best- and worst-case scenarios.
+
+**Chart Explanation:**  
+- **Black Dots**: Represent actual historical revenue data points, providing a baseline for the forecast.  
+- **Darker Blue Line**: Represents the predicted revenue trend for the next year, showing the expected trajectory based on historical patterns.  
+- **Lighter Blue Shaded Area**: Represents the uncertainty or confidence interval around the forecast, illustrating the range of potential revenue outcomes.
+
+This predictive model highlights the importance of data-driven forecasting for businesses, offering a competitive advantage by enabling proactive strategy formulation and efficient resource management.
 """)
 
 # Ensure we have data to work with
