@@ -110,26 +110,23 @@ with st.expander("Step 4: Unsupervised Learning - Clustering"):
 # Key Takeaways
 st.header("Key Takeaways")
 
+## Correlation Analysis
 st.subheader("Correlation Analysis")
 st.write("The following features showed the highest correlation with cardiovascular disease:")
 correlation_data = pd.DataFrame({
-    'Variable': ['age_years', 'height', 'weight', 'ap_hi', 'ap_lo', 'gender', 'smoke', 'alco', 'active', 'cholesterol', 'gluc'],
-    'Correlation': [0.239164, -0.011358, 0.179144, 0.427449, 0.337459, 0.006763, -0.016299, -0.008289, -0.037419, 0.221265, 0.091994],
-    'P-value': ['0.000000e+00', '2.921999e-03', '0.000000e+00', '0.000000e+00', '0.000000e+00', '7.641558e-02', '1.951802e-05', '2.988575e-02', '1.054363e-22', '0.000000e+00', '7.233263e-127'],
+    'Variable': ['age_years', 'weight', 'ap_hi', 'ap_lo', 'cholesterol', 'gluc'],
+    'Correlation': [0.239164, 0.179144, 0.427449, 0.337459, 0.221265, 0.091994],
+    'P-value': ['0.000000e+00', '0.000000e+00', '0.000000e+00', '0.000000e+00', '0.000000e+00', '7.233263e-127'],
     'Explanation': [
         'age_years has a moderate positive correlation with cardiovascular disease, which is statistically significant.',
-        'height has a very weak negative correlation, and the p-value indicates it is statistically significant.',
         'weight has a moderate positive correlation with cardiovascular disease, which is statistically significant.',
         'ap_hi (systolic blood pressure) has a strong positive correlation with cardiovascular disease, indicating its importance.',
         'ap_lo (diastolic blood pressure) has a moderate positive correlation, also significant for cardiovascular health.',
-        'gender shows a very weak correlation, which is not statistically significant at conventional levels.',
-        'smoke has a very weak negative correlation, but it is statistically significant.',
-        'alco shows a very weak negative correlation, which is statistically significant.',
-        'active has a weak negative correlation, suggesting physically active individuals are at slightly lower risk.',
         'cholesterol has a moderate positive correlation with cardiovascular disease, indicating it is a significant factor.',
         'gluc has a weak positive correlation, suggesting that elevated glucose levels are linked to cardiovascular disease.'
     ]
 })
+st.dataframe(correlation_data)
 
 # Bold the highest correlated rows
 def highlight_high_corr(s):
