@@ -217,10 +217,10 @@ with st.expander("Cluster 3 Definition"):
 col3, col4 = st.columns(2)
 
 with col3:
-    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_age_weight_cardio.png', caption='Scatter Plot by Age & Weight with Cardiovascular Disease', use_column_width=True)
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_age_weight_cardio.png', caption='Scatter Plot by Age & Weight with Cardiovascular Disease', use_container_width=True)
 
 with col4:
-    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_blood_pressure_cardio.png', caption='Scatter Plot by Blood Pressure with Cardiovascular Disease', use_column_width=True)
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/scatter_blood_pressure_cardio.png', caption='Scatter Plot by Blood Pressure with Cardiovascular Disease', use_container_width=True)
 
 # Adding Insights Below the Images
 col5, col6 = st.columns(2)
