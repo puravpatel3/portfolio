@@ -156,10 +156,10 @@ st.markdown("""
 col1, col2 = st.columns(2)
 
 with col1:
-    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_no_cardio_disease.png', caption='Cluster of Patients by Age & Weight without Cardiovascular Disease', use_column_width=True)
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_no_cardio_disease.png', caption='Cluster of Patients by Age & Weight without Cardiovascular Disease', use_container_width=True)
 
 with col2:
-    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_cardio_disease.png', caption='Cluster of Patients by Age & Weight with Cardiovascular Disease', use_column_width=True)
+    st.image('https://raw.githubusercontent.com/puravpatel3/portfolio/72c47bef2c21cf6e0d6892ece3491a71bc1554d2/files/cluster_patients_cardio_disease.png', caption='Cluster of Patients by Age & Weight with Cardiovascular Disease', use_container_width=True)
 
 with st.expander("Cluster 0 Definition"):
     st.markdown("""
