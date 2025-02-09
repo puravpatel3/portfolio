@@ -11,18 +11,85 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---- Title ----
+# ---- 1️⃣ Project Title ----
 st.title("🛒 Customer Sentiment Analysis on Amazon Product Reviews")
 
-# ---- Load Data ----
-data_url = "https://github.com/puravpatel3/portfolio/raw/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv"
-df = pd.read_csv(data_url)
+# ---- 2️⃣ Project Summary ----
+st.header("📌 Project Summary")
+st.write("""
+This project analyzes **Amazon product reviews** using **sentiment analysis** and **Aspect-Based Sentiment Analysis (ABSA)** to extract insights from customer feedback.
+By applying **natural language processing (NLP)**, we classify reviews as **positive, neutral, or negative**, determine sentiment trends over time, and identify specific aspects customers discuss.
 
-# Convert review_date to datetime format
-df["review_date"] = pd.to_datetime(df["review_date"])
+Our goal is to uncover actionable insights that businesses can use to improve **product offerings, marketing strategies, and customer satisfaction**.
+
+- **Dataset**: [Amazon Reviews Dataset](https://github.com/puravpatel3/portfolio/blob/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv)
+- **Timeframe Analyzed**: **10/26/2010 – 10/26/2012**
+- **Key Insights**: Identify which products receive the best/worst sentiment and what specific aspects drive customer satisfaction or complaints.
+""")
+
+# ---- 3️⃣ Use Case ----
+st.header("🔍 Use Case")
+st.write("""
+**Why analyze customer sentiment?**
+- 📊 **Product Improvement**: Identify trends in feedback to refine product features.
+- 🎯 **Marketing Strategy**: Optimize ad campaigns by understanding what customers love or dislike.
+- 🛍️ **Customer Experience**: Address pain points in product quality or user experience.
+- 🏆 **Competitive Analysis**: Compare sentiment trends against competitor products.
+- 📢 **Brand Reputation**: Monitor customer perceptions and respond proactively.
+""")
+
+# ---- 4️⃣ Key Technologies Used ----
+st.header("🛠️ Key Technologies Used")
+st.write("""
+- **Python**: Data processing & sentiment analysis.
+- **pandas**: Data manipulation.
+- **matplotlib & seaborn**: Data visualization.
+- **Streamlit**: Interactive dashboard.
+- **VADER Sentiment Analysis**: Classifies overall sentiment.
+- **spaCy NLP**: Extracts relevant product aspects.
+- **Transformers (BERT)**: Aspect-Based Sentiment Analysis (ABSA).
+""")
+
+# ---- 5️⃣ Project Steps ----
+st.header("🚀 Project Steps")
+
+with st.expander("📌 Step 1: Data Cleaning & Preparation"):
+    st.write("""
+    - **Filtered dataset** to only include reviews from the latest 2 years (10/26/2010 - 10/26/2012).
+    - **Reduced file size** by keeping only the top 50 most-reviewed products.
+    - **Converted timestamps** to human-readable review dates.
+    - **Removed missing values** and irrelevant columns.
+    """)
+
+with st.expander("📌 Step 2: Sentiment Analysis (VADER)") :
+    st.write("""
+    - Used **VADER (Valence Aware Dictionary and sEntiment Reasoner)** to classify reviews as **Positive, Neutral, or Negative**.
+    - Extracted **compound sentiment scores** to quantify sentiment intensity.
+    - Applied **text preprocessing** (lowercasing, punctuation removal) to improve accuracy.
+    """)
+
+with st.expander("📌 Step 3: Aspect-Based Sentiment Analysis (ABSA)") :
+    st.write("""
+    - Extracted key **aspects** from review text using **spaCy NLP**.
+    - Applied **BERT-based ABSA** to determine sentiment for each aspect.
+    - Filtered out **stop words and irrelevant terms** to keep only meaningful aspects.
+    """)
+
+with st.expander("📌 Step 4: Visualization & Insights") :
+    st.write("""
+    - Created **Sentiment Distribution** (positive, neutral, negative %).
+    - Developed **Word Cloud** to visualize frequently mentioned aspects.
+    - Added **Sentiment Over Time** visualization (Quarterly trend).
+    - Enabled **interactive filters** for dynamic analysis.
+    """)
 
 # ---- Sidebar Filters ----
 st.sidebar.header("🔍 Filter Data")
+
+# Load Data
+data_url = "https://github.com/puravpatel3/portfolio/raw/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv"
+df = pd.read_csv(data_url)
+df["review_date"] = pd.to_datetime(df["review_date"])
 
 # Date Filter
 min_date = df["review_date"].min()
@@ -49,10 +116,13 @@ if selected_product != "All":
 if selected_sentiment != "All":
     filtered_df = filtered_df[filtered_df["overall_sentiment"] == selected_sentiment]
 
-# ---- Layout with Two Columns ----
+# ---- 6️⃣ Data Visualizations ----
+st.header("📊 Data Visualizations")
+
+# Layout for Sentiment Charts
 col1, col2 = st.columns(2)
 
-# ---- Sentiment Distribution ----
+# Sentiment Distribution
 with col1:
     st.subheader("📊 Sentiment Distribution")
     sentiment_counts = filtered_df["overall_sentiment"].value_counts()
@@ -62,7 +132,7 @@ with col1:
     ax.set_ylabel("Number of Reviews")
     st.pyplot(fig)
 
-# ---- Sentiment Over Time (Quarterly) ----
+# Sentiment Over Time
 with col2:
     st.subheader("📈 Sentiment Over Time (Quarterly)")
     filtered_df["quarter"] = filtered_df["review_date"].dt.to_period("Q")
@@ -75,34 +145,28 @@ with col2:
     ax.legend(title="Sentiment")
     st.pyplot(fig)
 
-# ---- Layout with Two Columns for Product Bar Chart & Word Cloud ----
+# Product Pareto Chart & Word Cloud
 col3, col4 = st.columns(2)
 
-# ---- Product Review Count Bar Chart ----
 with col3:
-    st.subheader("🛍️ Top Reviewed Products")
-    product_counts = filtered_df["ProductId"].value_counts().reset_index()
+    st.subheader("🛍️ Top 10 Reviewed Products")
+    product_counts = filtered_df["ProductId"].value_counts().head(10).reset_index()
     product_counts.columns = ["ProductId", "Review Count"]
-
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.barplot(y=product_counts["ProductId"], x=product_counts["Review Count"], palette="viridis", ax=ax)
+    sns.barplot(y=product_counts["ProductId"], x=product_counts["Review Count"], ax=ax)
     ax.set_ylabel("Product ID")
     ax.set_xlabel("Number of Reviews")
     st.pyplot(fig)
 
-# ---- Word Cloud of Extracted Aspects ----
 with col4:
     st.subheader("🔍 Frequent Aspects in Reviews")
     aspect_text = " ".join(filtered_df["refined_aspects"].dropna().astype(str))
     wordcloud = WordCloud(width=800, height=400, background_color="white").generate(aspect_text)
-    
-    fig, ax = plt.subplots(figsize=(8, 5))
-    ax.imshow(wordcloud, interpolation="bilinear")
-    ax.axis("off")
-    st.pyplot(fig)
+    st.image(wordcloud.to_array(), use_column_width=True)
 
 # ---- Key Takeaways ----
 st.header("💡 Key Takeaways")
+
 st.write("""
 - **📢 Positive Sentiment Dominates**
   - Most reviews are **positive**, meaning customers generally like the products.
@@ -121,5 +185,10 @@ st.write("""
   - Example: Coffee drinkers love "bold flavor" but dislike "weak aroma."
 """)
 
-# ---- GitHub Reference ----
-st.write("🔗 **Want to see the code?** Check out the full implementation on [GitHub](https://github.com/puravpatel3/portfolio).")
+# ---- Next Steps ----
+st.header("🚀 What’s Next?")
+st.write("""
+- Expand analysis to **more product categories**.
+- Integrate **real-time sentiment monitoring** from live customer reviews.
+- Improve **aspect sentiment classification** using **advanced BERT models**.
+""")
