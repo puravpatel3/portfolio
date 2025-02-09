@@ -6,3 +6,4 @@ seaborn
 openpyxl
 pydeck
 prophet==1.1.6
+wordcloud
