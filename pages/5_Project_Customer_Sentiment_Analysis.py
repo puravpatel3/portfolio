@@ -158,13 +158,3 @@ st.header("🚀 What’s Next?")
 - Integrate **real-time sentiment monitoring** from live customer reviews.
 - Improve **aspect sentiment classification** using **advanced BERT models**.
 
----
-
-🔗 **Want to see the code?**  
-Check out the full implementation on **GitHub**:  
-[GitHub Repository](https://github.com/puravpatel3/portfolio)
-
----
-
-## ✅ **Your Streamlit App is Now Fully Enhanced!**
-This code is **fully optimized** for GitHub deployment. Let me know if you need any refinements! 🚀
