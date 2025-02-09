@@ -153,14 +153,3 @@ st.write("""
 - Improve **aspect sentiment classification** using **advanced BERT models**.
 """)
 
-# ---- GitHub Reference ----
-st.write("🔗 **Want to see the code?** Check out the full implementation on [GitHub](https://github.com/puravpatel3/portfolio).")
-
----
-
-## ✅ **Your Streamlit App is Now Fully Optimized!**
-### 🚀 **Next Steps**
-1. **Paste this code into your GitHub repo** (`Project_Customer_Sentiment_Analysis.py`).
-2. **Push your changes & redeploy on Streamlit**.
-3. **Test the app to ensure everything works as expected**.
-4. **Let me know if you need refinements!** 🎯
