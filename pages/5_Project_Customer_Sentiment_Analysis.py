@@ -186,7 +186,7 @@ st.write("""
 """)
 
 # ---- Next Steps ----
-st.header("What’s Next?")
+st.header("Next Steps")
 st.write("""
 - Expand analysis to **more product categories**.
 - Integrate **real-time sentiment monitoring** from live customer reviews.
