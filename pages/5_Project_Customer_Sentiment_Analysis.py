@@ -162,7 +162,7 @@ with col4:
     st.subheader("🔍 Frequent Aspects in Reviews")
     aspect_text = " ".join(filtered_df["refined_aspects"].dropna().astype(str))
     wordcloud = WordCloud(width=800, height=400, background_color="white").generate(aspect_text)
-    st.image(wordcloud.to_array(), use_column_width=True)
+    st.image(wordcloud.to_array(), use_container_width=True)
 
 # ---- Key Takeaways ----
 st.header("💡 Key Takeaways")
