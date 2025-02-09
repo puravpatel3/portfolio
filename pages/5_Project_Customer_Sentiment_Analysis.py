@@ -19,27 +19,29 @@ st.header("📌 Project Summary")
 st.write("""
 This project analyzes **Amazon product reviews** using **sentiment analysis** and **Aspect-Based Sentiment Analysis (ABSA)** to extract insights from customer feedback. 
 By applying **natural language processing (NLP)**, we classify reviews as **positive, neutral, or negative**, determine sentiment trends over time, and identify specific aspects 
-customers discuss. 
+customers discuss.
 
 Our goal is to uncover actionable insights that businesses can use to improve **product offerings, marketing strategies, and customer satisfaction**.
 
 - **Dataset**: [Amazon Reviews Dataset](https://github.com/puravpatel3/portfolio/blob/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv)
 - **Timeframe Analyzed**: **10/26/2010 – 10/26/2012**
 - **Key Insights**: Identify which products receive the best/worst sentiment and what specific aspects drive customer satisfaction or complaints.
+""")
 
----
-
-# **🔍 Use Case**
+# ---- Use Case ----
+st.header("🔍 Use Case")
+st.write("""
 **Why analyze customer sentiment?**
 - 📊 **Product Improvement**: Identify trends in feedback to refine product features.
 - 🎯 **Marketing Strategy**: Optimize ad campaigns by understanding what customers love or dislike.
 - 🛍️ **Customer Experience**: Address pain points in product quality or user experience.
 - 🏆 **Competitive Analysis**: Compare sentiment trends against competitor products.
 - 📢 **Brand Reputation**: Monitor customer perceptions and respond proactively.
+""")
 
----
-
-# **🛠️ Key Technologies Used**
+# ---- Key Technologies Used ----
+st.header("🛠️ Key Technologies Used")
+st.write("""
 - **Python**: Data processing & sentiment analysis.
 - **pandas**: Data manipulation.
 - **matplotlib & seaborn**: Data visualization.
@@ -47,14 +49,12 @@ Our goal is to uncover actionable insights that businesses can use to improve **
 - **VADER Sentiment Analysis**: Classifies overall sentiment.
 - **spaCy NLP**: Extracts relevant product aspects.
 - **Transformers (BERT)**: Aspect-Based Sentiment Analysis (ABSA).
+""")
 
----
+# ---- Project Steps ----
+st.header("🚀 Project Steps")
 
-# **🚀 Project Steps**
-Expanding each section will provide a detailed explanation of the methodology used in this project.
-
-## **Step 1: Data Cleaning & Preparation**  
-with st.expander("📌 Expand to view details"):
+with st.expander("📌 Step 1: Data Cleaning & Preparation"):
     st.write("""
     - **Filtered dataset** to only include reviews from the latest 2 years (10/26/2010 - 10/26/2012).
     - **Reduced file size** by keeping only the top 50 most-reviewed products.
@@ -62,24 +62,21 @@ with st.expander("📌 Expand to view details"):
     - **Removed missing values** and irrelevant columns.
     """)
 
-## **Step 2: Sentiment Analysis (VADER)**
-with st.expander("📌 Expand to view details"):
+with st.expander("📌 Step 2: Sentiment Analysis (VADER)"):
     st.write("""
     - Used **VADER (Valence Aware Dictionary and sEntiment Reasoner)** to classify reviews as **Positive, Neutral, or Negative**.
     - Extracted **compound sentiment scores** to quantify sentiment intensity.
     - Applied **text preprocessing** (lowercasing, punctuation removal) to improve accuracy.
     """)
 
-## **Step 3: Aspect-Based Sentiment Analysis (ABSA)**
-with st.expander("📌 Expand to view details"):
+with st.expander("📌 Step 3: Aspect-Based Sentiment Analysis (ABSA)"):
     st.write("""
     - Extracted key **aspects** from review text using **spaCy NLP**.
     - Applied **BERT-based ABSA** to determine sentiment for each aspect.
     - Filtered out **stop words and irrelevant terms** to keep only meaningful aspects.
     """)
 
-## **Step 4: Visualization & Insights**
-with st.expander("📌 Expand to view details"):
+with st.expander("📌 Step 4: Visualization & Insights"):
     st.write("""
     - Created **Sentiment Distribution** (positive, neutral, negative %).
     - Developed **Word Cloud** to visualize frequently mentioned aspects.
@@ -87,10 +84,8 @@ with st.expander("📌 Expand to view details"):
     - Enabled **interactive filters** for dynamic analysis.
     """)
 
----
-
-# **📊 Data Visualizations**
-st.header("📈 Sentiment Analysis Visualizations")
+# ---- Data Visualizations ----
+st.header("📊 Data Visualizations")
 
 # Load Data
 data_url = "https://github.com/puravpatel3/portfolio/raw/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv"
@@ -129,11 +124,10 @@ ax.imshow(wordcloud, interpolation="bilinear")
 ax.axis("off")
 st.pyplot(fig)
 
----
+# ---- Key Takeaways ----
+st.header("💡 Key Takeaways")
 
-# **💡 Key Takeaways**
-st.header("📌 Insights & Takeaways")
-
+st.write("""
 - **📢 Positive Sentiment Dominates**
   - Most reviews are **positive**, meaning customers generally like the products.
   - This is useful for marketing teams to highlight strong product features.
@@ -149,12 +143,24 @@ st.header("📌 Insights & Takeaways")
 - **🛠 Aspect-Based Insights Provide Granularity**
   - Instead of a general positive/negative rating, **ABSA identifies which product features drive sentiment**.
   - Example: Coffee drinkers love "bold flavor" but dislike "weak aroma."
+""")
 
----
-
-# **📝 Next Steps**
+# ---- Next Steps ----
 st.header("🚀 What’s Next?")
+st.write("""
 - Expand analysis to **more product categories**.
 - Integrate **real-time sentiment monitoring** from live customer reviews.
 - Improve **aspect sentiment classification** using **advanced BERT models**.
+""")
 
+# ---- GitHub Reference ----
+st.write("🔗 **Want to see the code?** Check out the full implementation on [GitHub](https://github.com/puravpatel3/portfolio).")
+
+---
+
+## ✅ **Your Streamlit App is Now Fully Optimized!**
+### 🚀 **Next Steps**
+1. **Paste this code into your GitHub repo** (`Project_Customer_Sentiment_Analysis.py`).
+2. **Push your changes & redeploy on Streamlit**.
+3. **Test the app to ensure everything works as expected**.
+4. **Let me know if you need refinements!** 🎯
