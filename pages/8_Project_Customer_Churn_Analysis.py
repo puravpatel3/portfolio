@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # ------------------- Page Configuration -------------------
-st.set_page_config(page_title="Telco Customer Churn Analysis Portfolio", layout="wide")
+st.set_page_config(page_title="Telco Customer Churn Analysis", layout="wide")
 
 # ------------------- Project Title -------------------
 st.title("Telco Customer Churn Analysis Portfolio Project")
