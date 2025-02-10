@@ -34,10 +34,6 @@ st.markdown("""
 # ------------------- Key Technologies Used -------------------
 st.header("Key Technologies Used")
 st.markdown("""
-**Programming Language:**  
-- **Python 3.12**
-
-**Libraries & Tools:**  
 - **Pandas:** Data manipulation and analysis  
 - **NumPy:** Numerical computations  
 - **Scikit-learn:** Machine learning and model evaluation  
