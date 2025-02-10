@@ -46,7 +46,7 @@ st.markdown("""
 st.header("Project Steps")
 with st.expander("Step 1: Data Cleaning & Preprocessing"):
     st.markdown("""
-    **What We Did:**  
+    **Actions Taken:**  
     - Cleaned the raw dataset by removing missing values and extraneous characters (e.g., in the TotalCharges field).  
     - Standardized column names and formatted numeric fields.
     - Engineered new features such as `tenure_group` (to segment customers by their duration with the company) and `AvgCharges` (average monthly charge derived from TotalCharges/tenure).
@@ -56,7 +56,7 @@ with st.expander("Step 1: Data Cleaning & Preprocessing"):
     """)
 with st.expander("Step 2: Exploratory Data Analysis (EDA)"):
     st.markdown("""
-    **What We Did:**  
+    **Actions Taken:**  
     - Performed statistical summaries, correlation analyses, and visualizations to understand data distributions and relationships.  
     - Identified key trends and potential issues in the data, such as the impact of tenure and monthly charges on churn.
 
@@ -65,7 +65,7 @@ with st.expander("Step 2: Exploratory Data Analysis (EDA)"):
     """)
 with st.expander("Step 3: Modeling"):
     st.markdown("""
-    **What We Did:**  
+    **Actions Taken:**  
     - Evaluated multiple machine learning models (Logistic Regression, Decision Tree, and Random Forest) using 5-fold cross-validation.
     - Selected Logistic Regression as the best model based on its performance (approximately 80% accuracy).
     - Integrated the model’s predictions back into the dataset.
@@ -75,7 +75,7 @@ with st.expander("Step 3: Modeling"):
     """)
 with st.expander("Step 4: Deployment & Dashboard"):
     st.markdown("""
-    **What We Did:**  
+    **Actions Taken:**  
     - Developed an interactive Streamlit dashboard that dynamically visualizes key metrics and model predictions.
     - Enabled filtering (e.g., by tenure group) to allow stakeholders to explore the data in depth.
 
