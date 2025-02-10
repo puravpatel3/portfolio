@@ -137,9 +137,9 @@ else:
 selected_tenure = st.selectbox("Select Tenure Group for Analysis", tenure_order)
 filtered_df = df[df['tenure_group'] == selected_tenure]
 
-# Define a consistent, softer palette for churn:
+# Define a consistent, bolder yet still pastel-like palette for churn:
 # Light red for "Yes" and light blue for "No"
-churn_palette = {"Yes": "#ffcccb", "No": "#add8e6"}
+churn_palette = {"Yes": "#ff9999", "No": "#99ccff"}
 
 # Side-by-Side Visualizations
 col1, col2 = st.columns(2)
