@@ -8,7 +8,7 @@ import seaborn as sns
 st.set_page_config(page_title="Telco Customer Churn Analysis", layout="wide")
 
 # ------------------- Project Title -------------------
-st.title("Telco Customer Churn Analysis Portfolio Project")
+st.title("Telco Customer Churn Analysis")
 
 # ------------------- Project Summary -------------------
 st.header("Project Summary")
