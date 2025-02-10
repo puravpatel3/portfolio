@@ -42,9 +42,16 @@ This app is suitable for data professionals, analysts, or businesses looking to 
 st.subheader("Key Technologies Used")
 st.write("""
 - **Pandas**: Essential for data manipulation and preparation.  
-- **Plotly**: For generating visualizations for data analysis.  
+- **Plotly**: For generating interactive visualizations for data analysis.  
 - **Streamlit**: Used to build the interactive web application for EDA.
 """)
+
+# === (Optional Additional Sections) ===
+# You could add the following sections to match your other portfolio pages:
+# - **Project Steps**: Describe each step of your EDA process in expandable sections.
+# - **Dataset Preview**: Already included below.
+# - **Key Takeaways**: Summarize the insights gained from the EDA.
+# - **Next Steps**: Outline potential next steps or further analysis ideas.
 
 # ================================================================================================
 # Sidebar for file upload and filtering options
@@ -146,9 +153,13 @@ if 'data' in locals() and data is not None:
 st.write('### 3. Create Your Visualization')
 
 if 'data' in locals() and data is not None:
-    # Default values for X-axis, Y-axis, and chart type
-    x_axis = st.selectbox("Choose X-axis", options=data.columns, index=list(data.columns).index('Vehicle Model'))
-    y_axis = st.selectbox("Choose Y-axis", options=data.columns, index=list(data.columns).index('Energy Consumed (kWh)'))
+    # Default values for X-axis and Y-axis
+    # Updated defaults: X-axis to "Charging Cost (USD)" and Y-axis to "Charging Duration (hours)"
+    default_x = "Charging Cost (USD)" if "Charging Cost (USD)" in data.columns else data.columns[0]
+    default_y = "Charging Duration (hours)" if "Charging Duration (hours)" in data.columns else data.columns[1]
+    
+    x_axis = st.selectbox("Choose X-axis", options=data.columns, index=list(data.columns).index(default_x))
+    y_axis = st.selectbox("Choose Y-axis", options=data.columns, index=list(data.columns).index(default_y))
     chart_type = st.selectbox("Select chart type", ["Bar", "Line", "Scatter"], index=2)
 
     # Toggle for Top X values
