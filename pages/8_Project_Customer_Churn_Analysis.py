@@ -128,28 +128,33 @@ if 'tenure_group' not in df.columns:
 selected_tenure = st.selectbox("Select Tenure Group for Analysis", sorted(df['tenure_group'].unique()))
 filtered_df = df[df['tenure_group'] == selected_tenure]
 
+# Define a consistent palette for churn: Yes (red) and No (green)
+churn_palette = {"Yes": "red", "No": "green"}
+
 # Side-by-Side Visualizations
 col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Churn Distribution")
     fig1, ax1 = plt.subplots()
-    sns.countplot(x="Churn", data=filtered_df, palette="viridis", ax=ax1)
+    sns.countplot(x="Churn", data=filtered_df, palette=churn_palette, ax=ax1)
     ax1.set_title("Churn Count in Selected Tenure Group")
     st.pyplot(fig1)
 
 with col2:
     st.subheader("Monthly Charges vs. Total Charges")
     fig2, ax2 = plt.subplots()
-    sns.scatterplot(x="MonthlyCharges", y="TotalCharges", hue="Predicted_Churn", data=filtered_df, 
-                    palette="coolwarm", ax=ax2)
+    # Convert Predicted_Churn to string labels for consistent coloring
+    filtered_df['Predicted_Churn_str'] = filtered_df['Predicted_Churn'].replace({0: "No", 1: "Yes"})
+    sns.scatterplot(x="MonthlyCharges", y="TotalCharges", hue="Predicted_Churn_str", data=filtered_df, 
+                    palette=churn_palette, ax=ax2)
     ax2.set_title("Charges Comparison by Predicted Churn")
     st.pyplot(fig2)
 
 # Additional Visualization: Overall Churn Distribution by Tenure Group
 st.subheader("Overall Churn Distribution by Tenure Group")
 fig3, ax3 = plt.subplots(figsize=(10,6))
-sns.countplot(x="tenure_group", hue="Churn", data=df, palette="Set2", ax=ax3)
+sns.countplot(x="tenure_group", hue="Churn", data=df, palette=churn_palette, ax=ax3)
 ax3.set_title("Churn Count by Tenure Group")
 st.pyplot(fig3)
 
