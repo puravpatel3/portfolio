@@ -119,13 +119,22 @@ st.markdown("""
 # ------------------- Data Visualizations -------------------
 st.header("Data Visualizations")
 
-# Create a 'tenure_group' if it does not exist
-if 'tenure_group' not in df.columns:
-    df['tenure_group'] = pd.cut(df['tenure'], bins=[0, 12, 24, 48, 60, df['tenure'].max()],
-                                labels=['0-12', '12-24', '24-48', '48-60', '60+'])
+# Define the desired order and labels for tenure groups
+tenure_order = ["0-12 Months", "12-24 Months", "24-48 Months", "48-60 Months", "60+ Months"]
+
+# Create a 'tenure_group' if it does not exist, with the updated labels
+if 'tenure_group' not in df.columns or df['tenure_group'].dtype.name != 'category':
+    df['tenure_group'] = pd.cut(
+        df['tenure'],
+        bins=[0, 12, 24, 48, 60, df['tenure'].max()],
+        labels=tenure_order
+    )
+else:
+    # If it already exists but labels need to be updated
+    df['tenure_group'] = df['tenure_group'].cat.rename_categories(tenure_order)
 
 # Interactive Filter: Select Tenure Group
-selected_tenure = st.selectbox("Select Tenure Group for Analysis", sorted(df['tenure_group'].unique()))
+selected_tenure = st.selectbox("Select Tenure Group for Analysis", tenure_order)
 filtered_df = df[df['tenure_group'] == selected_tenure]
 
 # Define a consistent palette for churn: Yes (red) and No (green)
@@ -154,7 +163,7 @@ with col2:
 # Additional Visualization: Overall Churn Distribution by Tenure Group
 st.subheader("Overall Churn Distribution by Tenure Group")
 fig3, ax3 = plt.subplots(figsize=(10,6))
-sns.countplot(x="tenure_group", hue="Churn", data=df, palette=churn_palette, ax=ax3)
+sns.countplot(x="tenure_group", hue="Churn", data=df, palette=churn_palette, ax=ax3, order=tenure_order)
 ax3.set_title("Churn Count by Tenure Group")
 st.pyplot(fig3)
 
