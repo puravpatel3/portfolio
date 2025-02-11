@@ -96,7 +96,7 @@ def load_data(url):
 df = load_data(dataset_url)
 
 st.write("### Dataset Preview")
-st.dataframe(df.head(), height=400)
+st.dataframe(df.head(), height=250)
 
 st.markdown("""
 **Field Descriptions for Model Input Features:**
