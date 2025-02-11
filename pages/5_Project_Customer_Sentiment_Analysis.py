@@ -88,7 +88,7 @@ st.header("Dataset Preview")
 data_url = "https://github.com/puravpatel3/portfolio/raw/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv"
 df = pd.read_csv(data_url)
 df["review_date"] = pd.to_datetime(df["review_date"])
-st.dataframe(df.head(), height=400)
+st.dataframe(df.head(), height=250)
 
 st.markdown("""
 **Field Descriptions for Model Input Features:**
