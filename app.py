@@ -46,9 +46,12 @@ header {visibility: hidden;}
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # ------------------- Banner -------------------
-# Display the banner image without any overlaid text
-st.image("https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/pp_banner_linkedin.jfif", 
-         use_container_width=True)
+banner_url = "https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/pp_banner_linkedin.jfif"
+st.markdown(f"""
+<div style="width:100%;">
+  <img src="{banner_url}" style="width:100%; height:200px; object-fit: cover;">
+</div>
+""", unsafe_allow_html=True)
 
 # ------------------- Main Content -------------------
 st.markdown("<div class='main'>", unsafe_allow_html=True)
