@@ -49,7 +49,7 @@ st.markdown("<div class='main'>", unsafe_allow_html=True)
 
 # Banner Image (optional)
 st.image("https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/banner.jpg", 
-         use_column_width=True)
+         use_container_width=True)
 
 st.title("Welcome to My Portfolio")
 
@@ -63,7 +63,7 @@ complex business challenges, optimizing processes, and driving smarter decisions
 
 # Profile Image (centered)
 st.image("https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/profile.jpg", 
-         width=200, output_format="auto", clamp=True, use_column_width=False, caption="Purav Patel")
+         width=200, output_format="auto", clamp=True, use_container_width=False, caption="Purav Patel")
 
 # Professional Summary (resume, LinkedIn links)
 st.subheader("Professional Summary")
