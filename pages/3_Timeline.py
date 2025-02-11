@@ -23,8 +23,8 @@ roles = [
         "lon": -80.1918,
         "time": "Aug '14 — Sep '16",
         "accomplishments": [
-            "Responsible for managing logistics operations for Imaging Systems inbound to Miami & outbound to South America.", 
-            "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
+            "Managed logistics operations for Imaging Systems inbound to Miami and outbound to South America.", 
+            "Increased on-time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
             "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
         ]
     },
@@ -35,8 +35,8 @@ roles = [
         "lon": -74.0324,
         "time": "Oct '16 — Dec '18",
         "accomplishments": [
-            "Responsible for the digital development of the global logistics data warehouse providing visibility to $450M annual spend and setting up ERP with Oracle Transportation Management (OTM) data architecture.",
-            "Created global lead time standards for internal and external customer shipments by mining and modeling 5+ data sources (1M+ rows of data) leading to a change in 40% of incorrectly set up lead times.",
+            "Developed the global logistics data warehouse providing visibility to $450M annual spend and set up ERP with Oracle Transportation Management (OTM) data architecture.",
+            "Created global lead time standards for internal and external customer shipments by mining and modeling 5+ data sources (1M+ rows of data), changing 40% of incorrectly set up lead times.",
             "Defined the data architecture for the new OTM data source and overhauled the existing data source by removing 70% of redundant code and reducing load time by 90%."
         ]
     },
@@ -47,10 +47,10 @@ roles = [
         "lon": -74.0060,
         "time": "Jan '19 — Jun '21",
         "accomplishments": [
-            "Responsible for leading team of 2 Product Owners focused on developing analytical tools to streamline the order execution process, support logistics cost savings initiatives, and provide visibility to logistics lead times.",
-            "Led multiple continuous improvement events to revamp OTD analytics: expanded automated defect reason codes from 4 to 50+, provided visibility to cross-functional defect relationships, and developed function specific analytics views.",
-            "Supported logistics projects (Air to Ocean, Premium Reduction, Consolidations) by developing cost focused analytical views helping enable $2.5M in cost savings.",
-            "Developed lead time analytical views to identify and rectify manufacturing lead time gaps improving adherence by 15%."
+            "Led a team of 2 Product Owners focused on developing analytical tools to streamline the order execution process, support logistics cost savings initiatives, and provide visibility to logistics lead times.",
+            "Led multiple continuous improvement events to revamp OTD analytics: expanded automated defect reason codes from 4 to 50+, provided visibility to cross-functional defect relationships, and developed function-specific analytics views.",
+            "Supported logistics projects (Air to Ocean, Premium Reduction, Consolidations) by developing cost-focused analytical views, helping enable $2.5M in cost savings.",
+            "Developed lead time analytical views to identify and rectify manufacturing lead time gaps, improving adherence by 15%."
         ]
     },
     {
@@ -60,24 +60,31 @@ roles = [
         "lon": -75.5346,  # Updated longitude for Glen Mills, PA
         "time": "Jul '21 — Present",
         "accomplishments": [
-            "Responsible for coaching a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on time delivery, cost reduction and process standard work.",
+            "Coached a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on-time delivery, cost reduction, and process standard work.",
             "Implemented a machine learning model in Python (sklearn) to predict On-Time Delivery (OTD) with 70% accuracy, enabling proactive order management and fulfillment.",
             "Developed and deployed a machine learning model in Python to predict delivery dates with 74% accuracy, enabling supply chain teams to better anticipate delays and improve delivery reliability.",
-            "Engineered a Python-based solution to align aging inventory with open order demand, uncovering a $5M opportunity by optimizing inventory allocation across regions, sub-regions, and distribution orgs.",
+            "Engineered a Python-based solution to align aging inventory with open order demand, uncovering a $5M opportunity by optimizing inventory allocation across regions, sub-regions, and distribution organizations.",
             "Hosted a company-wide ‘Intro to AI’ workshop for 200+ employees, demonstrating actionable steps to leverage AI in both professional and personal contexts to drive efficiency across everyday tasks."
         ]
     }
 ]
 
-# Set up session state to track current role index (start with first role by default)
+# ------------------- Session State Initialization -------------------
 if 'role_index' not in st.session_state:
     st.session_state['role_index'] = 0  # Start with the first role
 
-# Function to show role details and map location
+# ------------------- Sidebar Role Selector -------------------
+# Add a selectbox to allow direct role selection
+role_names = [role["role"] for role in roles]
+selected_role = st.sidebar.selectbox("Select Role", role_names)
+# Update session state index based on the selection
+st.session_state['role_index'] = role_names.index(selected_role)
+
+# ------------------- Function to Show Role Details and Map -------------------
 def show_role_details(role):
     col1, col2 = st.columns([2, 1])
 
-    # Left side: role details
+    # Left side: Role Details
     with col1:
         st.write(f"### {role['role']}")
         st.write(f"**Location:** {role['location']}")
@@ -86,7 +93,7 @@ def show_role_details(role):
         for accomplishment in role['accomplishments']:
             st.write(f"- {accomplishment}")
 
-        # Previous and Next buttons below the role description
+        # Previous and Next buttons
         col_prev, col_next = st.columns([1, 1])
         with col_prev:
             if st.button("⬅️ Previous"):
@@ -95,7 +102,7 @@ def show_role_details(role):
             if st.button("➡️ Next"):
                 st.session_state['role_index'] = (st.session_state['role_index'] + 1) % len(roles)
 
-    # Right side: Map view
+    # Right side: Map Visualization
     with col2:
         st.pydeck_chart(pdk.Deck(
             map_style='mapbox://styles/mapbox/light-v9',
@@ -104,16 +111,22 @@ def show_role_details(role):
                 longitude=role['lon'],
                 zoom=10,
                 pitch=50,
-            )
+            ),
+            layers=[
+                pdk.Layer(
+                    'ScatterplotLayer',
+                    data=[{"lat": role["lat"], "lon": role["lon"]}],
+                    get_position='[lon, lat]',
+                    get_color='[200, 30, 0, 160]',
+                    get_radius=200,
+                )
+            ]
         ))
 
-# Timeline Page
+# ------------------- Main Timeline Page -------------------
 def show_timeline():
     st.title("Professional Timeline")
-
-    # Display the current role details and map
     role = roles[st.session_state['role_index']]
     show_role_details(role)
 
-# Call show_timeline directly since this is part of the pages directory
 show_timeline()
