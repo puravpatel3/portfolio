@@ -24,7 +24,7 @@ roles = [
         "time": "Aug '14 — Sep '16",
         "accomplishments": [
             "Managed logistics operations for Imaging Systems inbound to Miami and outbound to South America.", 
-            "Increased on-time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
+            "Increased on time delivery by 16% by developing and implementing standard work with primary logistics carriers.",
             "Planned and executed ~130 Magnetic Resonance (MR) shipments inbound to Miami and outbound to Latin America."
         ]
     },
@@ -60,7 +60,7 @@ roles = [
         "lon": -75.5346,  # Updated longitude for Glen Mills, PA
         "time": "Jul '21 — Present",
         "accomplishments": [
-            "Coached a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on-time delivery, cost reduction, and process standard work.",
+            "Coached a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on time delivery, cost reduction, and process standard work.",
             "Implemented a machine learning model in Python (sklearn) to predict On-Time Delivery (OTD) with 70% accuracy, enabling proactive order management and fulfillment.",
             "Developed and deployed a machine learning model in Python to predict delivery dates with 74% accuracy, enabling supply chain teams to better anticipate delays and improve delivery reliability.",
             "Engineered a Python-based solution to align aging inventory with open order demand, uncovering a $5M opportunity by optimizing inventory allocation across regions, sub-regions, and distribution organizations.",
@@ -73,60 +73,56 @@ roles = [
 if 'role_index' not in st.session_state:
     st.session_state['role_index'] = 0  # Start with the first role
 
-# ------------------- Sidebar Role Selector -------------------
-# Add a selectbox to allow direct role selection
+# ------------------- Role Selector (Placed Below the Title) -------------------
+st.title("Professional Timeline")
 role_names = [role["role"] for role in roles]
-selected_role = st.sidebar.selectbox("Select Role", role_names)
-# Update session state index based on the selection
+selected_role = st.selectbox("Select Role", role_names, index=st.session_state['role_index'])
 st.session_state['role_index'] = role_names.index(selected_role)
 
-# ------------------- Function to Show Role Details and Map -------------------
-def show_role_details(role):
-    col1, col2 = st.columns([2, 1])
+# ------------------- Main Layout: Role Details & Map -------------------
+col1, col2 = st.columns([2, 3])
 
-    # Left side: Role Details
-    with col1:
-        st.write(f"### {role['role']}")
-        st.write(f"**Location:** {role['location']}")
-        st.write(f"**Time Worked:** {role['time']}")
-        st.write("**Top Accomplishments:**")
-        for accomplishment in role['accomplishments']:
-            st.write(f"- {accomplishment}")
+# Left Column: Role Details
+with col1:
+    current_role = roles[st.session_state['role_index']]
+    st.write(f"### {current_role['role']}")
+    st.write(f"**Location:** {current_role['location']}")
+    st.write(f"**Time Worked:** {current_role['time']}")
+    st.write("**Top Accomplishments:**")
+    for accomplishment in current_role['accomplishments']:
+        st.write(f"- {accomplishment}")
 
-        # Previous and Next buttons
-        col_prev, col_next = st.columns([1, 1])
-        with col_prev:
-            if st.button("⬅️ Previous"):
-                st.session_state['role_index'] = (st.session_state['role_index'] - 1) % len(roles)
-        with col_next:
-            if st.button("➡️ Next"):
-                st.session_state['role_index'] = (st.session_state['role_index'] + 1) % len(roles)
-
-    # Right side: Map Visualization
-    with col2:
-        st.pydeck_chart(pdk.Deck(
-            map_style='mapbox://styles/mapbox/light-v9',
-            initial_view_state=pdk.ViewState(
-                latitude=role['lat'],
-                longitude=role['lon'],
-                zoom=10,
-                pitch=50,
-            ),
-            layers=[
-                pdk.Layer(
-                    'ScatterplotLayer',
-                    data=[{"lat": role["lat"], "lon": role["lon"]}],
-                    get_position='[lon, lat]',
-                    get_color='[200, 30, 0, 160]',
-                    get_radius=200,
-                )
-            ]
-        ))
-
-# ------------------- Main Timeline Page -------------------
-def show_timeline():
-    st.title("Professional Timeline")
-    role = roles[st.session_state['role_index']]
-    show_role_details(role)
-
-show_timeline()
+# Right Column: Map with Markers for All Roles
+with col2:
+    # Create a list of markers for all roles, marking the selected role
+    markers = []
+    for role in roles:
+        markers.append({
+            "lat": role["lat"],
+            "lon": role["lon"],
+            "role": role["role"],
+            "selected": role["role"] == current_role["role"]
+        })
+    # Create a pydeck ScatterplotLayer
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=markers,
+        get_position="[lon, lat]",
+        get_color="(selected ? [255, 165, 0, 255] : [200, 200, 200, 150])",
+        get_radius="(selected ? 15000 : 8000)",
+        pickable=True,
+    )
+    # Set the view state to cover the United States
+    view_state = pdk.ViewState(
+        latitude=39.8283,  # Center of the US roughly
+        longitude=-98.5795,
+        zoom=3.5,
+        pitch=0
+    )
+    # Create the deck with the layer and a tooltip that shows the role name
+    deck = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        tooltip={"text": "{role}"}
+    )
+    st.pydeck_chart(deck)
