@@ -110,7 +110,7 @@ date_range = st.sidebar.date_input("Select Date Range", [min_date, max_date], mi
 
 # Product ID Filter
 product_options = df["ProductId"].unique()
-selected_product = st.sidebar.selectbox("🛍Select Product ID", ["All"] + list(product_options))
+selected_product = st.sidebar.selectbox("Select Product ID", ["All"] + list(product_options))
 
 # Sentiment Filter
 sentiment_options = ["All", "Positive", "Neutral", "Negative"]
