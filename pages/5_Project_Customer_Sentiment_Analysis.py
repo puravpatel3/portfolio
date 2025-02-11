@@ -18,13 +18,13 @@ st.title("Customer Sentiment Analysis on Amazon Product Reviews")
 st.header("Project Summary")
 st.write("""
 This project analyzes **Amazon product reviews** using **sentiment analysis** and **Aspect-Based Sentiment Analysis (ABSA)** to extract insights from customer feedback.
-By applying **natural language processing (NLP)**, we classify reviews as **positive, neutral, or negative**, determine sentiment trends over time, and identify specific aspects customers discuss.
+By applying **natural language processing (NLP)**, I classify reviews as **positive, neutral, or negative**, determine sentiment trends over time, and identify specific aspects discussed by customers.
 
-Our goal is to uncover actionable insights that businesses can use to improve **product offerings, marketing strategies, and customer satisfaction**.
+The goal is to uncover actionable insights that businesses can use to improve **product offerings, marketing strategies, and customer satisfaction**.
 
 - **Dataset**: [Amazon Reviews Dataset](https://github.com/puravpatel3/portfolio/blob/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv)
 - **Timeframe Analyzed**: **10/26/2010 – 10/26/2012**
-- **Key Insights**: Identify which products receive the best/worst sentiment and what specific aspects drive customer satisfaction or complaints.
+- **Key Insights**: Identify which products receive the best/worst sentiment and determine which specific aspects drive customer satisfaction or complaints.
 """)
 
 # ---- 3️⃣ Use Case ----
@@ -41,13 +41,13 @@ st.write("""
 # ---- 4️⃣ Key Technologies Used ----
 st.header("Key Technologies Used")
 st.write("""
-- **Python**: Data processing & sentiment analysis.
+- **Python**: Data processing and sentiment analysis.
 - **pandas**: Data manipulation.
 - **matplotlib & seaborn**: Data visualization.
-- **Streamlit**: Interactive dashboard.
+- **Streamlit**: Interactive dashboard development.
 - **VADER Sentiment Analysis**: Classifies overall sentiment.
 - **spaCy NLP**: Extracts relevant product aspects.
-- **Transformers (BERT)**: Aspect-Based Sentiment Analysis (ABSA).
+- **Transformers (BERT)**: Performs Aspect-Based Sentiment Analysis (ABSA).
 """)
 
 # ---- 5️⃣ Project Steps ----
@@ -55,32 +55,32 @@ st.header("Project Steps")
 
 with st.expander("Step 1: Data Cleaning & Preparation"):
     st.write("""
-    - **Filtered dataset** to only include reviews from the latest 2 years (10/26/2010 - 10/26/2012).
-    - **Reduced file size** by keeping only the top 50 most-reviewed products.
+    - **Filtered the dataset** to include reviews from the latest 2 years (10/26/2010 - 10/26/2012).
+    - **Reduced file size** by retaining only the top 50 most-reviewed products.
     - **Converted timestamps** to human-readable review dates.
     - **Removed missing values** and irrelevant columns.
     """)
 
-with st.expander("Step 2: Sentiment Analysis (VADER)") :
+with st.expander("Step 2: Sentiment Analysis (VADER)"):
     st.write("""
-    - Used **VADER (Valence Aware Dictionary and sEntiment Reasoner)** to classify reviews as **Positive, Neutral, or Negative**.
+    - Applied **VADER (Valence Aware Dictionary and sEntiment Reasoner)** to classify reviews as **Positive, Neutral, or Negative**.
     - Extracted **compound sentiment scores** to quantify sentiment intensity.
-    - Applied **text preprocessing** (lowercasing, punctuation removal) to improve accuracy.
+    - Performed **text preprocessing** (lowercasing, punctuation removal) to enhance accuracy.
     """)
 
-with st.expander("Step 3: Aspect-Based Sentiment Analysis (ABSA)") :
+with st.expander("Step 3: Aspect-Based Sentiment Analysis (ABSA)"):
     st.write("""
     - Extracted key **aspects** from review text using **spaCy NLP**.
-    - Applied **BERT-based ABSA** to determine sentiment for each aspect.
-    - Filtered out **stop words and irrelevant terms** to keep only meaningful aspects.
+    - Utilized a **BERT-based ABSA** approach to determine sentiment for each aspect.
+    - Filtered out **stop words and irrelevant terms** to retain only meaningful aspects.
     """)
 
-with st.expander("Step 4: Visualization & Insights") :
+with st.expander("Step 4: Visualization & Insights"):
     st.write("""
-    - Created **Sentiment Distribution** (positive, neutral, negative %).
-    - Developed **Word Cloud** to visualize frequently mentioned aspects.
-    - Added **Sentiment Over Time** visualization (Quarterly trend).
-    - Enabled **interactive filters** for dynamic analysis.
+    - Created a **Sentiment Distribution** visualization showing the proportions of positive, neutral, and negative reviews.
+    - Developed a **Word Cloud** to display frequently mentioned aspects in the reviews.
+    - Plotted **Sentiment Over Time** (quarterly trend) to observe how sentiment evolves.
+    - Enabled **interactive filters** for dynamic analysis of the review data.
     """)
 
 # ---- Sidebar Filters ----
@@ -127,7 +127,8 @@ with col1:
     st.subheader("Sentiment Distribution")
     sentiment_counts = filtered_df["overall_sentiment"].value_counts()
     fig, ax = plt.subplots(figsize=(5, 4))
-    sns.barplot(x=sentiment_counts.index, y=sentiment_counts.values, palette={"Positive": "green", "Neutral": "gray", "Negative": "red"}, ax=ax)
+    sns.barplot(x=sentiment_counts.index, y=sentiment_counts.values, 
+                palette={"Positive": "green", "Neutral": "gray", "Negative": "red"}, ax=ax)
     ax.set_xlabel("Sentiment")
     ax.set_ylabel("Number of Reviews")
     st.pyplot(fig)
@@ -166,29 +167,26 @@ with col4:
 
 # ---- Key Takeaways ----
 st.header("Key Takeaways")
-
 st.write("""
 - **Positive Sentiment Dominates**
-  - Most reviews are **positive**, meaning customers generally like the products.
-  - This is useful for marketing teams to highlight strong product features.
+  - Most reviews are **positive**, indicating that customers generally appreciate the products.
+  - This insight is useful for marketing teams to emphasize strong product features.
 
-- **Negative Reviews Offer Improvement Areas**
-  - Negative reviews highlight **pain points** such as packaging issues, product quality, or misleading descriptions.
-  - Companies can use this data to improve **customer experience**.
+- **Negative Reviews Highlight Areas for Improvement**
+  - Negative reviews pinpoint **pain points** such as packaging issues, product quality, or misleading descriptions.
+  - Companies can use this data to enhance the customer experience.
 
-- **Sentiment Fluctuates Over Time**
-  - Seasonal trends affect product sentiment (e.g., holiday season spikes).
-  - Businesses can time **promotions and improvements** based on sentiment trends.
+- **Sentiment Trends Over Time**
+  - Quarterly sentiment trends reveal seasonal patterns that can inform promotional timing and product updates.
 
-- **🛠 Aspect-Based Insights Provide Granularity**
-  - Instead of a general positive/negative rating, **ABSA identifies which product features drive sentiment**.
-  - Example: Coffee drinkers love "bold flavor" but dislike "weak aroma."
+- **Aspect-Based Insights**
+  - Aspect-based sentiment analysis provides granular insights by identifying specific product features that drive sentiment.
 """)
 
 # ---- Next Steps ----
 st.header("Next Steps")
 st.write("""
-- Expand analysis to **more product categories**.
-- Integrate **real-time sentiment monitoring** from live customer reviews.
-- Improve **aspect sentiment classification** using **advanced BERT models**.
+- Expand the analysis to additional product categories.
+- Integrate real-time sentiment monitoring from live customer reviews.
+- Refine aspect-based sentiment classification using advanced BERT models.
 """)
