@@ -14,10 +14,10 @@ st.title("Telco Customer Churn Analysis")
 st.header("Project Summary")
 st.markdown("""
 **Objective:**  
-The goal of this project is to analyze customer churn in the telecommunications industry and develop a robust predictive model to identify at-risk customers. We evaluated several models using 5-fold cross-validation and selected Logistic Regression—which achieved a prediction rate (accuracy) of approximately 80%. This model empowers the business to anticipate churn, enabling targeted retention strategies and proactive customer engagement.
+The goal of this project is to analyze customer churn in the telecommunications industry and develop a robust predictive model to identify at-risk customers. I evaluated several models using 5-fold cross-validation and selected Logistic Regression, which achieved a prediction rate (accuracy) of approximately 80%. This model enables the business to anticipate churn, facilitating targeted retention strategies and proactive customer engagement.
 
 **Dataset:**  
-We utilize an enriched Telco Customer Churn dataset that includes both original customer data and machine learning predictions. The dataset is hosted on GitHub for seamless integration and deployment.
+An enriched Telco Customer Churn dataset is utilized, containing both original customer data and machine learning predictions. The dataset is hosted on GitHub for seamless integration and deployment.
 
 **Business Impact:**  
 Reducing churn is vital for revenue maximization. By accurately identifying customers at risk of leaving, the company can launch targeted interventions, reduce revenue loss, and improve overall customer satisfaction and loyalty. This predictive model serves as a strategic tool to drive data-informed retention efforts.
@@ -26,7 +26,7 @@ Reducing churn is vital for revenue maximization. By accurately identifying cust
 # ------------------- Use Case -------------------
 st.header("Use Case")
 st.markdown("""
-- **Customer Retention:** Identify and engage customers who are likely to churn through targeted retention programs.
+- **Customer Retention:** Identify and engage customers likely to churn through targeted retention programs.
 - **Revenue Maximization:** Prevent revenue loss by addressing churn proactively with personalized offers.
 - **Operational Efficiency:** Enhance customer service and marketing strategies by leveraging data-driven insights.
 """)
@@ -47,28 +47,28 @@ st.header("Project Steps")
 with st.expander("Step 1: Data Cleaning & Preprocessing"):
     st.markdown("""
     **Actions Taken:**  
-    - Cleaned the raw dataset by removing missing values and extraneous characters (e.g., in the TotalCharges field).  
-    - Standardized column names and formatted numeric fields.
-    - Engineered new features such as `tenure_group` (to segment customers by their duration with the company) and `AvgCharges` (average monthly charge derived from TotalCharges/tenure).
+    - I cleaned the raw dataset by removing missing values and extraneous characters (e.g., in the TotalCharges field).  
+    - I standardized column names and formatted numeric fields.
+    - I engineered new features such as `tenure_group` (to segment customers by their duration with the company) and `AvgCharges` (average monthly charge derived from TotalCharges/tenure).
 
     **Why It’s Important:**  
-    Proper data cleaning and feature engineering ensure the dataset is reliable and insightful, forming a solid foundation for accurate predictive modeling.
+    Proper data cleaning and feature engineering ensure that the dataset is reliable and insightful, forming a solid foundation for accurate predictive modeling.
     """)
 with st.expander("Step 2: Exploratory Data Analysis (EDA)"):
     st.markdown("""
     **Actions Taken:**  
-    - Performed statistical summaries, correlation analyses, and visualizations to understand data distributions and relationships.  
-    - Identified key trends and potential issues in the data, such as the impact of tenure and monthly charges on churn.
+    - I performed statistical summaries, correlation analyses, and visualizations to understand data distributions and relationships.  
+    - I identified key trends and potential issues in the data, such as the impact of tenure and monthly charges on churn.
 
     **Why It’s Important:**  
-    EDA helps uncover hidden patterns and informs subsequent feature selection and model development, ensuring our predictive model targets the most influential factors.
+    Exploratory data analysis uncovers hidden patterns and informs subsequent feature selection and model development, ensuring that the predictive model targets the most influential factors.
     """)
 with st.expander("Step 3: Modeling"):
     st.markdown("""
     **Actions Taken:**  
-    - Evaluated multiple machine learning models (Logistic Regression, Decision Tree, and Random Forest) using 5-fold cross-validation.
-    - Selected Logistic Regression as the best model based on its performance (approximately 80% accuracy).
-    - Integrated the model’s predictions back into the dataset.
+    - I evaluated multiple machine learning models (Logistic Regression, Decision Tree, and Random Forest) using 5-fold cross-validation.
+    - I selected Logistic Regression as the best model based on its performance (approximately 80% accuracy).
+    - I integrated the model’s predictions back into the dataset.
 
     **Why It’s Important:**  
     The modeling step provides a data-driven method to predict customer churn, which is critical for identifying at-risk customers and deploying effective retention strategies.
@@ -76,8 +76,8 @@ with st.expander("Step 3: Modeling"):
 with st.expander("Step 4: Deployment & Dashboard"):
     st.markdown("""
     **Actions Taken:**  
-    - Developed an interactive Streamlit dashboard that dynamically visualizes key metrics and model predictions.
-    - Enabled filtering (e.g., by tenure group) to allow stakeholders to explore the data in depth.
+    - I developed an interactive Streamlit dashboard that dynamically visualizes key metrics and model predictions.
+    - I enabled filtering (e.g., by tenure group) to allow stakeholders to explore the data in depth.
 
     **Why It’s Important:**  
     An interactive dashboard facilitates clear communication of insights and supports executive-level decision-making by providing real-time, actionable information.
@@ -174,9 +174,9 @@ st.markdown("""
 - **Insightful Trends:**  
   Analysis reveals that customer churn is significantly influenced by tenure, monthly charges, and contract types.
 - **Model Performance:**  
-  Our best-performing model (Logistic Regression) achieved approximately 80% accuracy, serving as a strong baseline for predicting churn.
+  The best-performing model (Logistic Regression) achieved approximately 80% accuracy, serving as a strong baseline for predicting churn.
 - **Actionable Strategies:**  
-  By identifying at-risk customers, the business can implement targeted retention campaigns and optimize resource allocation to improve customer loyalty and revenue.
+  By identifying at-risk customers, targeted retention campaigns can be implemented and resource allocation optimized to improve customer loyalty and revenue.
 """)
 
 # ------------------- Next Steps -------------------
