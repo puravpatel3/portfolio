@@ -137,39 +137,43 @@ filtered_df = df[df['tenure_group'] == selected_tenure]
 # Define a consistent, bolder yet still pastel-like palette for churn:
 churn_palette = {"Yes": "#ff9999", "No": "#99ccff"}
 
-# --- Visualization 1: Churn Distribution ---
-st.subheader("Churn Distribution")
-# Compute counts by churn status
-churn_counts = filtered_df["Churn"].value_counts().reset_index()
-churn_counts.columns = ["Churn", "Count"]
-fig1 = px.bar(churn_counts, x="Churn", y="Count", 
-              color="Churn", 
-              color_discrete_map=churn_palette,
-              hover_data={"Count": ":,d"},
-              title="Churn Count in Selected Tenure Group")
-fig1.update_layout(xaxis_title="Churn", yaxis_title="Number of Customers", hovermode="x unified")
-st.plotly_chart(fig1, use_container_width=True)
+# Place the Churn Distribution and Charges Comparison charts side by side
+col1, col2 = st.columns(2)
 
-# --- Visualization 2: Monthly Charges vs. Total Charges ---
-st.subheader("Charges Comparison by Predicted Churn")
-# Convert Predicted_Churn to string labels for consistency
-filtered_df['Predicted_Churn_str'] = filtered_df['Predicted_Churn'].replace({0: "No", 1: "Yes"})
-fig2 = px.scatter(filtered_df, x="MonthlyCharges", y="TotalCharges", 
-                  color="Predicted_Churn_str", 
+with col1:
+    st.subheader("Churn Distribution")
+    # Compute counts by churn status
+    churn_counts = filtered_df["Churn"].value_counts().reset_index()
+    churn_counts.columns = ["Churn", "Count"]
+    fig1 = px.bar(churn_counts, x="Churn", y="Count", 
+                  color="Churn", 
                   color_discrete_map=churn_palette,
-                  title="Monthly Charges vs. Total Charges",
-                  hover_data={"MonthlyCharges": ":$,.2f", "TotalCharges": ":$,.2f"})
-fig2.update_layout(xaxis_title="Monthly Charges ($)", yaxis_title="Total Charges ($)", hovermode="closest")
-st.plotly_chart(fig2, use_container_width=True)
+                  hover_data={"Count": ":,d"},
+                  title="Churn Count in Selected Tenure Group")
+    fig1.update_layout(xaxis_title="Churn", yaxis_title="Number of Customers", hovermode="x unified")
+    st.plotly_chart(fig1, use_container_width=True)
 
-# --- Visualization 3: Overall Churn Distribution by Tenure Group ---
+with col2:
+    st.subheader("Charges Comparison by Predicted Churn")
+    # Convert Predicted_Churn to string labels for consistency
+    filtered_df['Predicted_Churn_str'] = filtered_df['Predicted_Churn'].replace({0: "No", 1: "Yes"})
+    fig2 = px.scatter(filtered_df, x="MonthlyCharges", y="TotalCharges", 
+                      color="Predicted_Churn_str", 
+                      color_discrete_map=churn_palette,
+                      title="Monthly Charges vs. Total Charges",
+                      hover_data={"MonthlyCharges": ":$,.2f", "TotalCharges": ":$,.2f"})
+    fig2.update_layout(xaxis_title="Monthly Charges ($)", yaxis_title="Total Charges ($)", hovermode="closest")
+    st.plotly_chart(fig2, use_container_width=True)
+
+# Visualization 3: Overall Churn Distribution by Tenure Group (Grouped Bars)
 st.subheader("Overall Churn Distribution by Tenure Group")
 overall_counts = df.groupby(["tenure_group", "Churn"]).size().reset_index(name="Count")
 fig3 = px.bar(overall_counts, x="tenure_group", y="Count", color="Churn",
               color_discrete_map=churn_palette,
               title="Churn Count by Tenure Group",
-              hover_data={"Count": ":,d"})
-fig3.update_layout(xaxis_title="Tenure Group", yaxis_title="Number of Customers", barmode="stack", hovermode="x unified")
+              hover_data={"Count": ":,d"},
+              barmode="group")
+fig3.update_layout(xaxis_title="Tenure Group", yaxis_title="Number of Customers", hovermode="x unified")
 st.plotly_chart(fig3, use_container_width=True)
 
 # ------------------- Key Takeaways -------------------
