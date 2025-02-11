@@ -1,5 +1,7 @@
 import streamlit as st
 import pydeck as pdk  # For map visualization
+import pandas as pd
+import plotly.express as px
 
 # List of roles with their corresponding locations and accomplishments
 roles = [
@@ -56,8 +58,8 @@ roles = [
     {
         "role": "Senior Order Fulfillment Analytics Manager",
         "location": "Glen Mills, PA",
-        "lat": 39.8918,  # Updated latitude for Glen Mills, PA
-        "lon": -75.5346,  # Updated longitude for Glen Mills, PA
+        "lat": 39.8918,
+        "lon": -75.5346,
         "time": "Jul '21 — Present",
         "accomplishments": [
             "Coached a global team of 4 Product Owners focused on analytical reporting and maintaining a pipeline of projects to improve revenue linearity, on-time delivery, cost reduction, and process standard work.",
@@ -81,12 +83,12 @@ st.title("Professional Timeline")
 selected_role = st.selectbox("Select Role", role_names, index=st.session_state['role_index'])
 st.session_state['role_index'] = role_names.index(selected_role)
 
-# ------------------- Main Layout: Role Details and Map -------------------
+# ------------------- Function to Show Role Details and Map -------------------
 def show_role_details(role):
-    # Define columns: left for details, right for the map.
-    # Adjust the column widths: 2 for details and 1.5 for the map (reducing map width by ~1/3).
+    # Define columns: left for details, right for map
+    # Use a column ratio of 2:1.5 (map width reduced)
     col1, col2 = st.columns([2, 1.5])
-
+    
     # Left side: Role Details
     with col1:
         st.write(f"### {role['role']}")
@@ -95,47 +97,58 @@ def show_role_details(role):
         st.write("**Top Accomplishments:**")
         for accomplishment in role['accomplishments']:
             st.write(f"- {accomplishment}")
-
-    # Right side: Map with all roles, focused on selected role's location
+    
+    # Right side: Map with markers for all roles, but focused on the selected role
     with col2:
-        # Build marker data for all roles
-        markers = []
+        # Prepare marker data with custom sizes and colors
+        processed_markers = []
         for r in roles:
-            markers.append({
-                "lat": r["lat"],
-                "lon": r["lon"],
-                "role": r["role"],
-                # Remove distinct color: all markers will be the same to avoid overbearing highlight
-                "selected": r["role"] == role["role"]
-            })
-        # Set the view state centered on the selected role with a reduced width focus
+            if r["role"] == role["role"]:
+                processed_markers.append({
+                    "lat": r["lat"],
+                    "lon": r["lon"],
+                    "role": r["role"],
+                    "radius": 15000,
+                    "color": [255, 165, 0, 255]  # Bright orange for selected role
+                })
+            else:
+                processed_markers.append({
+                    "lat": r["lat"],
+                    "lon": r["lon"],
+                    "role": r["role"],
+                    "radius": 300,  # Very small marker for others
+                    "color": [200, 200, 200, 50]  # Light gray, nearly transparent
+                })
+        
+        # Set the view state centered on the selected role
         view_state = pdk.ViewState(
             latitude=role["lat"],
             longitude=role["lon"],
             zoom=10,
             pitch=0
         )
-        # Create a ScatterplotLayer with a uniform color for all markers
+        
+        # Create a ScatterplotLayer using the processed markers
         layer = pdk.Layer(
             "ScatterplotLayer",
-            data=markers,
-            get_position='[lon, lat]',
-            get_color="[200, 200, 200, 150]",  # Uniform gray color for all markers
-            get_radius=8000,
+            data=processed_markers,
+            get_position="[lon, lat]",
+            get_color="color",
+            get_radius="radius",
             pickable=True,
         )
-        # Create the deck; note that we maintain the original map height
+        
+        # Create the deck with the layer; set height increased to 400 pixels while width is determined by column width
         deck = pdk.Deck(
             layers=[layer],
             initial_view_state=view_state,
             tooltip={"text": "{role}"}
         )
-        st.pydeck_chart(deck, height=300)  # Set height as before
+        st.pydeck_chart(deck, height=400)
 
 # ------------------- Horizontal Timeline Visualization -------------------
 def show_horizontal_timeline():
-    # Create a simple horizontal timeline using a Plotly scatter plot.
-    # Use the global variable role_names.
+    global role_names
     timeline_df = pd.DataFrame({
         "Role": role_names,
         "Index": list(range(len(role_names)))
