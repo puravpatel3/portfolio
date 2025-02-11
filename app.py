@@ -1,77 +1,83 @@
 import streamlit as st
 
-# Set page configuration with the new page title
+# ------------------- Page Configuration -------------------
 st.set_page_config(page_title="Welcome", layout="wide")
 
-# Main App layout
-def main():
-    # Title for the Welcome page
-    st.title("Welcome to My Portfolio")
+# Custom CSS to center images and adjust layout
+custom_css = """
+<style>
+/* Hide Streamlit default menu and footer */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
 
-    # Create two columns
-    col1, col2 = st.columns([1, 1])  # Left (Introduction) and Right (Professional Summary)
+/* Center the main content */
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    # Left column: Introduction
-    with col1:
-        st.subheader("Introduction")
-        st.write("""
-        I am a Senior Analytics Leader with 10+ years of experience transforming data into actionable insights 
-        through business intelligence, machine learning, and artificial intelligence. My career focus has been on 
-        solving complex business challenges, optimizing processes, and driving smarter decisions for organizations. 
-        My expertise includes:
-        """)
+/* Style for banner image */
+.banner-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+}
 
-        # Adding bullet points for career highlights
-        st.write("""
-        - **Business Intelligence & Python**: Building predictive models and data-driven solutions to streamline operations and reduce inefficiencies.
-        - **Leadership in Process Improvement**: Passionate about cross-functional collaboration, aligning teams, and delivering results that enhance business performance.
-        - **Strategic Growth & Innovation**: Skilled in developing dashboards aligned to functional processes, improving decision-making at both operational and executive levels.
+/* Center the profile image */
+.profile-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    width: 200px;
+}
 
-        **Key Career Highlights**:
-        - **Proven Leadership**: A track record of leading teams and driving strategic growth by leveraging data and analytics to make impactful business decisions.
-        - **Advanced Analytics**: Consistently pushing boundaries through the development of machine learning models and AI-driven applications.
-        - View my [Resume](https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf) or Timeline page to see more details on my career.
-        """)
+/* Style the social icons */
+.social-icons a {
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #0077b5; /* LinkedIn blue; customize as needed */
+}
+</style>
+"""
+st.markdown(custom_css, unsafe_allow_html=True)
 
-        # Adding hyperlinks for LinkedIn and Resume
-        st.markdown("""
-        **[View my LinkedIn](https://www.linkedin.com/in/puravp)**  
-        **[View my Resume](https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf)**
-        """)
+# ------------------- Main Content -------------------
+st.markdown("<div class='main'>", unsafe_allow_html=True)
 
-    # Right column: Professional Summary
-    with col2:
-        st.subheader("Professional Summary")
+# Banner Image (optional)
+st.image("https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/banner.jpg", 
+         use_column_width=True)
 
-        st.write("""
-        <style>
-        .role-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .role-details {
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+st.title("Welcome to My Portfolio")
 
-        st.write("""
-        <p class="role-title">Senior Order Fulfillment Analytics Manager</p>
-        <p class="role-details">Location: Glen Mills, PA<br>Time Worked: Jul '21 — Present</p>
+# Professional Introduction (centered)
+st.subheader("Introduction")
+st.write("""
+I am a Senior Analytics Leader with 10+ years of experience transforming data into actionable insights 
+through business intelligence, machine learning, and artificial intelligence. My career focuses on solving 
+complex business challenges, optimizing processes, and driving smarter decisions for organizations.
+""")
 
-        <p class="role-title">Order Execution & Logistics Analytics Manager</p>
-        <p class="role-details">Location: Manhattan, NY<br>Time Worked: Jan '19 — Jun '21</p>
+# Profile Image (centered)
+st.image("https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/profile.jpg", 
+         width=200, output_format="auto", clamp=True, use_column_width=False, caption="Purav Patel")
 
-        <p class="role-title">Logistics Analytics Product Owner</p>
-        <p class="role-details">Location: Hoboken, NJ<br>Time Worked: Oct '16 — Dec '18</p>
+# Professional Summary (resume, LinkedIn links)
+st.subheader("Professional Summary")
+st.write("""
+I specialize in developing predictive models and creating data-driven solutions that streamline operations, 
+reduce inefficiencies, and drive strategic growth. My experience spans across various industries, and I have a proven track record 
+of leading teams and delivering results.
+""")
+st.markdown("""
+**[View my LinkedIn](https://www.linkedin.com/in/puravp) | [View my Resume](https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Purav_Patel_Resume.pdf)**
+""")
 
-        <p class="role-title">Logistics & Distribution Leader</p>
-        <p class="role-details">Location: Miami, FL<br>Time Worked: Aug '14 — Sep '16</p>
+st.markdown("</div>", unsafe_allow_html=True)
 
-        <p class="role-title">Operations Management Leadership Development Program</p>
-        <p class="role-details">Location: Waukesha, WI<br>Time Worked: Jul '12 — Jul '14</p>
-        """, unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    main()
+# Navigation to other pages (if using multipage app, these would be in the sidebar)
+st.markdown("---")
+st.write("Use the sidebar to navigate to other sections of my portfolio.")
