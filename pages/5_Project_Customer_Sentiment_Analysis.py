@@ -183,38 +183,28 @@ with col4:
     wordcloud = WordCloud(width=800, height=400, background_color="white", colormap="Blues").generate(aspect_text)
     st.image(wordcloud.to_array(), use_container_width=True)
 
-# Visualization: Overall Churn Distribution by Tenure Group (Grouped Bars)
-st.subheader("Overall Churn Distribution by Tenure Group")
-overall_counts = df.groupby(["tenure_group", "Churn"]).size().reset_index(name="Count")
-fig3b = px.bar(overall_counts, x="tenure_group", y="Count", color="Churn",
-               color_discrete_map=sentiment_palette,
-               title="Churn Count by Tenure Group",
-               hover_data={"Count": ":,d"},
-               barmode="group",
-               category_orders={"tenure_group": tenure_order})
-fig3b.update_layout(xaxis_title="Tenure Group", yaxis_title="Number of Customers", hovermode="x unified")
-st.plotly_chart(fig3b, use_container_width=True)
-
 # ---- Key Takeaways ----
 st.header("Key Takeaways")
-st.markdown("""
-- **Insightful Trends:**  
-  Analysis reveals that customer churn is significantly influenced by tenure, monthly charges, and contract types.
-- **Model Performance:**  
-  The best-performing model (Logistic Regression) achieved approximately 80% accuracy, serving as a strong baseline for predicting churn.
-- **Actionable Strategies:**  
-  By identifying at-risk customers, targeted retention campaigns can be implemented and resource allocation optimized to improve customer loyalty and revenue.
+st.write("""
+- **Positive Sentiment Dominates**
+  - Most reviews are **positive**, indicating that customers generally appreciate the products.
+  - This insight is useful for marketing teams to emphasize strong product features.
+
+- **Negative Reviews Highlight Areas for Improvement**
+  - Negative reviews pinpoint **pain points** such as packaging issues, product quality, or misleading descriptions.
+  - Companies can use this data to enhance the customer experience.
+
+- **Sentiment Trends Over Time**
+  - Quarterly sentiment trends reveal seasonal patterns that can inform promotional timing and product updates.
+
+- **Aspect-Based Insights Provide Granularity**
+  - Aspect-based sentiment analysis offers detailed insights by identifying specific product features that drive sentiment.
 """)
 
 # ---- Next Steps ----
 st.header("Next Steps")
-st.markdown("""
-- **Model Enhancement:**  
-  - Perform further feature engineering (e.g., interaction terms, polynomial features).  
-  - Utilize hyperparameter tuning and experiment with advanced models (e.g., Gradient Boosting, XGBoost).
-- **Operational Deployment:**  
-  - Integrate the dashboard with real-time data feeds.  
-  - Optimize decision thresholds to improve the recall rate for churn prediction.
-- **Data Enrichment:**  
-  - Incorporate additional customer data (demographics, usage patterns) to enhance predictive accuracy.
+st.write("""
+- Expand the analysis to include additional product categories.
+- Integrate real-time sentiment monitoring from live customer reviews.
+- Refine aspect-based sentiment classification using advanced BERT models.
 """)
