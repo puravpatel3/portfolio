@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from prophet import Prophet
+from prophet.plot import plot_plotly  # Importing the Plotly plotting function for Prophet
 import plotly.io as pio
 import matplotlib.dates as mdates
 
@@ -21,7 +22,7 @@ A critical component of the project is the development of a predictive sales for
 the model enables car manufacturers and dealerships to anticipate future demand with greater accuracy. These insights empower stakeholders to make data-driven decisions 
 that enhance inventory management, optimize pricing strategies, and streamline resource allocation.
 
-The project underscores the importance of transforming raw sales data into meaningful insights to foster strategic growth and improve operational efficiency.
+This project underscores the importance of transforming raw sales data into meaningful insights to foster strategic growth and improve operational efficiency.
 """)
 
 # ------------------- Use Case -------------------
@@ -135,63 +136,65 @@ if car_model_filter != 'All':
 # ------------------- Sales Analysis Visualizations -------------------
 st.header("Sales Analysis Visualizations")
 
-# Define a custom color palette for consistency (feel free to adjust as desired)
-custom_palette = px.colors.qualitative.Plotly  # Using Plotly's built-in qualitative palette
+# Define a custom color palette for consistency
+custom_palette = ["#99ccff"]  # Using a uniform color for charts without grouping
 
-# 1. Sales Distribution by Region
+# 1. Sales Distribution by Region (No Color Coding)
 st.subheader("Sales Distribution by Region")
 sales_by_region = filtered_df.groupby('Dealer_Region').agg(total_sales=('Price ($)', 'sum')).reset_index().sort_values(by='total_sales', ascending=False)
 fig1 = px.bar(sales_by_region, x='Dealer_Region', y='total_sales',
-              color='Dealer_Region',
-              color_discrete_sequence=custom_palette,
-              hover_data={'total_sales':':$.2f'},
+              hover_data={'total_sales':':$,.2f'},
               labels={'Dealer_Region':'Region', 'total_sales':'Total Sales ($)'},
               title="Sales by Region")
-fig1.update_layout(xaxis_title="Region", yaxis_title="Total Sales ($)", 
-                   hovermode="x unified")
+# Remove color coding by not specifying the "color" parameter
+fig1.update_traces(marker_color="#99ccff")
+fig1.update_layout(xaxis_title="Region", yaxis_title="Total Sales ($)", hovermode="x unified")
 st.plotly_chart(fig1, use_container_width=True)
 
-# 2. Car Sales Over Time (by Quarter)
+# 2. Car Sales Over Time (by Quarter) (No Color Coding)
 st.subheader("Car Sales Over Time (by Quarter)")
 filtered_df['YearQuarter'] = filtered_df['Date'].dt.year.astype(str) + "Q" + (((filtered_df['Date'].dt.month - 1) // 3 + 1).astype(str))
 sales_by_quarter = filtered_df.groupby('YearQuarter').agg(total_sales=('Price ($)', 'sum')).reset_index()
 fig2 = px.bar(sales_by_quarter, x='YearQuarter', y='total_sales',
-              color='YearQuarter',
-              color_discrete_sequence=custom_palette,
-              hover_data={'total_sales':':$.2f'},
+              hover_data={'total_sales':':$,.2f'},
               labels={'YearQuarter':'Year-Quarter', 'total_sales':'Total Sales ($)'},
               title="Car Sales Over Time (by YearQuarter)")
+fig2.update_traces(marker_color="#99ccff")
 fig2.update_layout(xaxis_title="YearQuarter", yaxis_title="Total Sales ($)", hovermode="x unified")
 st.plotly_chart(fig2, use_container_width=True)
 
-# 3. Top 5 Dealers by Revenue
+# 3. Top 5 Dealers by Revenue (Stacked by Body Style)
 st.subheader("Top 5 Dealers by Revenue")
-revenue_by_dealer = filtered_df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_revenue')
-fig3 = px.bar(revenue_by_dealer, x='Dealer_Name', y='total_revenue',
-              color='Dealer_Name',
-              color_discrete_sequence=custom_palette,
-              hover_data={'total_revenue':':$.2f'},
+# Group by Dealer Name and Body Style
+revenue_by_dealer_body = filtered_df.groupby(['Dealer_Name', 'Body Style']).agg(total_revenue=('Price ($)', 'sum')).reset_index()
+# Calculate total revenue per dealer to identify top 5 dealers
+total_revenue_by_dealer = filtered_df.groupby('Dealer_Name').agg(total_revenue=('Price ($)', 'sum')).reset_index()
+top_5_dealers = total_revenue_by_dealer.nlargest(5, 'total_revenue')['Dealer_Name']
+revenue_by_dealer_body = revenue_by_dealer_body[revenue_by_dealer_body['Dealer_Name'].isin(top_5_dealers)]
+fig3 = px.bar(revenue_by_dealer_body, x='Dealer_Name', y='total_revenue',
+              color='Body Style',
               labels={'Dealer_Name':'Dealer Name', 'total_revenue':'Total Revenue ($)'},
-              title="Top 5 Dealers by Revenue")
+              title="Top 5 Dealers by Revenue (Stacked by Body Style)",
+              hover_data={'total_revenue':':$,.2f'},
+              barmode='stack')
 fig3.update_layout(xaxis_title="Dealer Name", yaxis_title="Total Revenue ($)", hovermode="x unified")
 st.plotly_chart(fig3, use_container_width=True)
 
-# 4. Top 5 Car Models by Sales
+# 4. Top 5 Car Models by Sales (Uniform Color)
 st.subheader("Top 5 Car Models by Sales")
 sales_by_model = filtered_df.groupby('Model').agg(total_sales=('Price ($)', 'sum')).reset_index().nlargest(5, 'total_sales')
 fig4 = px.bar(sales_by_model, x='Model', y='total_sales',
-              color='Model',
-              color_discrete_sequence=custom_palette,
-              hover_data={'total_sales':':$.2f'},
+              hover_data={'total_sales':':$,.2f'},
               labels={'Model':'Car Model', 'total_sales':'Total Sales ($)'},
               title="Top 5 Car Models by Sales")
+fig4.update_traces(marker_color="#99ccff")
 fig4.update_layout(xaxis_title="Car Model", yaxis_title="Total Sales ($)", hovermode="x unified")
 st.plotly_chart(fig4, use_container_width=True)
 
 # ------------------- Advanced Analytics Section -------------------
 st.header("Advanced Analytics")
 
-# Sales Breakdown by Region and Car Model (Heatmap)
+# Sales Breakdown by Region and Car Model (Heatmap) using Plotly Express
 st.subheader("Sales Breakdown by Region and Car Model")
 st.write("""
 This heatmap visualizes the sales performance of various car models across different dealer regions. The color gradient represents total sales volume in millions of dollars.
@@ -200,7 +203,7 @@ sales_by_region_model = filtered_df.groupby(['Dealer_Region', 'Model']).agg(tota
 top_models = sales_by_region_model.groupby('Model').agg(total_sales=('total_sales', 'sum')).nlargest(10, 'total_sales').index
 filtered_sales = sales_by_region_model[sales_by_region_model['Model'].isin(top_models)]
 heatmap_data = filtered_sales.pivot_table(index='Dealer_Region', columns='Model', values='total_sales', aggfunc='sum')
-# Convert values to millions for display
+# Convert to millions for display
 heatmap_data_m = heatmap_data / 1_000_000
 fig5 = px.imshow(heatmap_data_m,
                  text_auto=".1f",
@@ -232,12 +235,11 @@ if not filtered_df.empty:
             model.fit(region_data)
             future = model.make_future_dataframe(periods=730)
             forecast = model.predict(future)
-            # Use Prophet's Plotly integration for an interactive forecast chart
-            fig6 = model.plot_plotly(forecast)
+            # Use Prophet's Plotly integration function
+            fig6 = plot_plotly(model, forecast)
             fig6.update_layout(title=f"Revenue Forecast for {region_filter} Region",
                                xaxis_title="YearQuarter", yaxis_title="Revenue ($)",
                                hovermode="x unified")
-            # Optionally, update x-axis tick formatting
             st.plotly_chart(fig6, use_container_width=True)
         except Exception as e:
             st.error(f"An error occurred while forecasting: {str(e)}")
@@ -259,6 +261,7 @@ monthly_forecast['Cumulative Revenue ($)'] = monthly_forecast['Cumulative'].appl
 fig7 = px.line(monthly_forecast, x=monthly_forecast['YearMonth'].dt.to_timestamp(), y='revenue_forecast',
                markers=True, title="Revenue Forecast for 2024",
                labels={'x': 'Month', 'revenue_forecast': 'Revenue ($)'}, color_discrete_sequence=["blue"])
+# Add an area trace for uncertainty
 fig7.add_traces(px.area(monthly_forecast, x=monthly_forecast['YearMonth'].dt.to_timestamp(), y='revenue_forecast',
                         color_discrete_sequence=["skyblue"]).data)
 fig7.update_layout(xaxis_title="Month", yaxis_title="Revenue ($)", hovermode="x unified")
