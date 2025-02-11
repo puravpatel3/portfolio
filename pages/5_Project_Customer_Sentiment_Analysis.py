@@ -1,181 +1,201 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.express as px
+from wordcloud import WordCloud
 
-# ------------------- Page Configuration -------------------
-st.set_page_config(page_title="Telco Customer Churn Analysis", layout="wide")
+# ---- Set Page Configuration ----
+st.set_page_config(
+    page_title="Customer Sentiment Analysis",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# ------------------- Project Title -------------------
-st.title("Telco Customer Churn Analysis")
+# ---- 1️⃣ Project Title ----
+st.title("Customer Sentiment Analysis on Amazon Product Reviews")
 
-# ------------------- Project Summary -------------------
+# ---- 2️⃣ Project Summary ----
 st.header("Project Summary")
-st.markdown("""
-**Objective:**  
-The goal of this project is to analyze customer churn in the telecommunications industry and develop a robust predictive model to identify at-risk customers. I evaluated several models using 5-fold cross-validation and selected Logistic Regression, which achieved a prediction rate (accuracy) of approximately 80%. This model enables the business to anticipate churn, facilitating targeted retention strategies and proactive customer engagement.
+st.write("""
+This project analyzes **Amazon product reviews** using **sentiment analysis** and **Aspect-Based Sentiment Analysis (ABSA)** to extract insights from customer feedback.
+By applying **natural language processing (NLP)**, I classify reviews as **positive, neutral, or negative**, determine sentiment trends over time, and identify specific aspects mentioned in the reviews.
 
-**Dataset:**  
-An enriched Telco Customer Churn dataset is utilized, containing both original customer data and machine learning predictions. The dataset is hosted on GitHub for seamless integration and deployment.
+The goal is to uncover actionable insights that businesses can use to improve **product offerings, marketing strategies, and customer satisfaction**.
 
-**Business Impact:**  
-Reducing churn is vital for revenue maximization. By accurately identifying customers at risk of leaving, the company can launch targeted interventions, reduce revenue loss, and improve overall customer satisfaction and loyalty. This predictive model serves as a strategic tool to drive data-informed retention efforts.
+- **Dataset**: [Amazon Reviews Dataset](https://github.com/puravpatel3/portfolio/blob/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv)
+- **Timeframe Analyzed**: **10/26/2010 – 10/26/2012**
+- **Key Insights**: Identify which products receive the best or worst sentiment and determine which aspects drive customer satisfaction or complaints.
 """)
 
-# ------------------- Use Case -------------------
+# ---- 3️⃣ Use Case ----
 st.header("Use Case")
-st.markdown("""
-- **Customer Retention:** Identify and engage customers likely to churn through targeted retention programs.
-- **Revenue Maximization:** Prevent revenue loss by addressing churn proactively with personalized offers.
-- **Operational Efficiency:** Enhance customer service and marketing strategies by leveraging data-driven insights.
+st.write("""
+**Why analyze customer sentiment?**
+- **Product Improvement**: Identify trends in feedback to refine product features.
+- **Marketing Strategy**: Optimize ad campaigns by understanding what customers appreciate or dislike.
+- **Customer Experience**: Address pain points in product quality or user experience.
+- **Competitive Analysis**: Compare sentiment trends against competitor products.
+- **Brand Reputation**: Monitor customer perceptions and respond proactively.
 """)
 
-# ------------------- Key Technologies Used -------------------
+# ---- 4️⃣ Key Technologies Used ----
 st.header("Key Technologies Used")
-st.markdown("""
-- **Pandas:** Data manipulation and analysis  
-- **NumPy:** Numerical computations  
-- **Scikit-learn:** Machine learning and model evaluation  
-- **Plotly Express:** Interactive and dynamic data visualization  
-- **Streamlit:** Interactive web app development  
-- **GitHub:** Version control and cloud deployment
+st.write("""
+- **Python**: Data processing and sentiment analysis.
+- **pandas**: Data manipulation.
+- **matplotlib & seaborn**: (Previously used for static charts.)
+- **Plotly**: For interactive and dynamic visualizations.
+- **Streamlit**: Interactive dashboard development.
+- **VADER Sentiment Analysis**: Classifies overall sentiment.
+- **spaCy NLP**: Extracts relevant product aspects.
+- **Transformers (BERT)**: Performs Aspect-Based Sentiment Analysis (ABSA).
 """)
 
-# ------------------- Project Steps -------------------
+# ---- 5️⃣ Project Steps ----
 st.header("Project Steps")
-with st.expander("Step 1: Data Cleaning & Preprocessing"):
-    st.markdown("""
-    **Actions Taken:**  
-    - I cleaned the raw dataset by removing missing values and extraneous characters (e.g., in the TotalCharges field).  
-    - I standardized column names and formatted numeric fields.
-    - I engineered new features such as `tenure_group` (to segment customers by their duration with the company) and `AvgCharges` (average monthly charge derived from TotalCharges/tenure).
 
-    **Why It’s Important:**  
-    Proper data cleaning and feature engineering ensure that the dataset is reliable and insightful, forming a solid foundation for accurate predictive modeling.
-    """)
-with st.expander("Step 2: Exploratory Data Analysis (EDA)"):
-    st.markdown("""
-    **Actions Taken:**  
-    - I performed statistical summaries, correlation analyses, and visualizations to understand data distributions and relationships.  
-    - I identified key trends and potential issues in the data, such as the impact of tenure and monthly charges on churn.
-
-    **Why It’s Important:**  
-    Exploratory data analysis uncovers hidden patterns and informs subsequent feature selection and model development, ensuring that the predictive model targets the most influential factors.
-    """)
-with st.expander("Step 3: Modeling"):
-    st.markdown("""
-    **Actions Taken:**  
-    - I evaluated multiple machine learning models (Logistic Regression, Decision Tree, and Random Forest) using 5-fold cross-validation.
-    - I selected Logistic Regression as the best model based on its performance (approximately 80% accuracy).
-    - I integrated the model’s predictions back into the dataset.
-
-    **Why It’s Important:**  
-    The modeling step provides a data-driven method to predict customer churn, which is critical for identifying at-risk customers and deploying effective retention strategies.
-    """)
-with st.expander("Step 4: Deployment & Dashboard"):
-    st.markdown("""
-    **Actions Taken:**  
-    - I developed an interactive Streamlit dashboard that dynamically visualizes key metrics and model predictions.
-    - I enabled filtering (e.g., by tenure group) to allow stakeholders to explore the data in depth.
-
-    **Why It’s Important:**  
-    An interactive dashboard facilitates clear communication of insights and supports executive-level decision-making by providing real-time, actionable information.
+with st.expander("Step 1: Data Cleaning & Preparation"):
+    st.write("""
+    - **Filtered the dataset** to include reviews from the most recent 2 years (10/26/2010 - 10/26/2012).
+    - **Reduced file size** by retaining only the top 50 most-reviewed products.
+    - **Converted timestamps** to human-readable review dates.
+    - **Removed missing values** and irrelevant columns.
     """)
 
-# ------------------- Dataset Section -------------------
-st.header("Dataset")
-st.markdown("The final dataset, which includes the model predictions, is hosted on GitHub. Access it via the link below:")
-dataset_url = "https://raw.githubusercontent.com/puravpatel3/portfolio/3d0ea6e6edb91da1cc432498f5bb064717a165b9/files/telco_customer_churn_with_predictions_final.csv"
-st.markdown(f"[Telco Customer Churn Dataset]({dataset_url})")
+with st.expander("Step 2: Sentiment Analysis (VADER)"):
+    st.write("""
+    - Applied **VADER (Valence Aware Dictionary and sEntiment Reasoner)** to classify reviews as **Positive, Neutral, or Negative**.
+    - Extracted **compound sentiment scores** to quantify sentiment intensity.
+    - Performed **text preprocessing** (e.g., lowercasing, punctuation removal) to enhance accuracy.
+    """)
 
-@st.cache_data
-def load_data(url):
-    df = pd.read_csv(url)
-    return df
+with st.expander("Step 3: Aspect-Based Sentiment Analysis (ABSA)"):
+    st.write("""
+    - Extracted key **aspects** from review text using **spaCy NLP**.
+    - Utilized a **BERT-based ABSA** approach to determine sentiment for each aspect.
+    - Filtered out **stop words and irrelevant terms** to retain only meaningful aspects.
+    """)
 
-df = load_data(dataset_url)
+with st.expander("Step 4: Visualization & Insights"):
+    st.write("""
+    - Created a **Sentiment Distribution** visualization to show the proportions of positive, neutral, and negative reviews.
+    - Developed a **Word Cloud** to display frequently mentioned aspects.
+    - Plotted **Sentiment Over Time** (quarterly trend) to observe how sentiment evolves.
+    - Enabled **interactive filters** for dynamic analysis of the review data.
+    """)
 
-st.write("### Dataset Preview")
+# ---- Dataset Preview Section ----
+st.header("Dataset Preview")
+data_url = "https://github.com/puravpatel3/portfolio/raw/9120460482515ef843eee964f7278e5b81b889ee/files/final_amazon_sentiment_dataset.csv"
+df = pd.read_csv(data_url)
+df["review_date"] = pd.to_datetime(df["review_date"])
 st.dataframe(df.head(), height=400)
 
 st.markdown("""
 **Field Descriptions for Model Input Features:**
 
-- **tenure:** Number of months the customer has been with the company.
-- **MonthlyCharges:** The monthly fee charged to the customer.
-- **TotalCharges:** The total amount charged to the customer over their tenure.
-- **AvgCharges:** The average monthly charge (calculated as TotalCharges divided by tenure).
-- **SeniorCitizen:** Binary indicator (0 or 1) showing if the customer is a senior citizen.
-- **Partner:** Indicates if the customer has a partner.
-- **Dependents:** Indicates if the customer has dependents.
-- **MultipleLines:** Specifies whether the customer has multiple phone lines.
-- **InternetService:** Type of internet service provided (e.g., DSL, Fiber optic).
-- **StreamingTV:** Indicates if the customer subscribes to streaming TV services.
-- **StreamingMovies:** Indicates if the customer subscribes to streaming movie services.
-- **Contract:** Type of contract (e.g., Month-to-month, One year, Two year).
+- **Review_Text:** The text of the customer review.
+- **Sentiment_Score:** A numerical score indicating the review's sentiment.
+- **Polarity:** A measure of how positive or negative the review is.
+- **Subjectivity:** A measure of the degree of personal opinion in the review.
+- **Other Features:** Additional metadata such as review date, product category, etc.
 """)
 
-# ------------------- Data Visualizations -------------------
+# ---- Sidebar Filters ----
+st.sidebar.header("Filter Data")
+
+# Date Filter
+min_date = df["review_date"].min()
+max_date = df["review_date"].max()
+date_range = st.sidebar.date_input("Select Date Range", [min_date, max_date], min_value=min_date, max_value=max_date)
+
+# Product ID Filter
+product_options = df["ProductId"].unique()
+selected_product = st.sidebar.selectbox("Select Product ID", ["All"] + list(product_options))
+
+# Sentiment Filter
+sentiment_options = ["All", "Positive", "Neutral", "Negative"]
+selected_sentiment = st.sidebar.selectbox("Select Sentiment", sentiment_options)
+
+# ---- Apply Filters ----
+filtered_df = df[
+    (df["review_date"] >= pd.to_datetime(date_range[0])) &
+    (df["review_date"] <= pd.to_datetime(date_range[1]))
+]
+
+if selected_product != "All":
+    filtered_df = filtered_df[filtered_df["ProductId"] == selected_product]
+
+if selected_sentiment != "All":
+    filtered_df = filtered_df[filtered_df["overall_sentiment"] == selected_sentiment]
+
+# ---- 6️⃣ Data Visualizations ----
 st.header("Data Visualizations")
 
-# Define the desired order and labels for tenure groups
-tenure_order = ["0-12 Months", "12-24 Months", "24-48 Months", "48-60 Months", "60+ Months"]
+# Define a color palette similar to the churn analysis
+sentiment_palette = {"Positive": "#99ccff", "Neutral": "#cccccc", "Negative": "#ff9999"}
 
-if 'tenure_group' not in df.columns or df['tenure_group'].dtype.name != 'category':
-    df['tenure_group'] = pd.cut(
-        df['tenure'],
-        bins=[0, 12, 24, 48, 60, df['tenure'].max()],
-        labels=tenure_order
-    )
-else:
-    df['tenure_group'] = df['tenure_group'].cat.rename_categories(tenure_order)
-
-# Interactive Filter: Select Tenure Group
-selected_tenure = st.selectbox("Select Tenure Group for Analysis", tenure_order)
-filtered_df = df[df['tenure_group'] == selected_tenure]
-
-# Define a consistent, bolder yet still pastel-like palette for churn:
-churn_palette = {"Yes": "#ff9999", "No": "#99ccff"}
-
-# --- Place the Churn Distribution and Charges Comparison charts side by side ---
+# Layout for Sentiment Charts (side by side)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("Churn Distribution")
-    churn_counts = filtered_df["Churn"].value_counts().reset_index()
-    churn_counts.columns = ["Churn", "Count"]
-    fig1 = px.bar(churn_counts, x="Churn", y="Count", 
-                  color="Churn", 
-                  color_discrete_map=churn_palette,
-                  hover_data={"Count": ":,d"},
-                  title="Churn Count in Selected Tenure Group")
-    fig1.update_layout(xaxis_title="Churn", yaxis_title="Number of Customers", hovermode="x unified")
-    st.plotly_chart(fig1, use_container_width=True)
+    st.subheader("Sentiment Distribution")
+    sentiment_counts = filtered_df["overall_sentiment"].value_counts().reset_index()
+    sentiment_counts.columns = ["Sentiment", "Count"]
+    fig = px.bar(sentiment_counts, x="Sentiment", y="Count", 
+                 color="Sentiment", 
+                 color_discrete_map=sentiment_palette,
+                 hover_data={"Count": ":,d"},
+                 title="Distribution of Overall Sentiment")
+    fig.update_layout(xaxis_title="Sentiment", yaxis_title="Number of Reviews", hovermode="x unified")
+    st.plotly_chart(fig, use_container_width=True)
 
 with col2:
-    st.subheader("Charges Comparison by Predicted Churn")
-    filtered_df['Predicted_Churn_str'] = filtered_df['Predicted_Churn'].replace({0: "No", 1: "Yes"})
-    fig2 = px.scatter(filtered_df, x="MonthlyCharges", y="TotalCharges", 
-                      color="Predicted_Churn_str", 
-                      color_discrete_map=churn_palette,
-                      title="Monthly Charges vs. Total Charges",
-                      hover_data={"MonthlyCharges": ":$,.2f", "TotalCharges": ":$,.2f"})
-    fig2.update_layout(xaxis_title="Monthly Charges ($)", yaxis_title="Total Charges ($)", hovermode="closest")
+    st.subheader("Sentiment Over Time (Quarterly)")
+    filtered_df["quarter"] = filtered_df["review_date"].dt.to_period("Q").astype(str)
+    sentiment_trend = filtered_df.groupby(["quarter", "overall_sentiment"]).size().reset_index(name="Count")
+    fig2 = px.line(sentiment_trend, x="quarter", y="Count", color="overall_sentiment",
+                   markers=True, color_discrete_map=sentiment_palette,
+                   hover_data={"Count": ":,d"},
+                   title="Quarterly Sentiment Trend")
+    fig2.update_layout(xaxis_title="Quarter", yaxis_title="Number of Reviews")
     st.plotly_chart(fig2, use_container_width=True)
 
-# --- Visualization 3: Overall Churn Distribution by Tenure Group (Grouped Bars) ---
+# Layout for Product Pareto Chart and Word Cloud
+col3, col4 = st.columns(2)
+
+with col3:
+    st.subheader("Top 10 Reviewed Products")
+    # Get the top 10 reviewed products, sorted descending by review count
+    product_counts = filtered_df["ProductId"].value_counts().head(10).reset_index()
+    product_counts.columns = ["ProductId", "Review Count"]
+    product_counts = product_counts.sort_values("Review Count", ascending=False)
+    fig3 = px.bar(product_counts, x="Review Count", y="ProductId", orientation='h',
+                  hover_data={"Review Count": ":,d"},
+                  title="Top 10 Reviewed Products",
+                  color_discrete_sequence=["#99ccff"],
+                  category_orders={"ProductId": product_counts["ProductId"].tolist()})
+    fig3.update_layout(xaxis_title="Number of Reviews", yaxis_title="Product ID")
+    st.plotly_chart(fig3, use_container_width=True)
+
+with col4:
+    st.subheader("Frequent Aspects in Reviews")
+    aspect_text = " ".join(filtered_df["refined_aspects"].dropna().astype(str))
+    wordcloud = WordCloud(width=800, height=400, background_color="white", colormap="Blues").generate(aspect_text)
+    st.image(wordcloud.to_array(), use_container_width=True)
+
+# Visualization: Overall Churn Distribution by Tenure Group (Grouped Bars)
 st.subheader("Overall Churn Distribution by Tenure Group")
 overall_counts = df.groupby(["tenure_group", "Churn"]).size().reset_index(name="Count")
-fig3 = px.bar(overall_counts, x="tenure_group", y="Count", color="Churn",
-              color_discrete_map=churn_palette,
-              title="Churn Count by Tenure Group",
-              hover_data={"Count": ":,d"},
-              barmode="group",
-              category_orders={"tenure_group": tenure_order})
-fig3.update_layout(xaxis_title="Tenure Group", yaxis_title="Number of Customers", hovermode="x unified")
-st.plotly_chart(fig3, use_container_width=True)
+fig3b = px.bar(overall_counts, x="tenure_group", y="Count", color="Churn",
+               color_discrete_map=sentiment_palette,
+               title="Churn Count by Tenure Group",
+               hover_data={"Count": ":,d"},
+               barmode="group",
+               category_orders={"tenure_group": tenure_order})
+fig3b.update_layout(xaxis_title="Tenure Group", yaxis_title="Number of Customers", hovermode="x unified")
+st.plotly_chart(fig3b, use_container_width=True)
 
-# ------------------- Key Takeaways -------------------
+# ---- Key Takeaways ----
 st.header("Key Takeaways")
 st.markdown("""
 - **Insightful Trends:**  
@@ -186,7 +206,7 @@ st.markdown("""
   By identifying at-risk customers, targeted retention campaigns can be implemented and resource allocation optimized to improve customer loyalty and revenue.
 """)
 
-# ------------------- Next Steps -------------------
+# ---- Next Steps ----
 st.header("Next Steps")
 st.markdown("""
 - **Model Enhancement:**  
