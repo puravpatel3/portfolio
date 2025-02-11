@@ -1,9 +1,29 @@
 import streamlit as st
 import pydeck as pdk  # For map visualization
 import pandas as pd
+from datetime import datetime
 import plotly.express as px
 
-# List of roles with their corresponding locations and accomplishments
+# ------------------- Helper Function to Compute Years in Role -------------------
+def compute_years(time_str):
+    """
+    Computes the number of years between the start and end dates given in time_str.
+    The time_str is assumed to be in the format "Mon 'YY — Mon 'YY" or "Mon 'YY — Present".
+    """
+    try:
+        parts = time_str.split("—")
+        start_str = parts[0].strip()  # e.g., "Jul '12"
+        end_str = parts[1].strip()    # e.g., "Jul '14" or "Present"
+        start_date = datetime.strptime(start_str, "%b '%y")
+        if end_str.lower() == "present":
+            end_date = datetime.now()
+        else:
+            end_date = datetime.strptime(end_str, "%b '%y")
+        return (end_date - start_date).days / 365.25
+    except Exception as e:
+        return None
+
+# ------------------- List of Roles -------------------
 roles = [
     {
         "role": "Operations Management Leadership Development Program",
@@ -71,6 +91,10 @@ roles = [
     }
 ]
 
+# Precompute years for each role and add a new key "years"
+for role in roles:
+    role["years"] = compute_years(role["time"])
+
 # ------------------- Session State Initialization -------------------
 if 'role_index' not in st.session_state:
     st.session_state['role_index'] = 0  # Start with the first role
@@ -85,8 +109,7 @@ st.session_state['role_index'] = role_names.index(selected_role)
 
 # ------------------- Function to Show Role Details and Map -------------------
 def show_role_details(role):
-    # Define columns: left for details, right for map
-    # Use a column ratio of 2:1.5 (map width reduced)
+    # Use columns: left for details, right for map
     col1, col2 = st.columns([2, 1.5])
     
     # Left side: Role Details
@@ -94,73 +117,40 @@ def show_role_details(role):
         st.write(f"### {role['role']}")
         st.write(f"**Location:** {role['location']}")
         st.write(f"**Time Worked:** {role['time']}")
+        st.write(f"**Years in Role:** {role['years']:.1f} years")
         st.write("**Top Accomplishments:**")
         for accomplishment in role['accomplishments']:
             st.write(f"- {accomplishment}")
     
-    # Right side: Map with markers for all roles, but focused on the selected role
+    # Right side: Map (without markers) zoomed in on the role's location
     with col2:
-        # Prepare marker data with custom sizes and colors
-        processed_markers = []
-        for r in roles:
-            if r["role"] == role["role"]:
-                processed_markers.append({
-                    "lat": r["lat"],
-                    "lon": r["lon"],
-                    "role": r["role"],
-                    "radius": 15000,
-                    "color": [255, 165, 0, 255]  # Bright orange for selected role
-                })
-            else:
-                processed_markers.append({
-                    "lat": r["lat"],
-                    "lon": r["lon"],
-                    "role": r["role"],
-                    "radius": 300,  # Very small marker for others
-                    "color": [200, 200, 200, 50]  # Light gray, nearly transparent
-                })
-        
-        # Set the view state centered on the selected role
         view_state = pdk.ViewState(
             latitude=role["lat"],
             longitude=role["lon"],
             zoom=10,
             pitch=0
         )
-        
-        # Create a ScatterplotLayer using the processed markers
-        layer = pdk.Layer(
-            "ScatterplotLayer",
-            data=processed_markers,
-            get_position="[lon, lat]",
-            get_color="color",
-            get_radius="radius",
-            pickable=True,
-        )
-        
-        # Create the deck with the layer; set height increased to 400 pixels while width is determined by column width
+        # Create an empty deck (no layers) so only the base map is shown.
         deck = pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            tooltip={"text": "{role}"}
+            layers=[],  # No markers or layers
+            initial_view_state=view_state
         )
         st.pydeck_chart(deck, height=400)
 
-# ------------------- Horizontal Timeline Visualization -------------------
+# ------------------- Horizontal Timeline as a Bar Chart -------------------
 def show_horizontal_timeline():
-    global role_names
+    # Build a DataFrame with the role, chronological order, and years in role.
     timeline_df = pd.DataFrame({
         "Role": role_names,
-        "Index": list(range(len(role_names)))
+        "Order": [i+1 for i in range(len(role_names))],
+        "Years": [role["years"] for role in roles]
     })
-    fig = px.scatter(timeline_df, x="Index", y=[0]*len(timeline_df), 
-                     text="Role", 
-                     title="Career Timeline",
-                     hover_data={"Index": False, "Role": True},
-                     labels={"Index": "Chronological Order"})
-    fig.update_traces(marker=dict(size=20, color="blue"), textposition="bottom center")
-    fig.update_layout(yaxis=dict(visible=False), 
-                      xaxis=dict(tickmode="linear", tick0=0, dtick=1))
+    fig = px.bar(timeline_df, x="Order", y="Years", text="Role", 
+                 title="Career Timeline",
+                 labels={"Order": "Chronological Order", "Years": "Years in Role"},
+                 hover_data={"Role": True, "Years": ":.1f"})
+    fig.update_traces(textposition="outside", marker_color="blue")
+    fig.update_layout(xaxis=dict(dtick=1, tickmode="linear"))
     st.plotly_chart(fig, use_container_width=True)
 
 # ------------------- Main Timeline Page -------------------
@@ -171,4 +161,5 @@ def show_timeline():
     st.subheader("Career Timeline")
     show_horizontal_timeline()
 
+# Display the timeline page
 show_timeline()
