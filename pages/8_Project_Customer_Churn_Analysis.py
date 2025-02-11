@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import plotly.express as px
 
 # ------------------- Page Configuration -------------------
 st.set_page_config(page_title="Telco Customer Churn Analysis", layout="wide")
@@ -37,7 +36,7 @@ st.markdown("""
 - **Pandas:** Data manipulation and analysis  
 - **NumPy:** Numerical computations  
 - **Scikit-learn:** Machine learning and model evaluation  
-- **Matplotlib & Seaborn:** Data visualization  
+- **Plotly Express:** Interactive and dynamic data visualization  
 - **Streamlit:** Interactive web app development  
 - **GitHub:** Version control and cloud deployment
 """)
@@ -97,7 +96,7 @@ def load_data(url):
 df = load_data(dataset_url)
 
 st.write("### Dataset Preview")
-st.write(df.head())
+st.dataframe(df.head(), height=400)
 
 st.markdown("""
 **Field Descriptions for Model Input Features:**
@@ -122,7 +121,6 @@ st.header("Data Visualizations")
 # Define the desired order and labels for tenure groups
 tenure_order = ["0-12 Months", "12-24 Months", "24-48 Months", "48-60 Months", "60+ Months"]
 
-# Create a 'tenure_group' if it does not exist, with the updated labels
 if 'tenure_group' not in df.columns or df['tenure_group'].dtype.name != 'category':
     df['tenure_group'] = pd.cut(
         df['tenure'],
@@ -130,7 +128,6 @@ if 'tenure_group' not in df.columns or df['tenure_group'].dtype.name != 'categor
         labels=tenure_order
     )
 else:
-    # If it already exists but labels need to be updated
     df['tenure_group'] = df['tenure_group'].cat.rename_categories(tenure_order)
 
 # Interactive Filter: Select Tenure Group
@@ -138,35 +135,42 @@ selected_tenure = st.selectbox("Select Tenure Group for Analysis", tenure_order)
 filtered_df = df[df['tenure_group'] == selected_tenure]
 
 # Define a consistent, bolder yet still pastel-like palette for churn:
-# Light red for "Yes" and light blue for "No"
 churn_palette = {"Yes": "#ff9999", "No": "#99ccff"}
 
-# Side-by-Side Visualizations
-col1, col2 = st.columns(2)
+# --- Visualization 1: Churn Distribution ---
+st.subheader("Churn Distribution")
+# Compute counts by churn status
+churn_counts = filtered_df["Churn"].value_counts().reset_index()
+churn_counts.columns = ["Churn", "Count"]
+fig1 = px.bar(churn_counts, x="Churn", y="Count", 
+              color="Churn", 
+              color_discrete_map=churn_palette,
+              hover_data={"Count": ":,d"},
+              title="Churn Count in Selected Tenure Group")
+fig1.update_layout(xaxis_title="Churn", yaxis_title="Number of Customers", hovermode="x unified")
+st.plotly_chart(fig1, use_container_width=True)
 
-with col1:
-    st.subheader("Churn Distribution")
-    fig1, ax1 = plt.subplots()
-    sns.countplot(x="Churn", data=filtered_df, palette=churn_palette, ax=ax1)
-    ax1.set_title("Churn Count in Selected Tenure Group")
-    st.pyplot(fig1)
+# --- Visualization 2: Monthly Charges vs. Total Charges ---
+st.subheader("Charges Comparison by Predicted Churn")
+# Convert Predicted_Churn to string labels for consistency
+filtered_df['Predicted_Churn_str'] = filtered_df['Predicted_Churn'].replace({0: "No", 1: "Yes"})
+fig2 = px.scatter(filtered_df, x="MonthlyCharges", y="TotalCharges", 
+                  color="Predicted_Churn_str", 
+                  color_discrete_map=churn_palette,
+                  title="Monthly Charges vs. Total Charges",
+                  hover_data={"MonthlyCharges": ":$,.2f", "TotalCharges": ":$,.2f"})
+fig2.update_layout(xaxis_title="Monthly Charges ($)", yaxis_title="Total Charges ($)", hovermode="closest")
+st.plotly_chart(fig2, use_container_width=True)
 
-with col2:
-    st.subheader("Monthly Charges vs. Total Charges")
-    fig2, ax2 = plt.subplots()
-    # Convert Predicted_Churn to string labels for consistent coloring
-    filtered_df['Predicted_Churn_str'] = filtered_df['Predicted_Churn'].replace({0: "No", 1: "Yes"})
-    sns.scatterplot(x="MonthlyCharges", y="TotalCharges", hue="Predicted_Churn_str", data=filtered_df, 
-                    palette=churn_palette, ax=ax2)
-    ax2.set_title("Charges Comparison by Predicted Churn")
-    st.pyplot(fig2)
-
-# Additional Visualization: Overall Churn Distribution by Tenure Group
+# --- Visualization 3: Overall Churn Distribution by Tenure Group ---
 st.subheader("Overall Churn Distribution by Tenure Group")
-fig3, ax3 = plt.subplots(figsize=(10,6))
-sns.countplot(x="tenure_group", hue="Churn", data=df, palette=churn_palette, ax=ax3, order=tenure_order)
-ax3.set_title("Churn Count by Tenure Group")
-st.pyplot(fig3)
+overall_counts = df.groupby(["tenure_group", "Churn"]).size().reset_index(name="Count")
+fig3 = px.bar(overall_counts, x="tenure_group", y="Count", color="Churn",
+              color_discrete_map=churn_palette,
+              title="Churn Count by Tenure Group",
+              hover_data={"Count": ":,d"})
+fig3.update_layout(xaxis_title="Tenure Group", yaxis_title="Number of Customers", barmode="stack", hovermode="x unified")
+st.plotly_chart(fig3, use_container_width=True)
 
 # ------------------- Key Takeaways -------------------
 st.header("Key Takeaways")
