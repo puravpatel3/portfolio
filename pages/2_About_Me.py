@@ -41,7 +41,7 @@ def show_about_me():
         This web app serves as a platform to highlight my interests and technical skillsets while connecting with fellow professionals and business leaders. I invite you to explore my work and see how I integrate **data and AI** into everyday solutions.
         """)
 
-    # Right column: Scrollable images using Previous and Next buttons
+    # Right column: Centered image display with improved navigation
     with col2:
         # List of image URLs
         image_urls = [
@@ -52,25 +52,17 @@ def show_about_me():
             'https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/Rob_Rishi_Housewarming.jpg'
         ]
 
-        # Initialize session state for the image index
+        # Initialize session state for the image index if not already present
         if 'image_index' not in st.session_state:
             st.session_state['image_index'] = 0
 
-        # Show current image
+        # Center the image using HTML
+        st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
         st.image(image_urls[st.session_state['image_index']], width=300)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-        # Navigation buttons
-        col1_btn, col2_btn = st.columns([1, 1])
-
-        # Previous button
-        with col1_btn:
-            if st.button('Previous'):
-                st.session_state['image_index'] = (st.session_state['image_index'] - 1) % len(image_urls)
-
-        # Next button
-        with col2_btn:
-            if st.button('Next'):
-                st.session_state['image_index'] = (st.session_state['image_index'] + 1) % len(image_urls)
+        # Use a slider to navigate images instead of clunky buttons
+        st.session_state['image_index'] = st.slider("Select Image", 0, len(image_urls)-1, st.session_state['image_index'])
 
 # Call the function directly
 show_about_me()
