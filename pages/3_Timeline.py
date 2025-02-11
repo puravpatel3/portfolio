@@ -91,7 +91,7 @@ roles = [
     }
 ]
 
-# Precompute years for each role and add a new key "years"
+# Precompute years for each role and add as a new key "years"
 for role in roles:
     role["years"] = compute_years(role["time"])
 
@@ -109,7 +109,7 @@ st.session_state['role_index'] = role_names.index(selected_role)
 
 # ------------------- Function to Show Role Details and Map -------------------
 def show_role_details(role):
-    # Use columns: left for details, right for map
+    # Define columns: left for details, right for map
     col1, col2 = st.columns([2, 1.5])
     
     # Left side: Role Details
@@ -122,7 +122,7 @@ def show_role_details(role):
         for accomplishment in role['accomplishments']:
             st.write(f"- {accomplishment}")
     
-    # Right side: Map (without markers) zoomed in on the role's location
+    # Right side: Map without markers, zoomed in on the selected role's location
     with col2:
         view_state = pdk.ViewState(
             latitude=role["lat"],
@@ -130,27 +130,25 @@ def show_role_details(role):
             zoom=10,
             pitch=0
         )
-        # Create an empty deck (no layers) so only the base map is shown.
         deck = pdk.Deck(
-            layers=[],  # No markers or layers
+            layers=[],  # No markers displayed
             initial_view_state=view_state
         )
         st.pydeck_chart(deck, height=400)
 
 # ------------------- Horizontal Timeline as a Bar Chart -------------------
 def show_horizontal_timeline():
-    # Build a DataFrame with the role, chronological order, and years in role.
     timeline_df = pd.DataFrame({
         "Role": role_names,
-        "Order": [i+1 for i in range(len(role_names))],
+        "Order": [i + 1 for i in range(len(role_names))],
         "Years": [role["years"] for role in roles]
     })
     fig = px.bar(timeline_df, x="Order", y="Years", text="Role", 
                  title="Career Timeline",
                  labels={"Order": "Chronological Order", "Years": "Years in Role"},
                  hover_data={"Role": True, "Years": ":.1f"})
-    fig.update_traces(textposition="outside", marker_color="blue")
-    fig.update_layout(xaxis=dict(dtick=1, tickmode="linear"))
+    fig.update_traces(textposition="outside", marker_color="#99ccff")
+    fig.update_layout(xaxis=dict(tickmode="linear", tick0=1, dtick=1))
     st.plotly_chart(fig, use_container_width=True)
 
 # ------------------- Main Timeline Page -------------------
@@ -161,5 +159,4 @@ def show_timeline():
     st.subheader("Career Timeline")
     show_horizontal_timeline()
 
-# Display the timeline page
 show_timeline()
