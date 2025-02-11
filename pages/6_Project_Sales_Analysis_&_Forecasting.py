@@ -143,14 +143,17 @@ custom_palette = ["#99ccff"]
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("Sales Distribution by Region")
-    sales_by_region = filtered_df.groupby('Dealer_Region').agg(total_sales=('Price ($)', 'sum')).reset_index().sort_values(by='total_sales', ascending=False)
-    fig1 = px.bar(sales_by_region, x='Dealer_Region', y='total_sales',
+    st.subheader("Sales Distribution by Region (Stacked by Body Style)")
+    # Group by both Dealer Region and Body Style
+    sales_by_region_body = filtered_df.groupby(['Dealer_Region', 'Body Style']).agg(total_sales=('Price ($)', 'sum')).reset_index()
+    fig1 = px.bar(sales_by_region_body, 
+              x='Dealer_Region', 
+              y='total_sales', 
+              color='Body Style',
               hover_data={'total_sales':':$,.2f'},
               labels={'Dealer_Region':'Region', 'total_sales':'Total Sales ($)'},
-              title="Sales by Region")
-    fig1.update_traces(marker_color="#99ccff")
-    fig1.update_layout(xaxis_title="Region", yaxis_title="Total Sales ($)", hovermode="x unified")
+              title="Sales by Region (Stacked by Body Style)")
+    fig1.update_layout(barmode='stack', xaxis_title="Region", yaxis_title="Total Sales ($)", hovermode="x unified")
     st.plotly_chart(fig1, use_container_width=True)
 
 with col2:
