@@ -111,7 +111,7 @@ st.subheader("Dataset Preview")
 csv_url = 'https://raw.githubusercontent.com/puravpatel3/portfolio/7e1c707c1363b45cc59b4ed89a411f88fae04e82/files/car_sales.csv'
 df = pd.read_csv(csv_url)
 df['Date'] = pd.to_datetime(df['Date'])
-st.dataframe(df.head(), height=250)
+st.dataframe(df.head(), height=200)
 
 # ------------------- Sidebar Filters -------------------
 st.sidebar.header("Filter Options")
