@@ -48,7 +48,7 @@ st.markdown(custom_css, unsafe_allow_html=True)
 # ------------------- Banner -------------------
 # Display the banner image without any overlaid text
 st.image("https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/pp_banner_linkedin.jfif", 
-         use_column_width=True)
+         use_container_width=True)
 
 # ------------------- Main Content -------------------
 st.markdown("<div class='main'>", unsafe_allow_html=True)
