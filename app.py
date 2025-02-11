@@ -46,10 +46,10 @@ header {visibility: hidden;}
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # ------------------- Banner -------------------
-banner_url = "https://raw.githubusercontent.com/puravpatel3/portfolio/main/files/pp_banner_linkedin.jfif"
+banner_url = "https://raw.githubusercontent.com/puravpatel3/portfolio/2e630dba28609877b479e8ee5e8e65c9b317a883/files/pp_banner_linkedin.jfif"
 st.markdown(f"""
-<div style="width:100%;">
-  <img src="{banner_url}" style="width:100%; height:200px; object-fit: cover;">
+<div style="width:100%; height:200px; overflow:hidden; display: flex; justify-content: center; align-items: center;">
+  <img src="{banner_url}" style="max-height:200px; width: auto; object-fit: contain;">
 </div>
 """, unsafe_allow_html=True)
 
