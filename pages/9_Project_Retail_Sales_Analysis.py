@@ -145,24 +145,16 @@ st.markdown("""
 # ------------------- Visualizations -------------------
 st.header("Visualizations")
 
-# Sales Trend with Time Interval Selector
-st.subheader("Sales Trend Over Time")
-time_interval = st.radio("Select Time Interval", options=["Daily", "Weekly", "Monthly"], horizontal=True)
-
-df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].copy()
-if time_interval == "Weekly":
-    df_trend = df_trend.resample('W-Mon', on="Order Date").sum().reset_index().sort_values("Order Date")
-elif time_interval == "Monthly":
-    df_trend = df_trend.resample('M', on="Order Date").sum().reset_index().sort_values("Order Date")
-# Otherwise, daily data remains unchanged
-
+# Original Daily Sales Trend
+st.subheader("Daily Sales Trend")
+df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date")["Sales"].sum().reset_index().sort_values("Order Date")
 fig_trend = px.line(df_trend, x="Order Date", y="Sales", markers=True, 
-                    title=f"{time_interval} Sales Trend", 
+                    title="Daily Sales Trend", 
                     labels={"Sales": "Total Sales", "Order Date": "Date"},
                     hover_data={"Sales": ":,.2f"})
 st.plotly_chart(fig_trend, use_container_width=True)
 
-# Top 10 Products by Sales (Side-by-Side)
+# Top 10 Products by Sales and Sales vs. Profit Scatter (side-by-side)
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Top 10 Products by Sales")
@@ -192,13 +184,30 @@ col3, col4 = st.columns(2)
 with col3:
     st.subheader("US Heat Map by Profit")
     # Aggregate Profit by State (historical only)
-    state_profit = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("State").agg({"Profit": "sum"}).reset_index()
-    # Use a dynamic "Turbo" color scale for better differentiation
+    state_profit = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("State")["Profit"].sum().reset_index()
+
+    # Mapping from full state names to USPS abbreviations
+    us_state_abbrev = {
+        'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA',
+        'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE', 'District of Columbia': 'DC',
+        'Florida': 'FL', 'Georgia': 'GA', 'Hawaii': 'HI', 'Idaho': 'ID', 'Illinois': 'IL',
+        'Indiana': 'IN', 'Iowa': 'IA', 'Kansas': 'KS', 'Kentucky': 'KY', 'Louisiana': 'LA',
+        'Maine': 'ME', 'Maryland': 'MD', 'Massachusetts': 'MA', 'Michigan': 'MI', 'Minnesota': 'MN',
+        'Mississippi': 'MS', 'Missouri': 'MO', 'Montana': 'MT', 'Nebraska': 'NE', 'Nevada': 'NV',
+        'New Hampshire': 'NH', 'New Jersey': 'NJ', 'New Mexico': 'NM', 'New York': 'NY',
+        'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH', 'Oklahoma': 'OK',
+        'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC',
+        'South Dakota': 'SD', 'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT',
+        'Virginia': 'VA', 'Washington': 'WA', 'West Virginia': 'WV', 'Wisconsin': 'WI',
+        'Wyoming': 'WY'
+    }
+    state_profit['state_code'] = state_profit['State'].map(us_state_abbrev)
+
     fig_heat = px.choropleth(state_profit,
-                             locations="State",
+                             locations="state_code",
                              locationmode="USA-states",
                              color="Profit",
-                             color_continuous_scale="Turbo",
+                             color_continuous_scale="Blues",
                              scope="usa",
                              labels={"Profit": "Total Profit"},
                              title="Total Profit by State")
