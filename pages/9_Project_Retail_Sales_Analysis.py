@@ -149,7 +149,7 @@ st.markdown("""
 # ------------------- Visualizations -------------------
 st.header("Visualizations")
 
-# Sales Trend Over Time: aggregate both Sales and Profit by Order Date
+# Sales Trend Over Time and Top 10 Products by Sales
 col1, col2 = st.columns(2)
 
 with col1:
@@ -160,7 +160,7 @@ with col1:
     ).reset_index().sort_values("Order Date")
     fig_trend = px.line(df_trend, x="Order Date", y="Sales", markers=True, 
                         title="Daily Sales Trend", 
-                        labels={"Sales": "Total Sales", "Order Date": "Date"},
+                        labels={"Sales": "Sales", "Order Date": "Date"},
                         hover_data={"Sales": ":$,.0f", "Profit": ":$,.0f"})
     st.plotly_chart(fig_trend, use_container_width=True)
     
@@ -173,13 +173,13 @@ with col2:
     df_products = df_products.sort_values("Sales", ascending=False).head(10)
     fig_products = px.bar(df_products, x="Product Name", y="Sales", 
                           title="Top 10 Products by Sales", 
-                          labels={"Sales": "Total Sales", "Product Name": "Product"},
+                          labels={"Sales": "Sales", "Product Name": "Product"},
                           hover_data={"Sales": ":$,.0f", "Profit": ":$,.0f"})
     st.plotly_chart(fig_products, use_container_width=True)
 
 st.markdown("---")
 
-# Sales vs. Profit Scatter with outlier filtering from sidebar
+# Sales vs. Profit Scatter and Sales by Ship Mode Pie Chart
 col3, col4 = st.columns(2)
 with col3:
     st.subheader("Sales vs. Profit Scatter")
@@ -199,10 +199,14 @@ with col4:
         Sales=("Sales", "sum"),
         Profit=("Profit", "sum")
     ).reset_index()
+    # For the pie chart, we supply the Profit as customdata so it can appear in hovertemplate.
     fig_ship = px.pie(df_ship, names="Ship Mode", values="Sales", 
-                      title="Sales Distribution by Ship Mode",
-                      hover_data={"Sales": ":$,.0f", "Profit": ":$,.0f"})
-    fig_ship.update_traces(textposition='inside', textinfo='percent+label')
+                      title="Sales Distribution by Ship Mode")
+    fig_ship.update_traces(
+        customdata=df_ship[['Profit']],
+        hovertemplate='<b>%{label}</b><br>Sales: %{value:$,.0f}<br>Profit: %{customdata[0]:$,.0f}<extra></extra>',
+        textposition='inside', textinfo='percent+label'
+    )
     st.plotly_chart(fig_ship, use_container_width=True)
 
 st.markdown("---")
@@ -212,7 +216,6 @@ st.header("US Performance by State")
 col3, col4 = st.columns(2)
 with col3:
     st.subheader("USA Heat Map")
-    # Toggle for coloring by Profit or Revenue (Sales)
     heatmap_metric = st.radio("Color code USA Heatmap by:", options=["Profit", "Revenue"], index=0, horizontal=True)
     
     state_profit = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("State").agg(
@@ -234,7 +237,6 @@ with col3:
         'Wyoming': 'WY'
     }
     state_profit['state_code'] = state_profit['State'].map(us_state_abbrev)
-    # Choose color metric based on toggle selection
     color_field = "Profit" if heatmap_metric == "Profit" else "Sales"
     fig_heat = px.choropleth(
         state_profit,
@@ -243,7 +245,7 @@ with col3:
         color=color_field,
         color_continuous_scale="Viridis",
         scope="usa",
-        labels={color_field: f"Total {heatmap_metric}"},
+        labels={color_field: f"{heatmap_metric}"},
         hover_data={"Profit": ":$,.0f", "Sales": ":$,.0f"},
         title=f"Total {heatmap_metric} by State"
     )
@@ -267,17 +269,14 @@ st.markdown("""
 This interactive time series forecast predicts revenue trends for a selected region over the next year based on historical data.  
 By analyzing past sales performance and projecting future revenue (with confidence intervals), this forecast enables proactive decisions on inventory, staffing, and advertising.
 """)
-# Region filter now includes an "All" option by default
 region_options = ["All"] + sorted(filtered_df["Region"].dropna().unique().tolist())
 selected_region_forecast = st.selectbox("Select a Region for Forecasting", options=region_options, index=0)
 
-# Filter historical data for the selected region (or all regions if "All" is selected)
 if selected_region_forecast == "All":
     region_df = filtered_df[filtered_df["Data Type"] == "Historical"]
 else:
     region_df = filtered_df[(filtered_df["Region"] == selected_region_forecast) & (filtered_df["Data Type"] == "Historical")]
 
-# Checkbox to filter out outlier days with revenue > $10,000
 filter_outliers = st.checkbox("Filter out Outliers (Exclude days with revenue > $10,000)", value=False)
 
 region_data = region_df.groupby("Order Date").agg(
