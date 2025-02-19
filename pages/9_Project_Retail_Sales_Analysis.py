@@ -24,6 +24,10 @@ df = load_data(data_url)
 
 # ------------------- Page Title & Intro -------------------
 st.title("Retail Supply Chain Sales Analysis & Forecasting")
+st.markdown("""
+This project leverages advanced data analytics, feature engineering, and forecasting techniques to address complex retail supply chain challenges.  
+The dashboard highlights revenue drivers, operational efficiencies, and future trends, empowering proactive decision-making.
+""")
 
 # ------------------- Project Summary -------------------
 st.header("Project Summary")
@@ -256,11 +260,18 @@ st.markdown("""
 This interactive time series forecast predicts revenue trends for a selected region over the next year based on historical data.  
 By analyzing past sales performance and projecting future revenue (with confidence intervals), this forecast enables proactive decisions on inventory, staffing, and advertising.
 """)
-region_options = sorted(filtered_df["Region"].dropna().unique().tolist())
-selected_region_forecast = st.selectbox("Select a Region for Forecasting", options=region_options)
+# Update the region filter to include an "All" option by default
+region_options = ["All"] + sorted(filtered_df["Region"].dropna().unique().tolist())
+selected_region_forecast = st.selectbox("Select a Region for Forecasting", options=region_options, index=0)
 
-# Filter historical data for the selected region
-region_df = filtered_df[(filtered_df["Region"] == selected_region_forecast) & (filtered_df["Data Type"] == "Historical")]
+# Filter historical data for the selected region (or all if "All" is selected)
+if selected_region_forecast == "All":
+    region_df = filtered_df[filtered_df["Data Type"] == "Historical"]
+else:
+    region_df = filtered_df[(filtered_df["Region"] == selected_region_forecast) & (filtered_df["Data Type"] == "Historical")]
+
+# Add a checkbox to filter out outlier days with revenue > $10,000
+filter_outliers = st.checkbox("Filter out Outliers (Exclude days with revenue > $10,000)", value=False)
 
 # Always include the discount value as a regressor
 region_data = region_df.groupby("Order Date").agg(
@@ -268,6 +279,10 @@ region_data = region_df.groupby("Order Date").agg(
     avg_discount=("Discount", "mean")
 ).reset_index()
 region_data = region_data.rename(columns={"Order Date": "ds", "total_sales": "y", "avg_discount": "discount"})
+
+# Apply outlier filtering if selected
+if filter_outliers:
+    region_data = region_data[region_data["y"] <= 10000]
 
 if not region_data.empty and len(region_data) > 30:
     model = Prophet(changepoint_prior_scale=0.0015, seasonality_prior_scale=10)
@@ -286,7 +301,7 @@ if not region_data.empty and len(region_data) > 30:
             title=f"Revenue Forecast for {selected_region_forecast} Region",
             xaxis_title="Date", 
             yaxis_title="Revenue ($)",
-            yaxis_tickformat="$,",
+            yaxis_tickformat="$,.0f",
             hovermode="x unified"
         )
         st.plotly_chart(fig_forecast, use_container_width=True)
