@@ -21,10 +21,6 @@ df = load_data(data_url)
 
 # ------------------- Page Title & Intro -------------------
 st.title("Retail Supply Chain Sales Analysis & Forecasting")
-st.markdown("""
-This project leverages advanced data analytics, feature engineering, and forecasting techniques to address complex retail supply chain challenges.  
-The dashboard highlights revenue drivers, operational efficiencies, and future trends, empowering proactive decision-making.
-""")
 
 # ------------------- Project Summary -------------------
 st.header("Project Summary")
@@ -53,7 +49,7 @@ st.markdown("""
 - **Pandas & NumPy:** Data manipulation and numerical computations  
 - **Plotly Express:** Interactive data visualizations with tooltips  
 - **Streamlit:** Rapid development of executive-grade dashboards  
-- **Prophet:** Time-series forecasting with confidence intervals
+- **Prophet:** Time-series forecasting with confidence intervals and extra regressors
 """)
 
 # ------------------- Project Steps -------------------
@@ -255,23 +251,51 @@ st.markdown("""
 This interactive time series forecast predicts revenue trends for a selected region over the next year based on historical data.  
 By analyzing past sales performance and projecting future revenue (with confidence intervals), this forecast enables proactive decisions on inventory, staffing, and advertising.
 """)
+# Checkbox to toggle inclusion of discount as a regressor for seasonal promotions
+include_promotion = st.checkbox("Include Seasonal Promotions (Use Discount as regressor)", value=True)
+# Checkbox to toggle display of confidence intervals
+show_conf_int = st.checkbox("Show Confidence Intervals", value=True)
+
 region_options = sorted(filtered_df["Region"].dropna().unique().tolist())
 selected_region_forecast = st.selectbox("Select a Region for Forecasting", options=region_options)
 
+# Filter historical data for the selected region
 region_df = filtered_df[(filtered_df["Region"] == selected_region_forecast) & (filtered_df["Data Type"] == "Historical")]
-region_data = region_df.groupby("Order Date").agg(total_sales=("Sales", "sum")).reset_index()
+
+if include_promotion:
+    # Aggregate total sales and average discount (as a proxy for promotions)
+    region_data = region_df.groupby("Order Date").agg(
+        total_sales=("Sales", "sum"),
+        avg_discount=("Discount", "mean")
+    ).reset_index()
+    region_data = region_data.rename(columns={"Order Date": "ds", "total_sales": "y", "avg_discount": "discount"})
+else:
+    region_data = region_df.groupby("Order Date").agg(total_sales=("Sales", "sum")).reset_index()
+    region_data = region_data.rename(columns={"Order Date": "ds", "total_sales": "y"})
 
 if not region_data.empty and len(region_data) > 30:
-    region_data = region_data.rename(columns={"Order Date": "ds", "total_sales": "y"})
     model = Prophet(changepoint_prior_scale=0.0015, seasonality_prior_scale=10)
     model.add_seasonality(name="monthly", period=30.5, fourier_order=3)
     model.add_seasonality(name="quarterly", period=91.25, fourier_order=5)
     model.add_seasonality(name="yearly", period=365.25, fourier_order=10)
+    if include_promotion:
+        model.add_regressor("discount")
     try:
         model.fit(region_data)
         future = model.make_future_dataframe(periods=365)
+        if include_promotion:
+            # For new future dates, you might want to fill discount with the average discount from historical data
+            future["discount"] = region_data["discount"].mean()
         forecast = model.predict(future)
         fig_forecast = plot_plotly(model, forecast)
+        # Optionally remove confidence interval traces if not selected
+        if not show_conf_int:
+            new_data = []
+            for trace in fig_forecast.data:
+                if "yhat_upper" in trace.name or "yhat_lower" in trace.name:
+                    continue
+                new_data.append(trace)
+            fig_forecast.data = tuple(new_data)
         fig_forecast.update_layout(title=f"Revenue Forecast for {selected_region_forecast} Region",
                                      xaxis_title="Date", yaxis_title="Revenue ($)",
                                      yaxis_tickformat="$,",
