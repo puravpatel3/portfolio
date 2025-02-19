@@ -22,12 +22,8 @@ def load_data(url):
 data_url = "https://raw.githubusercontent.com/puravpatel3/portfolio/55f52c9a729c11496dbcc4a0ff3db811ca2aedb6/files/retail_sales_data_final.csv"
 df = load_data(data_url)
 
-# ------------------- Page Title & Intro -------------------
+# ------------------- Page Title -------------------
 st.title("Retail Supply Chain Sales Analysis & Forecasting")
-st.markdown("""
-This project leverages advanced data analytics, feature engineering, and forecasting techniques to address complex retail supply chain challenges.  
-The dashboard highlights revenue drivers, operational efficiencies, and future trends, empowering proactive decision-making.
-""")
 
 # ------------------- Project Summary -------------------
 st.header("Project Summary")
@@ -114,6 +110,11 @@ selected_ship_mode = get_filter_option("Ship Mode", df["Ship Mode"].dropna().uni
 selected_segment = get_filter_option("Segment", df["Segment"].dropna().unique())
 selected_sub_category = get_filter_option("Product Sub-Category", df["Sub-Category"].dropna().unique())
 
+# Additional filters for Sales vs. Profit Scatter outlier filtering
+st.sidebar.subheader("Sales vs. Profit Scatter Outlier Filter")
+max_sales_scatter = st.sidebar.number_input("Max Sales for Scatter Plot", value=20000, step=1000)
+max_profit_scatter = st.sidebar.number_input("Max Profit for Scatter Plot", value=5000, step=500)
+
 # Apply filters: if a filter returns None, include all values
 filtered_df = df.copy()
 if selected_data_type is not None:
@@ -148,22 +149,23 @@ st.markdown("""
 # ------------------- Visualizations -------------------
 st.header("Visualizations")
 
-# Side-by-side visualizations
+# Sales Trend Over Time: aggregate both Sales and Profit by Order Date
 col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Sales Trend Over Time")
-    # Aggregate sales by Order Date (historical only)
-    df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date")["Sales"].sum().reset_index().sort_values("Order Date")
+    df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date").agg(
+        Sales=("Sales", "sum"),
+        Profit=("Profit", "sum")
+    ).reset_index().sort_values("Order Date")
     fig_trend = px.line(df_trend, x="Order Date", y="Sales", markers=True, 
                         title="Daily Sales Trend", 
                         labels={"Sales": "Total Sales", "Order Date": "Date"},
-                        hover_data={"Sales": ":$,.0f"})
+                        hover_data={"Sales": ":$,.0f", "Profit": ":$,.0f"})
     st.plotly_chart(fig_trend, use_container_width=True)
     
 with col2:
     st.subheader("Top 10 Products by Sales")
-    # Aggregate sales and profit by Product Name (historical only)
     df_products = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Product Name").agg(
         Sales=("Sales", "sum"),
         Profit=("Profit", "sum")
@@ -177,12 +179,14 @@ with col2:
 
 st.markdown("---")
 
-# Additional combined visualizations in a two-column layout
+# Sales vs. Profit Scatter with outlier filtering from sidebar
 col3, col4 = st.columns(2)
 with col3:
     st.subheader("Sales vs. Profit Scatter")
-    # Scatter plot using historical data with Sales & Profit in tooltips
-    fig_scatter = px.scatter(filtered_df[filtered_df["Data Type"]=="Historical"],
+    scatter_df = filtered_df[(filtered_df["Data Type"]=="Historical") & 
+                             (filtered_df["Sales"] <= max_sales_scatter) & 
+                             (filtered_df["Profit"] <= max_profit_scatter)]
+    fig_scatter = px.scatter(scatter_df,
                              x="Sales", y="Profit",
                              color="Category",
                              hover_data={"Product Name": True, "Segment": True, "Sales": ":$,.0f", "Profit": ":$,.0f"},
@@ -191,28 +195,30 @@ with col3:
     st.plotly_chart(fig_scatter, use_container_width=True)
 with col4:
     st.subheader("Sales by Ship Mode")
-    df_ship = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("Ship Mode")["Sales"].sum().reset_index()
+    df_ship = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("Ship Mode").agg(
+        Sales=("Sales", "sum"),
+        Profit=("Profit", "sum")
+    ).reset_index()
     fig_ship = px.pie(df_ship, names="Ship Mode", values="Sales", 
                       title="Sales Distribution by Ship Mode",
-                      hover_data={"Sales": ":$,.0f"})
+                      hover_data={"Sales": ":$,.0f", "Profit": ":$,.0f"})
     fig_ship.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(fig_ship, use_container_width=True)
 
 st.markdown("---")
 
-# ------------------- US Heat Map & Top 10 States Table -------------------
+# US Heat Map & Top 10 States Table with toggle for Profit or Revenue
 st.header("US Performance by State")
-
 col3, col4 = st.columns(2)
 with col3:
-    st.subheader("US Heat Map by Profit")
-    # Aggregate Sales and Profit by State (historical only)
+    st.subheader("USA Heat Map")
+    # Toggle for coloring by Profit or Revenue (Sales)
+    heatmap_metric = st.radio("Color code USA Heatmap by:", options=["Profit", "Revenue"], index=0, horizontal=True)
+    
     state_profit = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("State").agg(
         Sales=("Sales", "sum"),
         Profit=("Profit", "sum")
     ).reset_index()
-
-    # Mapping from full state names to USPS abbreviations
     us_state_abbrev = {
         'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA',
         'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE', 'District of Columbia': 'DC',
@@ -228,17 +234,18 @@ with col3:
         'Wyoming': 'WY'
     }
     state_profit['state_code'] = state_profit['State'].map(us_state_abbrev)
-
+    # Choose color metric based on toggle selection
+    color_field = "Profit" if heatmap_metric == "Profit" else "Sales"
     fig_heat = px.choropleth(
         state_profit,
         locations="state_code",
         locationmode="USA-states",
-        color="Profit",
-        color_continuous_scale="Blues",
+        color=color_field,
+        color_continuous_scale="Viridis",
         scope="usa",
-        labels={"Profit": "Total Profit"},
+        labels={color_field: f"Total {heatmap_metric}"},
         hover_data={"Profit": ":$,.0f", "Sales": ":$,.0f"},
-        title="Total Profit by State"
+        title=f"Total {heatmap_metric} by State"
     )
     st.plotly_chart(fig_heat, use_container_width=True)
 
@@ -253,34 +260,32 @@ with col4:
 
 st.markdown("---")
 
-# ------------------- Forecasting / Advanced Analytics -------------------
+# Revenue Forecasting for Regions
 st.header("Revenue Forecasting")
 st.subheader("Revenue Forecasting for Regions")
 st.markdown("""
 This interactive time series forecast predicts revenue trends for a selected region over the next year based on historical data.  
 By analyzing past sales performance and projecting future revenue (with confidence intervals), this forecast enables proactive decisions on inventory, staffing, and advertising.
 """)
-# Update the region filter to include an "All" option by default
+# Region filter now includes an "All" option by default
 region_options = ["All"] + sorted(filtered_df["Region"].dropna().unique().tolist())
 selected_region_forecast = st.selectbox("Select a Region for Forecasting", options=region_options, index=0)
 
-# Filter historical data for the selected region (or all if "All" is selected)
+# Filter historical data for the selected region (or all regions if "All" is selected)
 if selected_region_forecast == "All":
     region_df = filtered_df[filtered_df["Data Type"] == "Historical"]
 else:
     region_df = filtered_df[(filtered_df["Region"] == selected_region_forecast) & (filtered_df["Data Type"] == "Historical")]
 
-# Add a checkbox to filter out outlier days with revenue > $10,000
+# Checkbox to filter out outlier days with revenue > $10,000
 filter_outliers = st.checkbox("Filter out Outliers (Exclude days with revenue > $10,000)", value=False)
 
-# Always include the discount value as a regressor
 region_data = region_df.groupby("Order Date").agg(
     total_sales=("Sales", "sum"),
     avg_discount=("Discount", "mean")
 ).reset_index()
 region_data = region_data.rename(columns={"Order Date": "ds", "total_sales": "y", "avg_discount": "discount"})
 
-# Apply outlier filtering if selected
 if filter_outliers:
     region_data = region_data[region_data["y"] <= 10000]
 
@@ -293,7 +298,6 @@ if not region_data.empty and len(region_data) > 30:
     try:
         model.fit(region_data)
         future = model.make_future_dataframe(periods=365)
-        # For future dates, fill discount with the average discount from historical data
         future["discount"] = region_data["discount"].mean()
         forecast = model.predict(future)
         fig_forecast = plot_plotly(model, forecast)
