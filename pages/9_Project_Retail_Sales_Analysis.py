@@ -151,22 +151,25 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("Sales Trend Over Time")
     # Aggregate sales by Order Date (historical only)
-    df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date")["Sales"].sum().reset_index()
+    df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date")["Sales"].sum().reset_index().sort_values("Order Date")
     fig_trend = px.line(df_trend, x="Order Date", y="Sales", markers=True, 
                         title="Daily Sales Trend", 
                         labels={"Sales": "Total Sales", "Order Date": "Date"},
-                        hover_data={"Sales": ":,.2f"})
+                        hover_data={"Sales": ":$,.0f"})
     st.plotly_chart(fig_trend, use_container_width=True)
     
 with col2:
     st.subheader("Top 10 Products by Sales")
-    # Aggregate sales by Product Name (historical only)
-    df_products = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Product Name")["Sales"].sum().reset_index()
+    # Aggregate sales and profit by Product Name (historical only)
+    df_products = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Product Name").agg(
+        Sales=("Sales", "sum"),
+        Profit=("Profit", "sum")
+    ).reset_index()
     df_products = df_products.sort_values("Sales", ascending=False).head(10)
     fig_products = px.bar(df_products, x="Product Name", y="Sales", 
                           title="Top 10 Products by Sales", 
                           labels={"Sales": "Total Sales", "Product Name": "Product"},
-                          hover_data={"Sales": ":,.2f"})
+                          hover_data={"Sales": ":$,.0f", "Profit": ":$,.0f"})
     st.plotly_chart(fig_products, use_container_width=True)
 
 st.markdown("---")
@@ -175,11 +178,11 @@ st.markdown("---")
 col3, col4 = st.columns(2)
 with col3:
     st.subheader("Sales vs. Profit Scatter")
-    # Scatter plot using historical data
+    # Scatter plot using historical data with Sales & Profit in tooltips
     fig_scatter = px.scatter(filtered_df[filtered_df["Data Type"]=="Historical"],
                              x="Sales", y="Profit",
                              color="Category",
-                             hover_data=["Product Name", "Segment"],
+                             hover_data={"Product Name": True, "Segment": True, "Sales": ":$,.0f", "Profit": ":$,.0f"},
                              title="Sales vs. Profit by Product Category",
                              labels={"Sales": "Sales", "Profit": "Profit"})
     st.plotly_chart(fig_scatter, use_container_width=True)
@@ -188,7 +191,7 @@ with col4:
     df_ship = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("Ship Mode")["Sales"].sum().reset_index()
     fig_ship = px.pie(df_ship, names="Ship Mode", values="Sales", 
                       title="Sales Distribution by Ship Mode",
-                      hover_data={"Sales": ":,.2f"})
+                      hover_data={"Sales": ":$,.0f"})
     fig_ship.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(fig_ship, use_container_width=True)
 
@@ -200,8 +203,11 @@ st.header("US Performance by State")
 col3, col4 = st.columns(2)
 with col3:
     st.subheader("US Heat Map by Profit")
-    # Aggregate Profit by State (historical only)
-    state_profit = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("State")["Profit"].sum().reset_index()
+    # Aggregate Sales and Profit by State (historical only)
+    state_profit = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("State").agg(
+        Sales=("Sales", "sum"),
+        Profit=("Profit", "sum")
+    ).reset_index()
 
     # Mapping from full state names to USPS abbreviations
     us_state_abbrev = {
@@ -227,6 +233,7 @@ with col3:
                              color_continuous_scale="Blues",
                              scope="usa",
                              labels={"Profit": "Total Profit"},
+                             hover_data={"Profit": ":$,.0f", "Sales": ":$,.0f"},
                              title="Total Profit by State")
     st.plotly_chart(fig_heat, use_container_width=True)
 
@@ -236,6 +243,7 @@ with col4:
         Sum_of_Sales=("Sales", "sum"),
         Sum_of_Profit=("Profit", "sum")
     ).reset_index().sort_values("Sum_of_Profit", ascending=False).head(10)
+    state_summary = state_summary.style.format({"Sum_of_Sales": "${:,.0f}", "Sum_of_Profit": "${:,.0f}"})
     st.dataframe(state_summary)
 
 st.markdown("---")
@@ -266,6 +274,7 @@ if not region_data.empty and len(region_data) > 30:
         fig_forecast = plot_plotly(model, forecast)
         fig_forecast.update_layout(title=f"Revenue Forecast for {selected_region_forecast} Region",
                                      xaxis_title="Date", yaxis_title="Revenue ($)",
+                                     yaxis_tickformat="$,",
                                      hovermode="x unified")
         st.plotly_chart(fig_forecast, use_container_width=True)
     except Exception as e:
