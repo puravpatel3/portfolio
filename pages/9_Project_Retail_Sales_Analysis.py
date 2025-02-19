@@ -24,10 +24,6 @@ df = load_data(data_url)
 
 # ------------------- Page Title & Intro -------------------
 st.title("Retail Supply Chain Sales Analysis & Forecasting")
-st.markdown("""
-This project leverages advanced data analytics, feature engineering, and forecasting techniques to address complex retail supply chain challenges.  
-The dashboard highlights revenue drivers, operational efficiencies, and future trends, empowering proactive decision-making.
-""")
 
 # ------------------- Project Summary -------------------
 st.header("Project Summary")
