@@ -145,19 +145,22 @@ st.markdown("""
 # ------------------- Visualizations -------------------
 st.header("Visualizations")
 
-# Original Daily Sales Trend
-st.subheader("Daily Sales Trend")
-df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date")["Sales"].sum().reset_index().sort_values("Order Date")
-fig_trend = px.line(df_trend, x="Order Date", y="Sales", markers=True, 
-                    title="Daily Sales Trend", 
-                    labels={"Sales": "Total Sales", "Order Date": "Date"},
-                    hover_data={"Sales": ":,.2f"})
-st.plotly_chart(fig_trend, use_container_width=True)
-
-# Top 10 Products by Sales and Sales vs. Profit Scatter (side-by-side)
+# Side-by-side visualizations
 col1, col2 = st.columns(2)
+
 with col1:
+    st.subheader("Sales Trend Over Time")
+    # Aggregate sales by Order Date (historical only)
+    df_trend = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Order Date")["Sales"].sum().reset_index()
+    fig_trend = px.line(df_trend, x="Order Date", y="Sales", markers=True, 
+                        title="Daily Sales Trend", 
+                        labels={"Sales": "Total Sales", "Order Date": "Date"},
+                        hover_data={"Sales": ":,.2f"})
+    st.plotly_chart(fig_trend, use_container_width=True)
+    
+with col2:
     st.subheader("Top 10 Products by Sales")
+    # Aggregate sales by Product Name (historical only)
     df_products = filtered_df[filtered_df["Data Type"] == "Historical"].groupby("Product Name")["Sales"].sum().reset_index()
     df_products = df_products.sort_values("Sales", ascending=False).head(10)
     fig_products = px.bar(df_products, x="Product Name", y="Sales", 
@@ -165,8 +168,14 @@ with col1:
                           labels={"Sales": "Total Sales", "Product Name": "Product"},
                           hover_data={"Sales": ":,.2f"})
     st.plotly_chart(fig_products, use_container_width=True)
-with col2:
+
+st.markdown("---")
+
+# Additional combined visualizations in a two-column layout
+col3, col4 = st.columns(2)
+with col3:
     st.subheader("Sales vs. Profit Scatter")
+    # Scatter plot using historical data
     fig_scatter = px.scatter(filtered_df[filtered_df["Data Type"]=="Historical"],
                              x="Sales", y="Profit",
                              color="Category",
@@ -174,6 +183,14 @@ with col2:
                              title="Sales vs. Profit by Product Category",
                              labels={"Sales": "Sales", "Profit": "Profit"})
     st.plotly_chart(fig_scatter, use_container_width=True)
+with col4:
+    st.subheader("Sales by Ship Mode")
+    df_ship = filtered_df[filtered_df["Data Type"]=="Historical"].groupby("Ship Mode")["Sales"].sum().reset_index()
+    fig_ship = px.pie(df_ship, names="Ship Mode", values="Sales", 
+                      title="Sales Distribution by Ship Mode",
+                      hover_data={"Sales": ":,.2f"})
+    fig_ship.update_traces(textposition='inside', textinfo='percent+label')
+    st.plotly_chart(fig_ship, use_container_width=True)
 
 st.markdown("---")
 
